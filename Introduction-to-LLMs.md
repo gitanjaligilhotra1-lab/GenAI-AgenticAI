@@ -364,6 +364,122 @@ Text → Tokens → Numbers → Model → Numbers → Tokens → Text
 *Note:* The user sees text, but the model processes **numbers representing tokens** internally.  
 
 ---
+---
 
+# Context Window & Limitations
+
+## 13. What is a Context Window?
+
+**Definition:**  
+The **context window** (or context length) is the **maximum number of tokens an LLM can process at once**. It determines how much “memory” the model has when generating text.
+
+**Why it Matters:**  
+
+* Defines the **information the model can see** at a time  
+* Limits how much previous conversation or document the model can remember  
+* Impacts **accuracy, summarization, reasoning, and coding tasks**
+
+**Example:**  
+
+GPT-4 (8K tokens context):  
+Input text: "Large language models can generate, summarize, and translate text..."
+Token count: 120 tokens → fits entirely in context window
+
+*All 120 tokens are available for the model to process.*
+
+---
+
+## 14. How Context Windows Work
+
+* LLMs process **text token by token**  
+* The **context window** is a fixed-size sliding window  
+* When input exceeds the limit, **older tokens are truncated**  
+
+**Visual Illustration:**
+
+[Token1, Token2, ..., TokenN] → Max N tokens
+
+Older tokens outside the window → forgotten
+
+
+**Example:**
+Context window = 8 tokens
+Input: "I love AI and machine learning every day!"
+Tokens: [I, love, AI, and, machine, learning, every, day, !]
+Token 9 (!) → truncated if context window exceeded
+
+
+---
+
+## 15. Limitations of Context Windows
+
+### 15.1 Truncation of Long Text
+
+* Input exceeding the window is **cut off**  
+* Model loses early content → may produce incomplete or inaccurate outputs  
+
+**Scenario:** Summarizing a 1200-token document with 1000-token context:  
+* First 200 tokens → truncated  
+* Model summarizes tokens 201–1200 only → early info lost  
+
+---
+
+### 15.2 Limited Long-Term Memory
+
+* Model **cannot remember tokens beyond the current window**  
+* Multi-turn chat may forget older messages  
+* New sessions = fresh context unless memory is explicitly managed  
+
+**Impact:**  
+- Chatbots may forget important user instructions  
+- Summaries of long research papers may miss the introduction  
+
+---
+
+### 15.3 Cost & Performance
+
+* Larger contexts → **more computation and memory**  
+* Token-based API billing → longer inputs = higher cost  
+* Very long context → slower response time  
+
+**Example:**  
+8K tokens → faster, cheaper
+32K tokens → slower, expensive
+
+
+---
+
+## 16. Managing Context Limitations
+
+**Strategies:**
+
+1. **Chunking:** Break documents into smaller segments within context limit  
+2. **Summarization:** Pre-summarize old chunks to fit more info  
+3. **Retrieval-Augmented Generation (RAG):** Feed relevant external info dynamically  
+4. **Explicit context management:** Keep track of important details manually in multi-turn conversations  
+
+**Example Workflow:**
+
+Step 1: Split 10,000-token document into 5 chunks of 2,000 tokens
+Step 2: Summarize each chunk into 500 tokens
+Step 3: Feed summarized chunks sequentially to LLM
+
+
+---
+
+## 17. Real-World Scenarios
+
+**Chatbot Example:**  
+*Context window = 4096 tokens*  
+* User pastes a 5000-token conversation  
+* Model only sees last 4096 tokens → early context lost  
+* Solution: summarize or chunk conversation  
+
+**Coding Assistant:**  
+* Large codebase = 50,000 tokens  
+* Model can only see function file in context window → cannot reason across entire repo  
+* Solution: feed file-by-file or provide summaries  
+
+---
 
 
