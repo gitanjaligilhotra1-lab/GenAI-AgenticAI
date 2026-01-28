@@ -334,10 +334,9 @@ The model learns to:
 
 ---
 
-## 6. Pre-training vs Fine-tuning
-
 <img width="1500" height="836" alt="image" src="https://github.com/user-attachments/assets/6201401d-fa60-4c17-92e5-e9094763d769" />
 
+## 6. Pre-training vs Fine-tuning
 
 | Aspect | Pre-training | Fine-tuning |
 |-----|------------|-----------|
