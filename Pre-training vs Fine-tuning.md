@@ -36,22 +36,61 @@ No humans label answers here — the **text teaches itself**.
 
 ---
 
-### 1.2 How Pre-training Works (Simple Flow)
+### 1.2 How Pre-training Works
 
-Huge text data (books, web, code)
-↓
-Tokenization
-↓
-Predict next token
-↓
-Calculate loss
-↓
-Update weights
-↓
+Pre-training is the phase where a language model learns how language works by repeatedly predicting text from massive data.
+
+### 1.2.1 Step-by-Step Flow
+
+Huge text data (books, web, code)  
+↓  
+Tokenization  
+↓  
+Predict next token(s)  
+↓  
+Calculate loss  
+↓  
+Update weights  
+↓  
 Repeat billions of times
 
+---
 
-This is called **self-supervised learning**.
+### 1.2.2 What’s Happening at Each Step
+
+**Huge text data**
+The model is fed massive amounts of raw text (no human-written labels).
+
+**Tokenization**
+Text is broken into tokens (words or subwords) that the model can process.
+
+**Predict next token(s)**
+Given previous tokens, the model guesses what comes next.
+
+**Calculate loss**
+The model checks how wrong its prediction was.
+
+**Update weights**
+Internal parameters are adjusted to reduce future mistakes.
+
+**Repeat billions of times**
+This loop runs over and over until the model becomes fluent in language.
+
+---
+
+### 1.2.3 Why This Is Called Self-Supervised Learning
+
+The text creates its own labels.
+
+**Example:**
+
+**Input:**  The sun rises in the
+
+**Target:** east
+
+No human tells the model the answer; the next token itself is the label.
+
+That’s why pre-training scales so well
 
 ---
 
@@ -97,7 +136,7 @@ A pre-trained model is **powerful but raw**.
 
 There are **three main pre-training methods** you should know.
 
----
+
 
 ### 2.1 Masked Language Modeling (MLM)
 
@@ -174,15 +213,15 @@ The model predicts the **next token using only previous tokens**.
 I am learning
 
 
-Model predicts:
+**Model predicts:**
 AI
 
 
-Then:
+**Then:**
 I am learning AI because
 
 
-Model predicts:
+**Model predicts:**
 it
 
 
@@ -208,21 +247,24 @@ it
 
 
 
-## 3. How Pre-training Actually Happens (End-to-End)
+## 3. How Pre-training Actually Happens
 
-Huge text data
-↓
-Tokenization
-↓
-Choose objective (MLM / CLM)
-↓
-Predict tokens
-↓
-Calculate loss
-↓
-Update weights
-↓
+**Pre-training Flow:**
+
+Huge text data  
+↓  
+Tokenization  
+↓  
+Choose training objective (MLM / CLM)  
+↓  
+Predict next token(s)  
+↓  
+Calculate loss  
+↓  
+Update model weights  
+↓  
 Repeat for weeks or months
+
 
 
 This requires:
@@ -235,7 +277,7 @@ This requires:
 
 ## 4. What is Fine-tuning?
 
-### Simple Definition
+###  Definition
 
 **Fine-tuning** is additional training on **smaller, curated data** to teach the model **how to behave**.
 
@@ -246,14 +288,63 @@ Now we shape **how it responds**.
 
 ### 4.1 How Fine-tuning Works
 
-Pre-trained model
-↓
-Small, high-quality dataset
-↓
-Train for fewer steps
-↓
-Behavior improves
+Fine-tuning starts **after** pre-training is complete.  
+The model already understands language — now we teach it **how to behave**.
 
+
+**Step 1: Start with a Pre-trained Model**
+
+- The model already knows grammar, vocabulary, and general facts
+- It can generate text but has no specific behavior or rules
+- Example: It can write sentences, but may be unsafe or inconsistent
+
+
+
+**Step 2: Prepare a Small, High-Quality Dataset**
+
+- Data is carefully curated by humans
+- Much smaller than pre-training data
+- Focuses on *how the model should respond*
+
+**Examples of fine-tuning data:**
+
+- Question → Answer pairs  
+- Instructions → Ideal responses  
+- Safe vs unsafe examples  
+
+Quality matters more than quantity here.
+
+
+
+**Step 3: Train for Fewer Steps**
+
+- Training runs for far fewer iterations than pre-training
+- Model weights are adjusted slightly
+- The model adapts instead of relearning language
+
+This makes fine-tuning:
+- Faster
+- Cheaper
+- More targeted
+
+
+
+**Step 4: Behavior Improves**
+
+After fine-tuning, the model:
+
+- Follows instructions better
+- Uses the desired tone and style
+- Becomes safer and more reliable
+- Performs specific tasks more accurately
+
+The model is now **usable in real applications**.
+
+
+**In Simple Terms:**
+
+Pre-training makes the model **smart**  
+Fine-tuning makes the model **useful**
 
 ---
 
@@ -262,6 +353,8 @@ Behavior improves
 **Training data:**
 
 Q: What is AI?
+
+
 A: Artificial Intelligence is the field of making machines intelligent.
 
 
@@ -274,9 +367,9 @@ A: Artificial Intelligence is the field of making machines intelligent.
 
 ---
 
-## 5. Types of Fine-tuning (Very Important)
+## 5. Types of Fine-tuning
 
----
+
 
 ### 5.1 Task Fine-tuning
 
@@ -336,6 +429,7 @@ The model learns to:
 
 <img width="1500" height="836" alt="image" src="https://github.com/user-attachments/assets/6201401d-fa60-4c17-92e5-e9094763d769" />
 
+
 ## 6. Pre-training vs Fine-tuning
 
 | Aspect | Pre-training | Fine-tuning |
@@ -348,7 +442,7 @@ The model learns to:
 
 ---
 
-## 7. Complete End-to-End Real-World Example
+## 7. Complete End-to-End Example
 
 ### Building a Medical Chatbot
 
