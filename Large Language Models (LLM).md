@@ -178,308 +178,129 @@ Applying complex promotion rules may produce incorrect results.
 
 ---
 
-## 5. Why LLMs Alone Are Not Enough
+## 5. Why LLMs Alone Is Not Enough
 
-**Case Study: HR Resume Screening**
+**Let's understand with this example: HR Resume Screening**
 
 **Scenario:** Using an LLM to pick the best candidate:
 
-*  No access to actual resumes
-*  Makes assumptions from general knowledge
-*  May hallucinate qualifications
+## 5.1 Problems:
+*  LLM has no access to actual resumes
+*  Makes assumptions based on general knowledge
+*  May hallucinate candidate qualifications
 *  Cannot be audited
+
+**Conclusion:** This approach is unsafe, unreliable, and not enterprise-ready.
 
 -----
 
-----
+## 5.2 The Solution: RAG (Retrieval-Augmented Generation)
 
-# Tokens & Tokenization
+### What is RAG?
 
-## 6. What are Tokens?
+**Definition:** RAG connects LLMs to real, trusted knowledge sources to provide accurate, verifiable answers.
 
-**Definition:**  
-In Natural Language Processing (NLP), a **token** is a small unit of text that a language model processes. Tokens can be:
+### How RAG Works: Step-by-Step
 
-* Words (e.g., `apple`)
-* Subwords (e.g., `appl` + `e`)
-* Characters (e.g., `a`, `p`, `p`, `l`, `e`)
+1. User asks a question
+2. System searches relevant knowledge sources (PDFs, databases, documents)
+3. Retrieves the most relevant content
+4. LLM reads the retrieved information
+5. Generates an answer based on actual data
+6. Provides the answer with source citations
 
-**Why Tokens Matter:**  
+### RAG Flow Diagram
 
-LLMs do not read text as humans do. They process **tokens**, which allows them to handle unknown words, punctuation, and complex languages efficiently.
-
-**Example:**
-
-*Sentence:*  
-I love AI.
-
-
-*Tokens (word-level):*  
-["I", "love", "AI", "."]
-
-
-*Tokens (subword-level):*  
-["I", "lo", "ve", "A", "I", "."]
-
+```mermaid
+graph TD
+    A["User Question"] --> B["Search Knowledge Sources"]
+    B --> C["PDFs, Databases, Documents"]
+    C --> D["Retrieve Relevant Content"]
+    D --> E["LLM Reads Retrieved Data"]
+    E --> F["Generate Answer with Sources"]
+    F --> G["Answer + Citation"]
+```
 
 ---
 
-## 7. What is Tokenization?
+## 5.3 RAG in Action: Examples
 
-**Definition:**  
-**Tokenization** is the process of converting text into tokens that a model can understand. It is the first step in preparing text for LLMs or other NLP models.
+### 5.3.1 Example 1: Candidate Resume Screening
 
-**Key Points:**
+**Without RAG:**
 
-* Breaks down sentences into smaller units  
-* Handles punctuation, spaces, and special characters  
-* Converts tokens into numerical IDs that the model can process  
+**Question**: *"Who is the best candidate for this role?"*
 
-**Example:**
+- LLM guesses without access to actual data
 
-*Text:*  
-Hello, world!
+**With RAG:**
 
+- Retrieves all candidate resumes from database
+- Compares skills and experience against job requirements
+- Explains decision with supporting evidence
+- Cites specific resumes as sources
 
-*Tokens:*  
-["Hello", ",", "world", "!"]
+**Outcome:** Accurate, explainable, and fully auditable decision.
 
+### 5.3.2 Example 2: Airline Promotion Rules
 
-*Token IDs (example for a model vocabulary):*  
-[15496, 11, 995, 0]
+**Without RAG:**
 
+- LLM invents rules or applies incorrect logic
 
-**Why Tokenization is Needed:**  
+**With RAG:**
 
-* LLMs operate on numbers, not raw text  
-* Ensures consistent processing of words, subwords, and symbols  
-* Reduces memory usage by splitting rare words into subwords  
+- Retrieves official promotion policy document
+- Applies exact conditions as specified
+- Explains why promotion does or doesn't apply
+- References specific policy sections
 
----
+### 5.3.3 Example 3: Current Events Question
 
-## 8. Types of Tokenization
+**Question:** *"Who won the most recent Turing Award?"*
 
-### 8.1 Word-Level Tokenization
+**Without RAG:**
 
-* Each word is treated as a token  
-* Simple but inefficient for rare words or misspellings  
+Provides outdated or incorrect answer based on training cutoff
 
-**Example:**  
-"I love AI" → ["I", "love", "AI"]
+**With RAG:**
 
-
-### 8.2 Subword-Level Tokenization
-
-* Breaks words into smaller units (subwords)  
-* Efficient for large vocabularies and rare words  
-
-**Example:**  
-"unhappiness" → ["un", "happiness"]
-
-
-### 8.3 Character-Level Tokenization
-
-* Each character is a token  
-* Handles unknown words and languages without spaces  
-
-**Example:**  
-"AI" → ["A", "I"]
-
+- Retrieves latest article or press release
+- Provides correct, current winner
+- Links to source for verification
 
 ---
 
-## 9. Tokenization in Practice with LLMs
+## 5.4 LLM vs. LLM with RAG: Comparison
 
-* Most modern LLMs (like GPT, Claude, and LLaMA) use **subword tokenization**  
-* Each token counts toward the model’s **context length** (e.g., GPT-4: 8K or 32K tokens)  
-* Tokenization affects:  
-  - Model input size  
-  - Memory and computational requirements  
-  - API pricing (OpenAI counts tokens)  
-
-**Example:**
-
-*Input:*  
-"Large language models are amazing!"
-
-
-*Tokens:*  
-["Large", "language", "models", "are", "amazing", "!"]
-
-
-*Token Count:* 6  
+| **Capability** | **LLM Only** | **LLM + RAG** |
+| --- | --- | --- |
+| Access private data | No | Yes |
+| Current information | No | Yes |
+| Prevent hallucinations | No | Yes, Significantly reduced |
+| Provide source citations | No | Yes |
+| Enterprise-ready | No | Yes |
+| Auditable decisions | No | Yes |
 
 ---
 
-## 10. Why Tokenization Matters
+## 6. Key Takeaway
 
-### 10.1 Cost
+**LLMs are powerful reasoning engines, but they lack memory of your specific world.**
 
-* LLM pricing is **per token**  
-* More tokens → higher cost  
+RAG provides LLMs with access to real, trusted, up-to-date knowledge from your organization.
 
-### 10.2 Context Window
+This is why **every serious enterprise GenAI system uses RAG**.
 
-* LLMs have a **token limit**  
-* Example: 8K, 32K tokens  
-* If input is too long  → truncated  
 
-### 10.3 Model Understanding
+### Bottom Line
 
-* Poor tokenization → poor model understanding  
-* Proper tokenization → better predictions  
+**LLM + RAG = Intelligent AI that:**
 
----
+- Knows your business and data
+- Provides accurate, verifiable answers
+- Can be trusted for critical decisions
+- Maintains audit trails and accountability
 
-## 11. Example: Token Count Surprise 
-
-*Text:*  
-Hello, how are you?
-
-
-*Tokens:*  
-["Hello", ",", " how", " are", " you", "?"]
-
-
-*Token Count:* 6 (not 4 words!)  
-
----
-
-## 12. Tokens in Training vs Usage
-
-* **Training:** Model learns patterns between tokens  
-* **Inference:** Model predicts the next token  
-* Everything internally is token-based  
-
-**Example:**
-
-*Input:*  
-I love pizza
-
-
-*Steps:*  
-Text → Tokens → Numbers → Model → Numbers → Tokens → Text
-
-
-*Note:* The user sees text, but the model processes **numbers representing tokens** internally.  
-
----
----
-
-# Context Window & Limitations
-
-## 13. What is a Context Window?
-
-**Definition:**  
-The **context window** (or context length) is the **maximum number of tokens an LLM can process at once**. It determines how much “memory” the model has when generating text.
-
-**Why it Matters:**  
-
-* Defines the **information the model can see** at a time  
-* Limits how much previous conversation or document the model can remember  
-* Impacts **accuracy, summarization, reasoning, and coding tasks**
-
-**Example:**  
-
-GPT-4 (8K tokens context):  
-Input text: "Large language models can generate, summarize, and translate text..."
-Token count: 120 tokens → fits entirely in context window
-
-*All 120 tokens are available for the model to process.*
-
----
-
-## 14. How Context Windows Work
-
-* LLMs process **text token by token**  
-* The **context window** is a fixed-size sliding window  
-* When input exceeds the limit, **older tokens are truncated**  
-
-**Visual Illustration:**
-
-[Token1, Token2, ..., TokenN] → Max N tokens
-
-Older tokens outside the window → forgotten
-
-
-**Example:**
-Context window = 8 tokens
-Input: "I love AI and machine learning every day!"
-Tokens: [I, love, AI, and, machine, learning, every, day, !]
-Token 9 (!) → truncated if context window exceeded
-
-
----
-
-## 15. Limitations of Context Windows
-
-### 15.1 Truncation of Long Text
-
-* Input exceeding the window is **cut off**  
-* Model loses early content → may produce incomplete or inaccurate outputs  
-
-**Scenario:** Summarizing a 1200-token document with 1000-token context:  
-* First 200 tokens → truncated  
-* Model summarizes tokens 201–1200 only → early info lost  
-
----
-
-### 15.2 Limited Long-Term Memory
-
-* Model **cannot remember tokens beyond the current window**  
-* Multi-turn chat may forget older messages  
-* New sessions = fresh context unless memory is explicitly managed  
-
-**Impact:**  
-- Chatbots may forget important user instructions  
-- Summaries of long research papers may miss the introduction  
-
----
-
-### 15.3 Cost & Performance
-
-* Larger contexts → **more computation and memory**  
-* Token-based API billing → longer inputs = higher cost  
-* Very long context → slower response time  
-
-**Example:**  
-8K tokens → faster, cheaper
-32K tokens → slower, expensive
-
-
----
-
-## 16. Managing Context Limitations
-
-**Strategies:**
-
-1. **Chunking:** Break documents into smaller segments within context limit  
-2. **Summarization:** Pre-summarize old chunks to fit more info  
-3. **Retrieval-Augmented Generation (RAG):** Feed relevant external info dynamically  
-4. **Explicit context management:** Keep track of important details manually in multi-turn conversations  
-
-**Example Workflow:**
-
-Step 1: Split 10,000-token document into 5 chunks of 2,000 tokens
-Step 2: Summarize each chunk into 500 tokens
-Step 3: Feed summarized chunks sequentially to LLM
-
-
----
-
-## 17. Real-World Scenarios
-
-**Chatbot Example:**  
-*Context window = 4096 tokens*  
-* User pastes a 5000-token conversation  
-* Model only sees last 4096 tokens → early context lost  
-* Solution: summarize or chunk conversation  
-
-**Coding Assistant:**  
-* Large codebase = 50,000 tokens  
-* Model can only see function file in context window → cannot reason across entire repo  
-* Solution: feed file-by-file or provide summaries  
-
----
 
 
