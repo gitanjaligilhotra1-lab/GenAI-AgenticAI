@@ -7,9 +7,12 @@ This single idea explains almost everything about how modern LLMs are built.
 
 ---
 
+<img width="882" height="528" alt="image" src="https://github.com/user-attachments/assets/fd8ce943-c785-49b2-8cbd-c67488a1a860" />
+
+
 ## 1. What is Pre-training?
 
-### Simple Definition
+### Definition
 
 **Pre-training** is the first, large-scale training phase where a model learns **how language works**.
 
@@ -203,6 +206,8 @@ it
 
 ---
 
+
+
 ## 3. How Pre-training Actually Happens (End-to-End)
 
 Huge text data
@@ -330,6 +335,9 @@ The model learns to:
 ---
 
 ## 6. Pre-training vs Fine-tuning
+
+<img width="1500" height="836" alt="image" src="https://github.com/user-attachments/assets/6201401d-fa60-4c17-92e5-e9094763d769" />
+
 
 | Aspect | Pre-training | Fine-tuning |
 |-----|------------|-----------|
