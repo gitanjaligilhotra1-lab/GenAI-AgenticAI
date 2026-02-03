@@ -34,7 +34,7 @@ Beginner-to-advanced Generative AI knowledge base covering AI/ML fundamentals, L
 
 ---
 
-## 🎯 Quick Navigation Guide
+##  Quick Navigation Guide
 
 ### For Beginners
 
@@ -60,7 +60,7 @@ Beginner-to-advanced Generative AI knowledge base covering AI/ML fundamentals, L
 
 ---
 
-## 📖 Documentation Format
+##  Documentation Format
 
 Each topic follows a consistent learning structure:
 
