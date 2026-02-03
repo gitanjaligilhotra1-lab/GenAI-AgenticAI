@@ -908,3 +908,293 @@ Autonomous systems must:
 - Complete goals despite challenges
 
 Failure handling is not optional — it is a **fundamental part of agent design**.
+
+---
+
+# 6. Multi-Agent Systems & Agent Orchestration
+
+Large Language Models (LLMs) become far more powerful when they are organized into **agents**.  
+They become *even more powerful* when **multiple agents work together**.
+
+This section explains:
+
+- What multi-agent systems are  
+- What agent orchestration means  
+- Why real-world AI systems use multiple agents  
+- Common orchestration patterns used in production  
+
+Think of this as moving from **one smart individual → a coordinated team**.
+
+---
+
+## 6.1 What Is Agent Orchestration?
+
+**One-line definition:**  
+**Agent orchestration** is the process of coordinating multiple agents so they work together toward a shared goal.
+
+Orchestration answers fundamental system questions:
+
+- Who does what?  
+- In what order?  
+- Which agent decides the next step?  
+- How do agents communicate?  
+- How are conflicts resolved?  
+
+Without orchestration:
+
+- Agents act independently  
+- Outputs conflict  
+- Systems become chaotic  
+
+With orchestration:
+
+- Agents behave like a well-organized team  
+- Responsibilities are clear  
+- Systems become reliable and scalable  
+
+---
+
+## 6.2 What Is a Multi-Agent System (MAS)?
+
+A **Multi-Agent System (MAS)** is an architecture where multiple specialized agents collaborate instead of relying on a single general-purpose agent.
+
+Each agent:
+
+- Has a **specific role**  
+- Uses **specific tools**  
+- Focuses on a **narrow responsibility**  
+
+> Instead of one agent doing everything, work is **distributed across a team of agents**.
+
+---
+
+## 6.3 Mental Model
+
+###  Single-Agent System
+
+One agent handles everything:
+
+- Research  
+- Analysis  
+- Writing  
+- Planning  
+- Verification  
+
+**Problems:**
+
+- Very long prompts  
+- Tool confusion  
+- Errors compound quickly  
+- Hard to debug  
+- Higher hallucination risk  
+
+> This is like **one person doing an entire company’s work alone**.
+
+###  Multi-Agent System
+
+A team of agents, each with one job:
+
+- Research agent  
+- Analyst agent  
+- Writer agent  
+- Reviewer agent  
+
+**Benefits:**
+
+- Lower cognitive load per agent  
+- Higher accuracy  
+- Easier debugging  
+- More scalable systems  
+
+> Mirrors **real human teams**, which is why it works so well.
+
+---
+
+## 6.4 Why Use Multi-Agent Systems?
+
+### Problems with Single Agents
+
+- Prompts become extremely long  
+- One agent must juggle many tools  
+- Errors stack on top of each other  
+- Difficult to isolate failures  
+- Hard to scale  
+
+### Benefits of Multi-Agent Systems
+
+- **Specialization:** Each agent becomes good at one thing  
+- **Better reasoning:** Tasks are decomposed logically  
+- **Parallelism:** Agents can work at the same time  
+- **Easier debugging:** Failures are isolated to roles  
+- **Lower hallucination:** Reviewer and critic agents catch errors  
+
+---
+
+## 6.5 Core Multi-Agent Orchestration Patterns
+
+These patterns are widely used in production systems.
+
+### 6.5.1 Supervisor–Worker Pattern
+
+**Structure:**
+
+- **Supervisor agent:** Understands user goal, breaks task into subtasks  
+- **Worker agents:** Execute assigned subtasks  
+- Results flow back to the supervisor  
+
+**Flow:**
+
+User request
+
+↓
+
+Supervisor agent
+
+↓
+
+Worker agents
+
+↓
+
+Supervisor aggregates results
+
+
+**Example:** Report Generation
+
+- Supervisor creates outline  
+- Research agent gathers information  
+- Writer agent drafts content  
+- Reviewer agent checks accuracy  
+
+> This is the **most common real-world pattern**.
+
+---
+
+### 6.5.2 Sequential Agents Pattern
+
+**Structure:** Agent A → Agent B → Agent C  
+
+- Each agent improves or refines previous output  
+
+**Example:**
+
+- Draft agent → creates initial content  
+- Improve agent → enhances clarity and structure  
+- Fact-check agent → verifies correctness  
+
+> Used for **pipelines and transformations**.
+
+---
+
+### 6.5.3 Parallel Agents Pattern
+
+**Structure:** Multiple agents work independently on the same task  
+
+**Example:**
+
+- For a critical decision, three agents generate solutions  
+- An aggregator selects the best one  
+
+> Reduces **single-model bias**.
+
+---
+
+### 6.5.4 Debate / Critic Pattern
+
+**Structure:**  
+
+- **Proposer agent** → suggests a solution  
+- **Critic agent** → challenges assumptions  
+
+**Example:**
+
+- One agent proposes a strategy  
+- Another agent tries to break it  
+
+> Excellent for **hallucination control** and **high-stakes reasoning**.
+
+---
+
+### 6.5.5 Role-Based Agents Pattern
+
+**Structure:** Each agent has a fixed professional role:
+
+- Legal agent  
+- Finance agent  
+- Engineering agent  
+
+- User requests are routed to relevant agents  
+
+> Common in **enterprise systems**.
+
+---
+
+## 6.6 Example: Multi-Agent RAG System
+
+**User request:** Analyze competitor pricing and suggest a strategy.
+
+**Orchestration flow:**
+
+1. Supervisor agent decomposes the task  
+2. Market research agent retrieves documents  
+3. Analyst agent compares pricing data  
+4. Strategist agent proposes a plan  
+5. Reviewer agent validates logic and assumptions  
+
+> This is **Agentic RAG combined with a Multi-Agent System**.
+
+---
+
+## 6.7 Agent Communication
+
+Agents communicate using:
+
+- Shared memory  
+- Message passing  
+- Structured outputs (JSON)  
+
+**Important rule:**  
+
+- Unstructured chat between agents → unstable systems
+- Structured communication → reliable systems  
+
+> Clear **contracts between agents** are critical.
+
+---
+
+## 6.8 Challenges in Multi-Agent Systems
+
+| Problem            | Solution                     |
+|-------------------|------------------------------|
+| Infinite loops     | Step limits                  |
+| Cost explosion     | Budget controls              |
+| Conflicting outputs| Supervisor agent             |
+| Hallucinations     | Reviewer / critic agent      |
+| High latency       | Parallel execution           |
+
+---
+
+## 6.9 Frameworks for Building Multi-Agent Systems
+
+- **LangGraph (Recommended):** Graph-based control flow, explicit state transitions, prevents infinite loops, production-ready  
+- **LangChain Agents:** Easy to start, less control, prototypes  
+- **CrewAI:** Role-based agents, task assignment, simple syntax, business workflows  
+- **AutoGen (Microsoft):** Conversational agent-to-agent systems, research workflows  
+- **Semantic Kernel (Microsoft):** Planner-based orchestration, enterprise integration, .NET apps  
+
+---
+
+## 6.10 When NOT to Use Multi-Agent Systems
+
+Avoid MAS when:
+
+- Simple Q&A is enough  
+- Latency must be extremely low  
+- Cost constraints are strict  
+- Workflows are static and predictable  
+
+---
+
+## 6.11 Key Mental Model
+
+**Multi-agent systems turn LLMs from solo performers into coordinated teams capable of solving real-world problems.**
