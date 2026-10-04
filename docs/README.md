@@ -14,7 +14,9 @@ The `docs/` area is the long-term home for structured engineering guides, archit
 ## Deep-Dive Guides
 
 ### Agentic AI
-- **[Agent Architecture & Agent Loops](agentic-ai/agent-architecture.md)** — agent runtime, control loops, orchestration, state, tools, planning, memory, context, termination, human approval, security, evaluation, observability, scaling, cost, and workflow-vs-agent trade-offs.
+1. **[Agent Architecture & Agent Loops](agentic-ai/agent-architecture.md)** — runtime, control loops, state, planning, termination, security, evaluation, scaling, and workflow-vs-agent trade-offs.
+2. **[Tool Use & Agent Orchestration](agentic-ai/tool-use-and-orchestration.md)** — contracts, discovery, routing, execution, permissions, approvals, parallelism, retries, idempotency, observability, and evaluation.
+3. **[Agent Memory Architecture](agentic-ai/agent-memory.md)** — working, episodic, semantic, procedural and profile memory; read/write pipelines, retrieval, consolidation, forgetting, security, privacy, evaluation, and scaling.
 
 ### System Design
 - **[Production RAG System Design](system-design/production-rag.md)** — ingestion, retrieval, reranking, context construction, evaluation, security, scalability, reliability, latency, cost, and Agentic RAG.
