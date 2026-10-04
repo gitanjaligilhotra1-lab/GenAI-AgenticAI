@@ -41,10 +41,10 @@ flowchart LR
 LLMs → Prompting → RAG → Tool Use → Agents → Evaluation → Production
 
 ### Agentic AI Engineer
-[AI Agents](AI%20Agents.md) → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
+[AI Agents](AI%20Agents.md) → **[Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)** → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
 
 ### System Design / Interview Preparation
-LLM Architecture → RAG Design → Agent Architecture → Production Concerns → Case Studies → Trade-offs
+LLM Architecture → **[Production RAG Design](docs/system-design/production-rag.md)** → **[Agent Architecture](docs/agentic-ai/agent-architecture.md)** → Production Concerns → Case Studies → Trade-offs
 
 See the complete **[Learning Roadmap](ROADMAP.md)**.
 
@@ -71,6 +71,7 @@ See the complete **[Learning Roadmap](ROADMAP.md)**.
 
 ### 3. Agentic AI
 - [AI Agents](AI%20Agents.md)
+- **[Agent Architecture & Agent Loops — Deep Dive](docs/agentic-ai/agent-architecture.md)**
 - [Single-Agent vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md)
 - [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md)
 
@@ -79,7 +80,10 @@ See the complete **[Learning Roadmap](ROADMAP.md)**.
 - [Agent-to-Agent — A2A](A2A%20Protocol.md)
 
 ### 5. Architecture & System Design
-The [System Design](docs/system-design/README.md) section develops end-to-end case studies covering requirements, architecture, data/control flow, retrieval, orchestration, memory, security, evaluation, observability, scalability, latency, cost, failure handling, and trade-offs.
+- **[Production RAG System Design](docs/system-design/production-rag.md)**
+- [System Design Hub](docs/system-design/README.md)
+
+The system-design material covers requirements, architecture, data/control flow, retrieval, orchestration, memory, security, evaluation, observability, scalability, latency, cost, failure handling, and explicit trade-offs.
 
 ### 6. Design Patterns
 The [Design Patterns](docs/design-patterns/README.md) catalog organizes reusable RAG, agent, memory, orchestration, and reliability patterns.
