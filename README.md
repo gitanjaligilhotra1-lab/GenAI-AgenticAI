@@ -1,71 +1,133 @@
-# GenAI-AgenticAI
-Beginner-to-advanced Generative AI knowledge base covering AI/ML fundamentals, LLMs, prompting, embeddings & vector databases, RAG (chunking, retrieval), AI Agents (agentic AI), A2A, MCP, LangChain/LlamaIndex, fine-tuning (LoRA), evaluation, optimization, and enterprise GenAI systems.
+# GenAI & Agentic AI
 
+> A practical, beginner-to-advanced knowledge base for understanding, building, evaluating, and designing modern Generative AI and Agentic AI systems.
 
-## Repository Structure
+This repository connects **fundamentals with real engineering**: LLMs, prompting, embeddings, RAG, fine-tuning, agents, multi-agent systems, MCP, A2A, architecture, system design, evaluation, security, scalability, latency, and cost.
 
-### Foundations
+## What You Will Learn
 
-- AI & ML Fundamentals - Core concepts of artificial intelligence and machine learning
-- Large Language Models (LLMs) - Understanding how LLMs work, tokens, context windows, and limitations
+| Track | Topics |
+|---|---|
+| Foundations | AI/ML, neural networks, transformers, tokenization, foundation models |
+| LLM Engineering | prompting, embeddings, inference, RAG, fine-tuning, hallucination |
+| Agentic AI | agents, tool use, planning, memory, orchestration, multi-agent systems |
+| Protocols | MCP and A2A |
+| System Design | RAG platforms, enterprise assistants, research/coding agents, multi-agent platforms |
+| Production AI | evaluation, observability, guardrails, security, reliability, scalability, latency, cost |
 
-### Core GenAI Techniques
+## Learning Journey
 
-- **Prompt Engineering** - Zero-shot, few-shot, Chain-of-Thought, and optimization techniques
-- **Embeddings & Vector Databases** - Semantic search, similarity matching, FAISS, Pinecone
-- **Retrieval Augmented Generation (RAG)** - Document ingestion, chunking strategies, retrieval techniques
+```mermaid
+flowchart LR
+    A[AI & ML] --> B[Transformers]
+    B --> C[LLMs]
+    C --> D[Prompt Engineering]
+    D --> E[Embeddings]
+    E --> F[RAG]
+    F --> G[Tool Use]
+    G --> H[AI Agents]
+    H --> I[Multi-Agent Systems]
+    I --> J[MCP & A2A]
+    J --> K[Evaluation & Production]
+    K --> L[System Design]
+```
 
-### Advanced Systems
+## Start Here
 
-- **Tools & Frameworks** - Function calling, LangChain, LlamaIndex, tool orchestration
-- **AI Agents** - Agentic AI concepts, agent workflows, multi-agent systems, specialization, collaboration, and failure handling, integration with A2A & MCP
-- **A2A Protocol** - Agent-to-agent communication, design principles, enterprise features
-- **MCP (Model Context Protocol)** - Context management, server primitives, integration with A2A
+### Beginner
+[AI & ML Fundamentals](AI%20%26%20ML%20Fundamentals.md) → [Transformers](Transformers.md) → [Large Language Models](Large%20Language%20Models%20%28LLM%29.md) → [Prompt Engineering](Prompt%20Engineering.md) → [Embeddings](Embeddings%20%26%20Vector%20Databases.md) → [RAG](RAG.md)
 
-### Model Optimization
+### Applied AI Engineer
+LLMs → Prompting → RAG → Tool Use → Agents → Evaluation → Production
 
-- **Fine-Tuning** - LoRA, PEFT, when to fine-tune vs use RAG
-- **Evaluation & Optimization** - Metrics, latency optimization, cost reduction strategies
+### Agentic AI Engineer
+[AI Agents](AI%20Agents.md) → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
 
-### Enterprise & Production
+### System Design / Interview Preparation
+LLM Architecture → RAG Design → Agent Architecture → Production Concerns → Case Studies → Trade-offs
 
-- **Enterprise GenAI** - Security, compliance, scalability, monitoring, data privacy
-- **Real-World Use Cases** - Chatbots, document Q&A, enterprise search, automation
-
----
-
-##  Quick Navigation Guide
-
-### For Beginners
-
-1. Start with **AI & ML Foundations**
-2. Move to **Large Language Models (LLMs)**
-3. Learn **Prompt Engineering** basics
-4. Understand **Embeddings & Vector Databases**
-5. Study **RAG (Retrieval Augmented Generation)**
-
-### For Intermediate Learners
-
-1. Explore **Tools & Frameworks** (LangChain, LlamaIndex)
-2. Dive into **AI Agents** and multi-agent systems
-3. Learn **Fine-Tuning** techniques
-4. Study **Evaluation & Optimization** methods
-
-### For Advanced Practitioners
-
-1. Master **A2A Protocol** for agent communication
-2. Understand **MCP (Model Context Protocol)**
-3. Implement **Enterprise GenAI** systems
-4. Apply learning to **Real-World Use Cases**
+See the complete **[Learning Roadmap](ROADMAP.md)**.
 
 ---
 
-##  Documentation Format
+## Core Knowledge Base
 
-Each topic follows a consistent learning structure:
+### 1. Foundations
+- [AI & ML Fundamentals](AI%20%26%20ML%20Fundamentals.md)
+- [AI Foundation Models](AI%20Foundation%20Models.md)
+- [Transformers](Transformers.md)
+- [Tokenization](Tokenization.md)
+- [Large Language Models](Large%20Language%20Models%20%28LLM%29.md)
+- [Pre-training vs Fine-tuning](Pre-training%20vs%20Fine-tuning.md)
 
-- **What is it?** - Clear definition and overview
-- **Why is it needed?** - Problem it solves and motivation
-- **How it works** - Step-by-step explanation with examples
-- **Examples** - Real-world scenarios and code snippets
-- **Key takeaways** - Summary of essential concepts
+### 2. LLM & GenAI Engineering
+- [Prompt Engineering](Prompt%20Engineering.md)
+- [Embeddings & Vector Databases](Embeddings%20%26%20Vector%20Databases.md)
+- [Retrieval-Augmented Generation](RAG.md)
+- [LLM Inference](Inference%20in%20LLM.md)
+- [Fine-Tuning](Fine-Tuning.md)
+- [LLM Hallucination](LLM%20Hallucination.md)
+- [AI Frameworks](AI%20Frameworks.md)
+
+### 3. Agentic AI
+- [AI Agents](AI%20Agents.md)
+- [Single-Agent vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md)
+- [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md)
+
+### 4. Agent Interoperability
+- [Model Context Protocol — MCP](MCP%20%28Model%20Context%20Protocol%29.md)
+- [Agent-to-Agent — A2A](A2A%20Protocol.md)
+
+### 5. Architecture & System Design
+The [System Design](docs/system-design/README.md) section develops end-to-end case studies covering requirements, architecture, data/control flow, retrieval, orchestration, memory, security, evaluation, observability, scalability, latency, cost, failure handling, and trade-offs.
+
+### 6. Design Patterns
+The [Design Patterns](docs/design-patterns/README.md) catalog organizes reusable RAG, agent, memory, orchestration, and reliability patterns.
+
+---
+
+## How Topics Are Developed
+
+Major engineering topics progressively follow a common structure:
+
+1. What is it?
+2. Why does it exist?
+3. Mental model
+4. How it works
+5. Architecture
+6. Step-by-step flow
+7. Practical example
+8. Implementation
+9. Design decisions and trade-offs
+10. Failure modes
+11. Evaluation
+12. Security
+13. Performance, scalability, latency, and cost
+14. Production considerations
+15. Interview questions
+16. Key takeaways
+
+## Architecture-First Learning
+
+The goal is not only to know definitions. A reader should be able to answer:
+
+- **How does this component work?**
+- **Where does it fit in an architecture?**
+- **When should I use it?**
+- **What breaks in production?**
+- **How do I evaluate it?**
+- **How does it scale?**
+- **What alternatives exist?**
+- **What trade-offs would I discuss in a system-design interview?**
+
+## Repository Evolution
+
+The repository is being progressively organized into the [structured knowledge hub](docs/README.md). Existing material is retained while deeper architecture guides, examples, production practices, design patterns, and system-design case studies are added.
+
+## Contributing
+
+Contributions that improve technical accuracy, diagrams, examples, system-design discussions, implementation quality, or production guidance are welcome.
+
+---
+
+**Goal:** bridge the gap between *learning GenAI concepts* and *engineering production-grade intelligent systems*.
