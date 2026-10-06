@@ -35,9 +35,10 @@ A progressive path from AI foundations to production-grade agentic systems.
 - [Security & Guardrails](docs/production/security-and-guardrails.md)
 - [Reliability & Resilience](docs/production/reliability-and-resilience.md)
 - [Context Engineering](docs/production/context-engineering.md)
+- [Performance, Latency & Cost](docs/production/performance-latency-and-cost.md)
 - [Production Engineering Hub](docs/production/README.md)
 
-Next pillar: Performance / Latency / Cost.
+**Core production track complete.** Future work here should focus on end-to-end case studies, implementation examples, and specialized operational patterns.
 
 ## 5. System Design
 - [Production RAG System Design](docs/system-design/production-rag.md)
