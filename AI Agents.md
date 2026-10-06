@@ -1,1137 +1,818 @@
-# AI Agents 
+# AI Agents
 
-## 1️. What Are AI Agents?
+An AI agent is a software system that uses a model to make **dynamic decisions about what to do next** in pursuit of a goal.
 
-An **AI Agent** is an advanced system built on LLMs that can **not only understand and generate text**, but also **act autonomously to achieve goals**. Unlike a plain LLM, which only answers questions, an AI agent can **plan, use tools, remember information, and adapt based on results**.
+The strongest idea from the original chapter remains central:
 
----
+```text
+Goal
+ ↓
+Decide
+ ↓
+Act / Use Tool
+ ↓
+Observe Result
+ ↓
+Update
+ ↓
+Continue or Stop
+```
 
-### Key Capabilities of AI Agents
+Tools, state, memory, and planning can make an agent more capable, but they should be added because the task needs them—not because every agent must contain every feature.
 
-An AI agent can:
-
-- **Understand goals**
-  - Interpret user intent or objectives
-  - Example: `"Book the cheapest flight to Paris next week"`
-
-- **Plan steps**
-  - Break complex goals into smaller, manageable tasks
-  - Example:
-    1. Find available flights
-    2. Compare prices
-    3. Book the cheapest option
-    4. Send confirmation to the user
-
-- **Use tools**
-  - Access external systems like APIs, databases, or automation scripts
-  - Example:
-    - Flight booking API
-    - Calendar API
-    - Email sending system
-
-- **Remember information**
-  - Store context, preferences, and previous interactions
-  - Example:
-    - User prefers aisle seats
-    - Budget under $800
-
-- **Adapt based on results**
-  - Adjust plans or actions when something fails
-  - Example:
-    - Flight booking fails → try a different airline or alternative dates
+This chapter provides the fundamentals. Continue into the engineering deep dives at the end.
 
 ---
 
-### AI Agent vs Plain LLM
+## 1. LLM vs Workflow vs Agent
 
-| Feature | Plain LLM | AI Agent |
-|---------|-----------|----------|
-| **Purpose** | Generate text only | Achieve goals autonomously |
-| **Action** | None | Executes tasks and interacts with systems |
-| **Planning** | None | Breaks goals into steps |
-| **Memory** | Limited to current context | Stores context, preferences, long-term info |
-| **Tool Usage** | None | Uses external APIs, databases, scripts |
-| **Proactivity** | Reactive | Can take initiative based on goals |
+These concepts are related but different.
 
-**Analogy:**
+### LLM call
 
-- LLM → Calculator (answers questions)
-- Agent → Personal assistant (plans your day, makes reservations, and adapts if something fails)
+```text
+Input → Model → Output
+```
 
----
+Useful for:
 
-### AI Agent Architecture (Top → Bottom)
+- summarization,
+- extraction,
+- classification,
+- generation.
 
-1. **User Request**
-   - Example:  
-     `"Book me the cheapest flight to Paris next week"`
+### Deterministic workflow
 
-2. **Agent (Brain)**
-   - Uses the LLM as the reasoning core
-   - Orchestrates planning, tool usage, and memory
-   - Decides what steps to take next
+```text
+Step A → Step B → Step C
+```
 
-3. **Tools**
-   - External systems the agent can call to perform actions
-   - Examples:
-     - `FlightSearchAPI` → find flights
-     - `HotelBookingAPI` → book hotels
-     - `CalendarAPI` → schedule meetings
+Software decides the sequence.
 
-4. **Memory**
-   - Stores context and preferences for future decisions
-   - Examples:
-     - Short-term: `"We are booking flights for next weekend"`
-     - Long-term: `"User prefers morning flights"`
+### Agent
 
-5. **Planning**
-   - Breaks goals into ordered steps, possibly hierarchical or dynamic
-   - Example:
-     1. Find flights  
-     2. Compare prices  
-     3. Book cheapest  
-     4. Send confirmation
+```text
+Goal
+ ↓
+Model/runtime decides next action
+ ↓
+Environment changes
+ ↓
+Observation
+ ↓
+Next decision
+```
+
+The defining feature is **dynamic control over actions**, not simply the presence of an LLM.
 
 ---
 
-### Example: HR Interview Scheduler Agent
+## 2. Why Agents Exist
 
-**Goal:** Schedule interviews for shortlisted candidates
-
-**Steps:**
-
-- **Observe user request**
-  - "Schedule interviews for the shortlisted candidates"
-
-- **Use tools**
-  - Read resumes (Resume DB)
-  - Check interviewers’ calendars (Calendar API)
-
-- **Memory**
-  - Remember interviewer preferences
-
-- **Planning**
-  - Generate interview slots
-
-- **Execution**
-  - Send emails to candidates and interviewers
-  - Confirm schedule with user
-
-### Pseudocode (Conceptual Flow – No Code Block)
-
-- Agent observes the request:
-  - Schedule interviews for shortlisted candidates
-
-- Agent uses tools:
-  - Resume Database to read shortlisted candidates
-  - Calendar API to check interviewer availability
-
-- Agent creates a plan:
-  - Generate interview slots based on availability and preferences
-
-- Agent executes the plan:
-  - Schedule interviews
-  - Send confirmation emails
-
----
-
-## 2️. Why We Need AI Agents
-
-Plain Large Language Models (LLMs) are powerful, but they have **fundamental limitations** when used alone in real-world systems.
-
-### Problems with Plain LLMs
-
-- Generates a single response and then stops
-- No memory across tasks or sessions
-- Cannot use tools or interact with external systems
-- Cannot plan or execute multi-step actions
-- Entirely reactive to prompts
-
-In short, a plain LLM can **explain what to do**, but it cannot **do the work**.
-
----
-
-### How AI Agents Solve This
-
-AI agents extend LLMs with additional capabilities that make them practical for real-world tasks.
-
-- Handle **multi-step tasks autonomously**
-  - Break a goal into steps
-  - Execute those steps in order
-
-- Interact with **external systems**
-  - APIs
-  - Databases
-  - Scripts
-  - Enterprise tools
-
-- Maintain **context and memory over time**
-  - Remember user preferences
-  - Track task progress
-  - Avoid repeating questions
-
-- **Plan and adapt dynamically**
-  - Change strategy when a step fails
-  - Retry with alternatives
-  - Escalate to humans if needed
-
----
-
-### Key Takeaways
-
-- AI agents **extend LLMs** with:
-  - Planning
-  - Memory
-  - Tool usage
-
-- AI agents can:
-  - Autonomously complete complex real-world tasks
-  - Operate over time, not just one response
-
-- Unlike LLMs, agents are:
-  - Goal-oriented
-  - Proactive
-  - Adaptive
-
-- **Tools + Memory + Planning = Real-world problem-solving capability**
-
----
-
-## 3️. Agentic AI Concepts
-
-To truly understand AI agents, it is important to break them down into their **core building blocks**. These building blocks explain *how* agents think, decide, and act.
-
-An AI agent is not a single component. It is a **system** composed of multiple concepts working together.
-
----
-
-### 3.1 Agency
-
-**Agency** means the ability to take actions toward a goal.
-
-- The agent is not just responding to prompts
-- The agent decides **what to do next**
-- The agent continues acting until the goal is achieved or deemed impossible
-
-Example:
-- User goal: “Plan my travel for next week”
-- The agent:
-  - Decides to search flights
-  - Then books hotels
-  - Then sends confirmations
-
-Without agency:
-- The model would only explain how travel planning works
-
-With agency:
-- The system actually performs the planning steps
-
----
-
-### 3.2 Goal-Oriented Behavior
-
-Agents operate around **explicit goals**.
-
-- A goal defines:
-  - What success looks like
-  - When the agent should stop
-  - How actions are evaluated
-
-Examples of goals:
-- “Book the cheapest flight under $800”
-- “Schedule interviews for all shortlisted candidates”
-- “Resolve the customer support ticket”
-
-Agents continuously ask:
-- Am I closer to the goal?
-- Do I need to change my plan?
-
----
-
-### 3.3 Environment
-
-The **environment** is everything the agent can observe and interact with.
-
-This includes:
-- User inputs
-- Tool responses
-- Databases
-- APIs
-- Files
-- Other agents
-
-The environment is **dynamic**:
-- Tool responses may change
-- APIs may fail
-- Data may be incomplete
-
-Agents must reason based on **imperfect and changing information**.
-
----
-
-### 3.4 Tools
-
-Tools are **external capabilities** that allow agents to do real work.
-
-Common tools include:
-- Search APIs
-- Databases
-- Calendars
-- Email systems
-- Payment gateways
-- Internal enterprise services
-
-Important idea:
-- The LLM does not replace tools
-- The LLM **decides when and how to use tools**
-
-Example:
-- User: “Schedule a meeting tomorrow”
-- Agent chooses:
-  - Calendar tool
-  - Email tool for invitations
-
-Tools turn agents from **talkers** into **doers**.
-
----
-
-### 3.5 Reasoning
-
-Reasoning is how an agent decides **which action to take next**.
-
-Agents reason about:
-- User intent
-- Available tools
-- Current context
-- Past actions
-- Expected outcomes
-
-Typical reasoning questions:
-- Which tool should I use?
-- Do I have enough information?
-- Should I ask the user for clarification?
-- Should I retry or change strategy?
-
-Reasoning happens **before, during, and after actions**.
-
----
-
-### 3.6 Planning
-
-Planning is the process of **breaking a goal into ordered steps**.
-
-Instead of acting randomly, agents:
-- Think ahead
-- Decide a sequence of actions
-- Execute step-by-step
-
-Example plan:
-- Goal: “Organize a team meeting”
-- Plan:
-  1. Check team availability
-  2. Book meeting room
-  3. Schedule calendar invite
-  4. Send agenda
-
-Planning makes agents:
-- More reliable
-- Less error-prone
-- Easier to debug
-
----
-
-### 3.7 Types of Planning
-
-Agents may use different planning strategies:
-
-- **Static Planning**
-  - Fixed steps
-  - Suitable for simple tasks
-
-- **Dynamic Planning**
-  - Adjusts steps based on results
-  - Used when APIs fail or data changes
-
-- **Hierarchical Planning**
-  - High-level goals broken into sub-goals
-  - Sub-goals further broken into actions
-
-Example:
-- High-level goal: “Launch a product”
-- Sub-goals:
-  - Market research
-  - Pricing
-  - Marketing campaign
-  - Release execution
-
----
-
-### 3.8 Memory
-
-Memory allows agents to **persist information over time**.
-
-Without memory:
-- Agents forget preferences
-- Agents repeat questions
-- Agents lose context
-
-Memory enables:
-- Personalization
-- Long-running workflows
-- Learning from past actions
-
-Memory is a core requirement for real-world agents.
-
----
-
-### 3.9 Short-Term vs Long-Term Memory
-
-- **Short-Term Memory**
-  - Stores current task context
-  - Example:
-    - “We are scheduling interviews”
-
-- **Long-Term Memory**
-  - Stores persistent knowledge
-  - Example:
-    - “User prefers morning meetings”
-    - “Budget limit is $800”
-
-- **Episodic Memory**
-  - Stores past interactions
-  - Example:
-    - Previous booking failures
-    - Past successful strategies
-
-Memory is often implemented using:
-- Prompt context
-- Databases
-- Vector stores
-
----
-
-### 3.10 Observation and Feedback Loop
-
-Agents operate in a loop:
-
-- Observe the environment
-- Decide next action
-- Act using tools
-- Observe results
-- Adjust behavior
-
-This loop continues until:
-- Goal is achieved
-- Agent fails safely
-- Human intervention is required
-
-This feedback loop is what makes agents **adaptive** rather than static.
-
----
-
-### 3.11 Putting It All Together
-
-An AI agent combines:
-
-- Agency → ability to act
-- Goals → direction
-- Reasoning → decision-making
-- Planning → structured execution
-- Tools → real-world interaction
-- Memory → persistence over time
-- Feedback → adaptation
-
-Only when all these components work together does an agent become **truly autonomous**.
-
----
-
-## 4️. Tool-Using Agents
-
-Tool-using agents are what transform AI systems from **advisors** into **operators**.  
-A tool-using agent does not just explain what should be done — it **actually does it** by interacting with external systems.
-
----
-
-### 4.1 What Does “Tool-Using Agent” Mean?
-
-A **tool-using agent** is an AI agent that can:
-
-- Decide **when** a tool is needed
-- Choose **which** tool to use
-- Provide the correct inputs to the tool
-- Interpret the tool’s output
-- Decide the next action based on the result
-
-The LLM acts as the **decision-maker**, while tools perform the **execution**.
-
----
-
-### 4.2 Why Tools Are Necessary
-
-LLMs alone cannot:
-
-- Access real-time data
-- Modify external systems
-- Trigger workflows
-- Persist changes
-
-Tools solve this by giving agents **capabilities beyond text generation**.
+Many tasks cannot be solved by one response.
 
 Examples:
-- HR agent → Resume database
-- Finance agent → Billing system
-- Support agent → Knowledge base search
-- Travel agent → Flight and hotel booking APIs
+
+- investigate an incident,
+- research a topic across sources,
+- schedule around changing availability,
+- diagnose a system,
+- complete a workflow whose next step depends on intermediate results.
+
+An agent can adapt its next action based on what it observes.
 
 ---
 
-### 4.3 Types of Tools Used by Agents
+## 3. Mental Model
 
-Agents may use many categories of tools:
+Think of a well-designed agent as a **controlled decision loop**, not an unconstrained autonomous model.
 
-- **Information Retrieval Tools**
-  - Web search
-  - Internal document search
-  - Knowledge bases
+```mermaid
+flowchart TD
+    G[Goal] --> O[Orchestrator]
+    O --> M[Model Decision]
+    M --> D{Next Action}
+    D -->|Tool| T[Controlled Tool Execution]
+    T --> OBS[Observation]
+    OBS --> S[(State)]
+    S --> O
+    D -->|Need User| U[Ask User]
+    D -->|Complete| F[Final Result]
+    O --> B[Budgets / Policies]
+```
 
-- **Action Tools**
-  - Calendar scheduling
-  - Email sending
-  - Ticket creation
+The model helps decide.
 
-- **Computation Tools**
-  - Calculators
-  - Data processing pipelines
-
-- **System Tools**
-  - File access
-  - Database queries
-  - Cloud services
-
-Each tool expands what the agent can accomplish.
+The runtime enforces constraints.
 
 ---
 
-### 4.4 How an Agent Decides Which Tool to Use
+## 4. Core Building Blocks
 
-The LLM chooses tools based on several signals:
+A practical agent architecture can contain:
 
-1. **User Intent**
-   - What the user is trying to achieve
+- **goal** — desired outcome,
+- **model/policy** — semantic decision-maker,
+- **orchestrator** — controls the loop,
+- **tools** — external capabilities,
+- **state** — current execution information,
+- **memory** — selected persisted information when needed,
+- **planning** — decomposition when needed,
+- **guardrails/policy** — deterministic boundaries,
+- **observability** — traces and metrics,
+- **stopping conditions** — prevent endless execution.
 
-2. **Tool Descriptions**
-   - Clear descriptions help the model map intent to tools
+---
 
-3. **Context**
-   - Current task state
-   - Previous actions
-   - Stored memory
+## 5. Agency
 
-4. **Prompting Strategy**
-   - Instructions that guide decision-making
+Agency means the system can choose among actions based on the current situation.
 
 Example:
-- User request: “Schedule a meeting tomorrow”
-- Agent reasoning:
-  - This is a scheduling task
-  - Calendar tool matches this intent
-  - Email tool may be needed afterward
+
+User goal:
+
+> Investigate why checkout errors increased.
+
+The agent may decide to:
+
+1. inspect metrics,
+2. inspect recent deployments,
+3. search logs,
+4. compare configuration,
+5. stop when evidence is sufficient.
+
+The exact path can change based on observations.
 
 ---
 
-### 4.5 Tool Descriptions Matter
+## 6. Goals
 
-Agents rely heavily on **tool descriptions**.
+A goal should define what success means.
 
-Well-written descriptions:
-- Reduce incorrect tool usage
-- Improve reliability
-- Make agent behavior predictable
+Weak:
 
-Example descriptions:
-- SearchTool → Finds information on the web
-- CalendarTool → Creates and updates meetings
-- EmailTool → Sends messages to recipients
+```text
+"Investigate."
+```
 
-Poor descriptions lead to:
-- Wrong tool selection
-- Failed actions
-- Unstable agents
+Better:
 
----
+```text
+"Identify the most likely cause of the checkout error spike,
+provide supporting evidence, and recommend a safe next action."
+```
 
-### 4.6 Reason-Act-Observe (ReAct) Pattern
+Good goals improve:
 
-The **ReAct pattern** enables agents to interleave reasoning and actions.
-
-The cycle:
-- Reason about what to do
-- Act using a tool
-- Observe the result
-- Reason again
-
-This allows agents to:
-- Correct mistakes
-- Handle uncertainty
-- Adapt plans dynamically
-
-ReAct is foundational for most modern agent frameworks.
+- planning,
+- stopping,
+- evaluation.
 
 ---
 
-### 4.7 Function Calling and Structured Tool Invocation
+## 7. Environment
 
-Modern agents often use **structured tool calls**.
-
-Key ideas:
-- Tools have defined inputs and outputs
-- The agent produces structured requests
-- The system executes the tool safely
-
-Benefits:
-- Predictable behavior
-- Easier debugging
-- Reduced hallucinations
-
-This is commonly referred to as:
-- Function calling
-- Tool invocation
-- Structured actions
-
----
-
-### 4.8 Guardrails for Tool Usage
-
-Tool access must be controlled.
-
-Guardrails ensure:
-- Unsafe actions are blocked
-- Invalid inputs are rejected
-- Sensitive systems are protected
+The environment is everything the agent can observe or affect.
 
 Examples:
-- Limiting payment amounts
-- Restricting database writes
-- Preventing unauthorized emails
 
-Without guardrails:
-- Agents can cause real damage
+- APIs,
+- databases,
+- files,
+- websites,
+- calendars,
+- ticket systems,
+- code repositories,
+- users,
+- other agents.
 
----
-
-### 4.9 Structured Outputs
-
-Agents often use **structured outputs** to:
-
-- Ensure correct tool parameters
-- Maintain consistency
-- Enable automation
-
-Structured outputs reduce:
-- Ambiguity
-- Parsing errors
-- Execution failures
-
-This is critical in production systems.
+The agent does not directly control the environment. It interacts through defined interfaces.
 
 ---
 
-### 4.10 Tool Usage in Real Workflows
+## 8. The Agent Loop
 
-End-to-end flow:
+```text
+Perceive
+  ↓
+Decide
+  ↓
+Act
+  ↓
+Observe
+  ↓
+Update State
+  ↓
+Stop or Continue
+```
 
-- User provides a goal
-- Agent reasons about required actions
-- Agent selects appropriate tools
-- Tools perform actions
-- Agent observes results
-- Agent continues or stops based on goal completion
-
-Tools are not optional add-ons — they are **core to agentic AI**.
-
----
-
-### 4.11 Common Failure Modes with Tools
-
-Tool-using agents can fail when:
-
-- Tool descriptions are unclear
-- APIs return unexpected data
-- Permissions are misconfigured
-- The agent overuses or misuses tools
-
-Robust agents detect failures and:
-- Retry with alternatives
-- Replan
-- Escalate to humans
+This loop is the foundation of agentic behavior.
 
 ---
 
-### 4.12 Why Tool-Using Agents Matter
+## 9. Example: HR Interview Scheduler
 
-Without tools:
-- Agents are limited to advice
+The original HR scheduler example is a useful agent scenario.
 
-With tools:
-- Agents become operational systems
-- Tasks can be completed end-to-end
-- Automation becomes possible
+Goal:
 
-Tool-using agents are the foundation of **enterprise AI**, **automation platforms**, and **autonomous workflows**.
+> Schedule interviews for shortlisted candidates.
 
----
+Possible capabilities:
 
+- candidate database,
+- interviewer calendars,
+- scheduling system,
+- email/notification service.
 
-## 5️. Memory in Agents
+Flow:
 
-Memory is what allows AI agents to **operate over time** instead of behaving like stateless chatbots.  
-Without memory, an agent cannot maintain context, learn preferences, or handle long-running tasks.
+```mermaid
+flowchart TD
+    G[Schedule Interviews] --> C[Load Candidate List]
+    C --> A[Check Interviewer Availability]
+    A --> P[Propose Slots]
+    P --> V{Conflicts?}
+    V -->|Yes| A
+    V -->|No| H{Approval Required?}
+    H -->|Yes| U[Human Approval]
+    H -->|No| S[Schedule]
+    U --> S
+    S --> N[Notify Participants]
+    N --> F[Verify Bookings]
+```
 
-Memory turns an agent from a **single-response system** into a **persistent problem solver**.
-
----
-
-### 5.1 Why Memory Is Necessary
-
-Without memory, agents:
-
-- Forget user preferences
-- Repeat the same questions
-- Lose track of progress
-- Cannot personalize behavior
-- Fail at multi-step workflows
-
-With memory, agents can:
-
-- Maintain continuity across interactions
-- Remember past decisions
-- Improve over time
-- Handle long-term goals
-
-Memory is essential for real-world applications.
+The agent can adapt if a calendar is unavailable or a slot conflicts.
 
 ---
 
-### 5.2 What Agents Store in Memory
+## 10. Tools
 
-Agents store different types of information, such as:
-
-- User preferences
-  - Preferred meeting times
-  - Budget limits
-  - Communication style
-
-- Task state
-  - What has already been done
-  - What remains unfinished
-
-- Past outcomes
-  - Successful strategies
-  - Failed attempts
-
-- Environmental knowledge
-  - Tool behaviors
-  - System constraints
-
----
-
-### 5.3 Short-Term Memory
-
-Short-term memory stores **current task context**.
-
-Characteristics:
-- Temporary
-- Task-specific
-- Limited in size
+Tools let the system access authoritative data or perform external actions.
 
 Examples:
-- “We are scheduling interviews”
-- “Flights have already been compared”
 
-Short-term memory is often implemented using:
-- Prompt context
-- In-memory state
+```text
+search_flights
+check_calendar
+get_candidate
+create_interview
+send_notification
+```
 
-It resets once the task or session ends.
-
----
-
-### 5.4 Long-Term Memory
-
-Long-term memory stores **persistent information** across sessions.
-
-Characteristics:
-- Durable
-- User-specific or agent-specific
-- Grows over time
-
-Examples:
-- “User prefers morning flights”
-- “Interviewer prefers 30-minute interviews”
-- “Budget must stay under $800”
-
-Long-term memory enables:
-- Personalization
-- Reduced repetition
-- Better user experience
+Without tools, a model can still reason or generate text, but it cannot independently change external state.
 
 ---
 
-### 5.5 Episodic Memory
+## 11. Tool Calling Does Not Automatically Mean Agent
 
-Episodic memory stores **past interactions and events**.
-
-Examples:
-- Previous booking failures
-- Past interview scheduling conflicts
-- Earlier user feedback
-
-This allows agents to:
-- Learn from mistakes
-- Avoid repeating failures
-- Improve future decisions
-
-Episodic memory is critical for adaptive behavior.
-
----
-
-### 5.6 Memory Implementation Approaches
-
-Common approaches include:
-
-- **Prompt-Based Memory**
-  - Short-term context passed with each request
-
-- **Database Storage**
-  - Structured storage for preferences and states
-
-- **Vector Databases**
-  - Semantic storage for unstructured memories
-  - Enables similarity-based retrieval
-
-Each approach has trade-offs in cost, speed, and complexity.
-
----
-
-### 5.7 Memory Retrieval
-
-Agents must decide **what to remember** and **what to recall**.
-
-Key challenges:
-- Avoiding irrelevant memories
-- Retrieving the most useful information
-- Managing memory growth
-
-Effective memory retrieval ensures:
-- Relevant context
-- Accurate decisions
-- Reduced hallucinations
-
----
-
-### 5.8 Memory and Privacy
-
-Memory introduces responsibility.
-
-Agents must:
-- Respect data privacy
-- Handle sensitive information carefully
-- Allow memory deletion or updates
-
-Memory systems must be designed with:
-- Access controls
-- Retention policies
-- Compliance requirements
-
----
-
-### 5.9 Memory and Planning
-
-Memory and planning are tightly connected.
-
-Memory provides:
-- Past knowledge
-- Preferences
-- Constraints
-
-Planning uses memory to:
-- Choose better strategies
-- Avoid repeated failures
-- Optimize execution paths
-
-Without memory, planning is inefficient and error-prone.
-
----
-
-### 5.10 Memory in Multi-Step Workflows
-
-In long workflows, memory allows agents to:
-
-- Pause and resume tasks
-- Track intermediate results
-- Coordinate multiple actions
-- Maintain consistency
-
-This is especially important for:
-- Enterprise workflows
-- Multi-day tasks
-- Multi-agent systems
-
----
-
-### 5.11 Failure Without Memory
-
-Agents without memory:
-
-- Ask the same questions repeatedly
-- Lose trust with users
-- Cannot operate autonomously
-- Require constant human supervision
-
-Memory is what enables **true autonomy**.
-
----
-
-### 5.12 Memory as a Core Agent Capability
-
-Memory is not an optional feature.
-
-It is:
-- A core component of agent architecture
-- A prerequisite for reliability
-- Essential for personalization and learning
-
-An AI agent without memory is **not an agent**, just a chatbot.
-
-
----
-
-
-## 6️. Planning in AI Agents
-
-Planning is what allows an AI agent to **move from intention to execution**.  
-Instead of acting randomly or responding once, agents use planning to **structure their behavior over time**.
-
-Planning answers the question:
-- “What steps should I take to achieve this goal?”
-
----
-
-### 6.1 What Is Planning?
-
-Planning is the process of **breaking a goal into ordered, actionable steps**.
-
-Key ideas:
-- Goals are often complex
-- Complex goals must be decomposed
-- Each step moves the agent closer to success
+A model call that invokes one predetermined tool can still be part of a normal workflow.
 
 Example:
-- Goal: “Organize a team meeting”
-- Steps:
-  - Check participant availability
-  - Book meeting room
-  - Schedule calendar invite
-  - Send agenda
 
-Without planning:
-- The agent acts blindly
+```text
+Question → lookup_order → LLM formats answer
+```
 
-With planning:
-- The agent acts deliberately
+That is not necessarily an autonomous agent.
+
+Agentic behavior appears when the system dynamically chooses and sequences actions based on observations.
 
 ---
 
-### 6.2 Why Planning Matters
+## 12. Read vs Write Tools
 
-Planning enables agents to:
+Read:
 
-- Handle multi-step tasks
-- Reduce errors
-- Maintain progress
-- Recover from failures
-- Explain their behavior
+```text
+get_calendar
+search_documents
+get_order
+```
 
-In real-world systems, planning is **mandatory**, not optional.
+Write:
+
+```text
+schedule_interview
+cancel_order
+send_email
+```
+
+Write tools create greater risk and usually need stronger:
+
+- authorization,
+- validation,
+- confirmation,
+- audit.
 
 ---
 
-### 6.3 Static Planning
+## 13. Structured Tool Calls
 
-Static planning uses **predefined steps**.
+Prefer structured contracts:
 
-Characteristics:
-- Fixed sequence
-- No adaptation
-- Simple and predictable
+```json
+{
+  "tool": "check_calendar",
+  "arguments": {
+    "interviewer_id": "i-42",
+    "date": "2026-10-10"
+  }
+}
+```
+
+The application validates arguments before execution.
+
+See [Tool Use & Agent Orchestration](docs/agentic-ai/tool-use-and-orchestration.md).
+
+---
+
+## 14. State
+
+State tracks what is happening in the current run.
 
 Example:
-- Payroll processing
-- Report generation
 
-Limitations:
-- Fails if assumptions change
-- Cannot handle unexpected outcomes
+```json
+{
+  "goal": "schedule interviews",
+  "candidate_index": 3,
+  "scheduled": 2,
+  "pending": 4,
+  "tool_calls": 7
+}
+```
 
-Static planning works best for **stable, repeatable tasks**.
-
----
-
-### 6.4 Dynamic Planning
-
-Dynamic planning adapts based on results.
-
-Characteristics:
-- Plans change as the environment changes
-- Decisions are made step-by-step
-- Errors trigger replanning
-
-Example:
-- Flight booking where prices change
-- Scheduling meetings with availability conflicts
-
-Dynamic planning allows agents to:
-- Retry
-- Choose alternatives
-- Adjust constraints
-
-This is the most common planning approach in agentic AI.
+State is not the same as long-term memory.
 
 ---
 
-### 6.5 Hierarchical Planning
+## 15. Memory
 
-Hierarchical planning breaks goals into **multiple levels**.
-
-Structure:
-- High-level goal
-- Sub-goals
-- Low-level actions
-
-Example:
-- High-level goal: “Launch a product”
-- Sub-goals:
-  - Market research
-  - Pricing strategy
-  - Marketing execution
-- Each sub-goal has its own plan
-
-Hierarchical planning improves:
-- Clarity
-- Scalability
-- Reusability
-
----
-
-### 6.6 Planning and Reasoning
-
-Planning and reasoning work together.
-
-- Reasoning decides:
-  - What to do next
-  - Which option is best
-
-- Planning decides:
-  - The sequence of actions
-  - Dependencies between steps
-
-Agents continuously reason **within the plan**.
-
----
-
-### 6.7 Replanning and Adaptation
-
-Real environments are unpredictable.
-
-Agents must:
-- Detect failures
-- Understand why they occurred
-- Modify plans accordingly
+Memory persists selected information for future use.
 
 Examples:
-- API failure
-- Missing data
-- Conflicting constraints
 
-Replanning ensures:
-- Robustness
-- Reliability
-- Reduced human intervention
+- stable user preference,
+- prior task outcome,
+- validated lesson,
+- unresolved commitment.
 
----
+An agent **does not require long-term memory to be an agent**.
 
-### 6.8 Planning Horizons
+For many tasks, current-run state is enough.
 
-Agents may plan over different time horizons:
+Persistent memory should be added when continuity or experience materially improves future behavior.
 
-- Short-term planning
-  - Immediate next steps
-
-- Medium-term planning
-  - Task completion
-
-- Long-term planning
-  - Multi-day or recurring goals
-
-More autonomy requires longer planning horizons.
+See [Agent Memory Architecture](docs/agentic-ai/agent-memory.md).
 
 ---
 
-### 6.9 Planning in Multi-Agent Systems
+## 16. Planning
 
-In multi-agent systems:
-- Each agent may have its own plan
-- Plans must align or coordinate
+Planning decomposes a goal into actions.
 
-Common strategies:
-- Central planner agent
-- Shared goals and constraints
-- Negotiation between agents
+Example:
 
-Planning becomes a coordination problem.
+```text
+Goal: organize team meeting
 
----
+1. identify participants
+2. retrieve availability
+3. find candidate slots
+4. confirm constraints
+5. schedule
+6. verify
+```
 
-### 6.10 Planning Failure Modes
+But simple tasks do not need a generated plan.
 
-Planning can fail when:
+If the control flow is already known, deterministic software is often better.
 
-- Goals are ambiguous
-- Steps are too vague
-- Dependencies are ignored
-- Environment changes rapidly
-
-Good agent design includes:
-- Validation checks
-- Fallback strategies
-- Human escalation
+See [Planning & Reasoning Patterns](docs/agentic-ai/planning-and-reasoning.md).
 
 ---
 
-### 6.11 Planning as a Core Capability
+## 17. Reactive Agents
 
-Planning is not just task management.
+A reactive agent chooses one next action at a time.
 
-It is:
-- A core intelligence capability
-- Required for autonomy
-- Essential for trust and reliability
+```text
+Observe → Decide → Act → Observe
+```
 
-Without planning, agents cannot operate independently.
+Useful for short, uncertain tasks.
 
 ---
 
-### 6.12 Planning Enables Real-World Agents
+## 18. Plan-and-Execute Agents
 
-When combined with:
-- Memory
-- Tools
-- Reasoning
+For longer tasks:
 
-Planning enables agents to:
-- Execute complex workflows
-- Handle uncertainty
-- Operate continuously
+```text
+Goal
+ ↓
+Create plan
+ ↓
+Execute steps
+ ↓
+Observe
+ ↓
+Replan if needed
+ ↓
+Verify completion
+```
 
-This is what separates **agentic AI** from simple automation.
+This adds visibility but also latency, cost, and state complexity.
 
+---
+
+## 19. Reasoning and Decisions
+
+In engineering terms, the important output is not hidden internal reasoning; it is the observable decision trajectory:
+
+```text
+selected action
+arguments
+observation
+state transition
+completion decision
+```
+
+These are what we can test and trace.
+
+---
+
+## 20. Context
+
+Context is the information given to the model for the current decision.
+
+It may contain:
+
+- instructions,
+- current goal,
+- state,
+- relevant conversation,
+- selected memory,
+- tool schemas,
+- recent observations,
+- retrieved knowledge.
+
+More context is not always better.
+
+---
+
+## 21. RAG and Agents
+
+RAG retrieves external knowledge.
+
+An agent can use retrieval as one capability.
+
+```text
+Agent
+ ↓
+Decides knowledge is needed
+ ↓
+RAG / Search
+ ↓
+Evidence
+ ↓
+Agent decides next step
+```
+
+When retrieval itself becomes adaptive and iterative, the architecture becomes [Agentic RAG](docs/agentic-ai/agentic-rag.md).
+
+---
+
+## 22. Guardrails
+
+Agents that can act need deterministic boundaries.
+
+Guardrails may enforce:
+
+- tool permissions,
+- argument constraints,
+- spending limits,
+- maximum iterations,
+- content policy,
+- approval requirements,
+- data access.
+
+Do not ask the model to enforce its own security boundary.
+
+---
+
+## 23. Human-in-the-Loop
+
+Human approval is useful for:
+
+- financial actions,
+- external communication,
+- production changes,
+- destructive operations,
+- ambiguous high-impact decisions.
+
+```text
+Agent proposes action
+      ↓
+Policy requires approval
+      ↓
+Human reviews exact action
+      ↓
+Approve / Reject
+```
+
+Autonomy should be proportional to risk.
+
+---
+
+## 24. Stopping Conditions
+
+Agents need explicit stopping rules.
+
+Stop when:
+
+- goal is complete,
+- user input is required,
+- approval is denied,
+- evidence is insufficient,
+- action budget is exhausted,
+- repeated actions indicate a loop,
+- an unrecoverable error occurs.
+
+Unlimited loops are not autonomy; they are a reliability bug.
+
+---
+
+## 25. Failure Recovery
+
+Agents should classify failures.
+
+Examples:
+
+- transient tool failure → retry,
+- invalid argument → repair request,
+- permission denied → stop/escalate,
+- missing information → ask user/retrieve,
+- repeated failure → fallback/terminate.
+
+Retries should be bounded.
+
+---
+
+## 26. Reliability
+
+Production reliability requires more than a good prompt.
+
+Consider:
+
+- timeouts,
+- retries,
+- idempotency,
+- durable state,
+- checkpointing,
+- fallbacks,
+- cancellation,
+- circuit breakers,
+- graceful degradation.
+
+Agent engineering is partly distributed-systems engineering.
+
+---
+
+## 27. Security
+
+Agent attack surfaces include:
+
+- user input,
+- retrieved documents,
+- websites,
+- tool responses,
+- memory,
+- other agents.
+
+Important principles:
+
+- least privilege,
+- external authorization,
+- treat observations as untrusted,
+- keep secrets out of model context,
+- audit consequential actions.
+
+---
+
+## 28. Evaluation
+
+Evaluate the trajectory, not only the final prose.
+
+### Outcome
+
+Did the task succeed?
+
+### Action selection
+
+Were the right tools/actions chosen?
+
+### Arguments
+
+Were calls correct?
+
+### Efficiency
+
+How many steps/calls/tokens?
+
+### Safety
+
+Were permissions and approvals respected?
+
+### Recovery
+
+Did the system handle failures correctly?
+
+---
+
+## 29. Observability
+
+A useful trace:
+
+```text
+Agent Run
+├── goal
+├── decision 1
+│   ├── tool call
+│   └── observation
+├── decision 2
+│   ├── tool call
+│   └── observation
+├── completion check
+└── result
+```
+
+Tracing makes failures diagnosable.
+
+---
+
+## 30. Cost and Latency
+
+Every loop can add:
+
+- model inference,
+- tool latency,
+- retrieval,
+- tokens,
+- external API cost.
+
+Use budgets:
+
+```text
+max_model_calls
+max_tool_calls
+max_iterations
+max_elapsed_time
+max_cost
+```
+
+A more autonomous architecture is not automatically a better architecture.
+
+---
+
+## 31. Single Agent vs Multi-Agent
+
+Start with one agent when possible.
+
+A single agent with good tools is:
+
+- easier to evaluate,
+- easier to debug,
+- cheaper,
+- easier to secure.
+
+Move to multiple agents when specialization, independent ownership, parallel work, or interoperability provides a clear benefit.
+
+See:
+
+- [Single-Agent vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md)
+- [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md)
+
+---
+
+## 32. Agents vs Workflows
+
+| Dimension | Workflow | Agent |
+|---|---|---|
+| Control flow | predefined | dynamic |
+| Predictability | high | lower |
+| Adaptability | limited | high |
+| Evaluation | easier | harder |
+| Cost | usually lower | often higher |
+| Best for | known processes | uncertain/open-ended tasks |
+
+A strong production design is often hybrid:
+
+```text
+Deterministic Workflow
+       ↓
+Agentic Decision Point
+       ↓
+Controlled Tools
+       ↓
+Deterministic Validation
+```
+
+---
+
+## 33. Common Anti-Patterns
+
+### Agent for everything
+
+Use normal software when the path is known.
+
+### Unlimited autonomy
+
+Bound tools, iterations, cost, and risk.
+
+### Model-enforced permissions
+
+Authorization belongs outside the model.
+
+### Save everything as memory
+
+Selective memory is safer and more useful.
+
+### Multi-agent by default
+
+Multiple agents introduce coordination cost.
+
+### Tool success = goal success
+
+Verify the actual outcome.
+
+---
+
+## 34. Production Design Checklist
+
+Before calling a system an agent, answer:
+
+### Goal
+- What is success?
+- What ends the run?
+
+### Decisions
+- Which choices are dynamic?
+- Which can remain deterministic?
+
+### Tools
+- What can the agent read/write?
+- What permissions exist?
+
+### State
+- What must survive each step?
+
+### Memory
+- Is persistent memory actually needed?
+
+### Planning
+- Is decomposition required?
+
+### Safety
+- Which actions require approval?
+
+### Evaluation
+- How will task and trajectory success be measured?
+
+### Operations
+- Budgets?
+- retries?
+- timeouts?
+- tracing?
+- cancellation?
+
+---
+
+## 35. Key Takeaways
+
+- An AI agent is a **controlled system that makes dynamic decisions about actions toward a goal**.
+- The LLM is a component, not the entire agent.
+- Tool calling alone does not automatically make a system agentic.
+- State tracks the current run; memory persists selected information across time.
+- Long-term memory is useful but not mandatory for every agent.
+- Planning should be used when complexity requires it.
+- Deterministic workflows are preferable when control flow is known.
+- The runtime should own permissions, budgets, validation, and stopping.
+- Evaluate actions and trajectories, not just final text.
+- Start with a single agent and add multi-agent complexity only when justified.
+
+---
+
+## Continue Learning
+
+1. **AI Agents — this chapter**
+2. [Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)
+3. [Tool Use & Agent Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)
+4. [Agent Memory Architecture](docs/agentic-ai/agent-memory.md)
+5. [Planning & Reasoning Patterns](docs/agentic-ai/planning-and-reasoning.md)
+6. [Agentic RAG](docs/agentic-ai/agentic-rag.md)
+7. [Single-Agent vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md)
+8. [MCP](MCP%20%28Model%20Context%20Protocol%29.md)
+9. [A2A](A2A%20Protocol.md)
