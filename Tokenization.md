@@ -96,12 +96,14 @@ This is a sample
 
 ## 4. Tokenization in Practice with LLMs
 
-* Most modern LLMs (like GPT, Claude, and LLaMA) use **subword tokenization**  
-* Each token counts toward the model’s **context length** (e.g., GPT-4: 8K or 32K tokens)  
-* Tokenization affects:  
-  - Model input size  
-  - Memory and computational requirements  
-  - API pricing (OpenAI counts tokens)  
+* Many modern LLM tokenizers use subword-like or byte-aware schemes; the exact algorithm and vocabulary are model-specific  
+* Input and generated tokens consume the model's available context budget; exact limits depend on the model  
+* Tokenization affects:
+  - sequence length
+  - context usage
+  - compute and memory
+  - latency
+  - token-metered API cost where applicable  
 
 **Example:**
 
@@ -121,14 +123,14 @@ This is a sample
 
 ### 10.1 Cost
 
-* LLM pricing is **per token**  
-* More tokens → higher cost  
+* Many hosted model APIs meter input/output usage in tokens, although pricing models vary
+* More processed tokens generally increase compute and can increase cost  
 
 ### 10.2 Context Window
 
 * LLMs have a **token limit**  
-* Example: 8K, 32K tokens  
-* If input is too long  → truncated  
+* Exact limits vary by model
+* Applications must keep the complete request—system instructions, conversation, retrieved context, tool schemas, and expected output—within the supported budget  
 
 ### 10.3 Model Understanding
 
@@ -187,7 +189,7 @@ The **context window** (or context length) is the **maximum number of tokens an 
 
 **Example:**  
 
-GPT-4 (8K tokens context):  
+Illustrative model context budget: 8K tokens  
 Input text: "Large language models can generate, summarize, and translate text..."
 Token count: 120 tokens → fits entirely in context window
 
@@ -198,8 +200,8 @@ Token count: 120 tokens → fits entirely in context window
 ## 9. How Context Windows Work
 
 * LLMs process **text token by token**  
-* The **context window** is a fixed-size sliding window  
-* When input exceeds the limit, **older tokens are truncated**  
+* A model has a maximum supported context length
+* Applications decide how to handle overflow: reject, truncate, summarize, retrieve selectively, or rebuild context. It is not universally true that the model automatically drops the oldest tokens.  
 
 **Visual Illustration:**
 
@@ -276,12 +278,116 @@ Step 3: Feed summarized chunks sequentially to LLM
 ## 12. Example Scenarios
 
 **Chatbot Example:**  
-*Context window = 4096 tokens*  
-* User pastes a 5000-token conversation  
-* Model only sees last 4096 tokens → early context lost  
-* Solution: summarize or chunk conversation  
+*Context budget = 4096 tokens*  
+* The complete request would require 5000 tokens  
+* The application must reduce/reject the request before inference or use an appropriate larger-context model
+* Possible solution: summarize, retrieve selectively, or remove irrelevant history  
 
 **Coding Assistant:**  
 * Large codebase = 50,000 tokens  
 * Model can only see function file in context window → cannot reason across entire repo  
 * Solution: feed file-by-file or provide summaries 
+
+
+---
+
+## 13. Token IDs and Vocabulary
+
+A tokenizer maps token pieces to integer IDs.
+
+```text
+Text
+ ↓
+Tokenizer
+ ↓
+Token pieces
+ ↓
+Vocabulary lookup
+ ↓
+Token IDs
+ ↓
+Model
+```
+
+The model processes token IDs/embeddings, not the original string directly.
+
+Different models can tokenize the same text differently because they use different vocabularies and tokenizer algorithms.
+
+---
+
+## 14. Why Token Counts Are Hard to Guess
+
+Token count is not the same as:
+
+- word count,
+- character count,
+- syllable count.
+
+Factors include:
+
+- language,
+- punctuation,
+- whitespace,
+- numbers,
+- code,
+- uncommon words,
+- tokenizer vocabulary.
+
+Therefore, examples in this chapter are illustrative. Use the tokenizer associated with the actual model when an exact count matters.
+
+---
+
+## 15. Context Window vs Memory
+
+A context window is **not long-term memory**.
+
+```text
+Context Window
+= information supplied to this inference
+
+Agent Memory
+= selected information persisted and retrieved across interactions
+```
+
+A long context can reduce how aggressively an application must summarize or retrieve, but it does not replace memory lifecycle, permissions, freshness, or retrieval design.
+
+---
+
+## 16. Context Engineering
+
+For an LLM application, the context budget may contain:
+
+```text
+System instructions
++ conversation
++ retrieved documents
++ tool definitions
++ tool results
++ memory
++ user request
++ generated output
+```
+
+Context engineering is the discipline of selecting the **most useful information**, not merely filling the largest possible window.
+
+---
+
+## 17. Key Takeaways
+
+- Models process token IDs rather than raw text.
+- Tokens may represent words, subwords, bytes/characters, punctuation, or combinations depending on the tokenizer.
+- Exact tokenization is model-specific.
+- Token count affects context capacity, compute, latency, and often cost.
+- Applications—not a universal automatic rule—decide how overflow is handled.
+- Context window and persistent memory are different concepts.
+- Larger context does not remove the need for selective retrieval and context engineering.
+
+---
+
+## Continue Learning
+
+1. [AI Foundation Models](AI%20Foundation%20Models.md)
+2. **Tokenization — this chapter**
+3. [Transformers](Transformers.md)
+4. [Large Language Models](Large%20Language%20Models%20%28LLM%29.md)
+5. [Prompt Engineering](Prompt%20Engineering.md)
