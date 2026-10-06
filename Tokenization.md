@@ -121,18 +121,18 @@ This is a sample
 
 ## 5. Why Tokenization Matters
 
-### 10.1 Cost
+### 5.1 Cost
 
 * Many hosted model APIs meter input/output usage in tokens, although pricing models vary
 * More processed tokens generally increase compute and can increase cost  
 
-### 10.2 Context Window
+### 5.2 Context Window
 
 * LLMs have a **token limit**  
 * Exact limits vary by model
 * Applications must keep the complete request—system instructions, conversation, retrieved context, tool schemas, and expected output—within the supported budget  
 
-### 10.3 Model Understanding
+### 5.3 Model Understanding
 
 * Poor tokenization → poor model understanding  
 * Proper tokenization → better predictions  
@@ -174,7 +174,7 @@ Text → Tokens → Numbers → Model → Numbers → Tokens → Text
 ---
 ---
 
-# Context Window & Limitations
+## Context Window & Limitations
 
 ## 8. What is a Context Window?
 
