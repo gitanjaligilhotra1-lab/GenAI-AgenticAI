@@ -26,7 +26,8 @@ Future reorganization can move root chapters into dedicated foundations/LLM-engi
 
 ### Production AI Engineering
 1. **[Evaluation & Observability](production/evaluation-and-observability.md)** — datasets, graders, RAG/tool/agent evaluation, regression gates, tracing, monitoring, failure mining, latency, cost, and privacy-aware telemetry.
-2. **[Production Engineering Hub](production/README.md)** — roadmap for security, reliability, context engineering, and performance/cost guidance.
+2. **[Security & Guardrails](production/security-and-guardrails.md)** — threat modeling, injection defenses, secure RAG, authorization, least privilege, sandboxing, memory/tenant security, MCP/A2A trust, red teaming, and incident response.
+3. **[Production Engineering Hub](production/README.md)** — roadmap for security, reliability, context engineering, and performance/cost guidance.
 
 ### System Design
 - **[Production RAG System Design](system-design/production-rag.md)** — ingestion, retrieval, reranking, context construction, evaluation, security, scalability, reliability, latency, cost, and Agentic RAG.
