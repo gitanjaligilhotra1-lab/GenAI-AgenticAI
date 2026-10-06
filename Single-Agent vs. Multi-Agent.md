@@ -1,7 +1,7 @@
 ## 1. Single-Agent Workflows
 
 A **single-agent workflow** is the simplest form of agentic system.  
-One agent is responsible for understanding the goal, planning the steps, using tools, managing memory, and completing the task end-to-end.
+One agent/runtime owns the task end-to-end. It may use tools, state, optional memory, and planning when the task requires them.
 
 This model is often the **starting point** for building agent-based systems.
 
@@ -77,10 +77,12 @@ They are ideal for:
 
 Single-agent systems also have limitations:
 
-- Limited scalability
-- No parallel task execution
-- Single point of failure
-- Harder to specialize across domains
+- One decision context can become overloaded on very broad tasks
+- Specialization boundaries may become harder to maintain
+- A single runtime can become a coordination bottleneck
+- Independent organizational ownership is harder to model
+
+A single agent **can still execute independent tool calls in parallel**, so parallelism alone is not a reason to create multiple agents.
 
 As task complexity increases, these limitations become significant.
 
@@ -1198,3 +1200,212 @@ Avoid MAS when:
 ## 6.11 Key Mental Model
 
 **Multi-agent systems turn LLMs from solo performers into coordinated teams capable of solving real-world problems.**
+
+
+---
+
+## 9. The Most Important Design Rule
+
+> **Do not add another agent unless it creates a clear architectural advantage.**
+
+Before multi-agent, ask whether the problem can be solved with:
+
+```text
+one agent
++ better tools
++ parallel tool execution
++ deterministic workflow steps
++ better context/state
+```
+
+Multi-agent architecture adds:
+
+- more model calls,
+- more state,
+- handoff failures,
+- duplicated context,
+- harder debugging,
+- larger security surface,
+- higher latency/cost.
+
+---
+
+## 10. When Multiple Agents Are Justified
+
+Strong reasons include:
+
+### Independent specialization
+
+Different roles need distinct tools, policies, context, or models.
+
+### Independent ownership
+
+Agents are deployed/owned by different teams or organizations.
+
+### Isolation
+
+Sensitive context or permissions should not be shared with one universal agent.
+
+### Long-running delegation
+
+A coordinator delegates durable work to independently managed workers.
+
+### Parallel semantic work
+
+Several independent investigations can genuinely benefit from separate reasoning contexts.
+
+---
+
+## 11. When Multiple Agents Are Not Justified
+
+Weak reasons:
+
+- "the task has many steps,"
+- "we want parallel API calls,"
+- "multi-agent sounds more advanced,"
+- "one prompt is getting long."
+
+Many-step tasks can be deterministic workflows.
+
+Parallel API calls can be performed by one orchestrator.
+
+A long prompt may indicate poor context engineering rather than a need for more agents.
+
+---
+
+## 12. Coordination Topologies
+
+### Supervisor / Worker
+
+```mermaid
+flowchart TD
+    S[Supervisor] --> A[Research Worker]
+    S --> B[Data Worker]
+    S --> C[Writer Worker]
+    A --> S
+    B --> S
+    C --> S
+```
+
+Good when centralized control is desirable.
+
+### Sequential specialists
+
+```text
+Research → Analyze → Review → Publish
+```
+
+Useful when outputs have clear dependencies.
+
+### Peer collaboration
+
+Agents communicate without a permanent central supervisor.
+
+This can be flexible but is harder to bound and debug.
+
+---
+
+## 13. Shared vs Isolated State
+
+Shared state simplifies coordination but can create:
+
+- accidental context leakage,
+- race conditions,
+- unclear ownership.
+
+Isolated state improves boundaries but requires explicit handoff contracts.
+
+A good handoff should include only what the next agent needs:
+
+```json
+{
+  "task": "verify deployment hypothesis",
+  "evidence_ids": ["e12", "e19"],
+  "constraints": ["read-only"],
+  "expected_output": "verification_result"
+}
+```
+
+---
+
+## 14. Failure Modes Unique to Multi-Agent Systems
+
+- recursive delegation,
+- agent ping-pong,
+- duplicated work,
+- contradictory conclusions,
+- stale shared state,
+- deadlock/wait cycles,
+- permission escalation through delegation,
+- runaway cost,
+- loss of provenance across handoffs.
+
+These problems do not disappear because each individual agent works well.
+
+---
+
+## 15. Evaluation
+
+Compare the multi-agent design against a simpler baseline.
+
+Measure:
+
+- task success,
+- handoff correctness,
+- redundant work,
+- completion latency,
+- model/tool calls,
+- cost,
+- failure recovery,
+- permission adherence.
+
+The question is not:
+
+> Did the multi-agent system work?
+
+It is:
+
+> Did it work **better enough than the simpler design to justify its complexity?**
+
+---
+
+## 16. Protocol Boundaries
+
+### MCP
+
+Standardizes access from AI applications to capabilities such as tools/resources/prompts.
+
+### A2A
+
+Supports interoperability between independent agentic applications.
+
+Neither protocol is mandatory for an in-process multi-agent workflow.
+
+See:
+
+- [MCP](MCP%20%28Model%20Context%20Protocol%29.md)
+- [A2A](A2A%20Protocol.md)
+
+---
+
+## 17. Key Takeaways
+
+- Start with a single agent/runtime when possible.
+- A single agent can still use many tools and parallelize independent calls.
+- Multi-agent systems are valuable for specialization, isolation, ownership, delegation, and some parallel semantic work.
+- More agents do not automatically improve accuracy or scalability.
+- Define explicit handoff contracts and state ownership.
+- Evaluate multi-agent designs against a simpler baseline.
+- MCP and A2A can support multi-agent architectures but are not prerequisites.
+- Complexity must earn its place.
+
+---
+
+## Continue Learning
+
+1. [AI Agents](AI%20Agents.md)
+2. [Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)
+3. **Single-Agent vs Multi-Agent — this chapter**
+4. [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md)
+5. [MCP](MCP%20%28Model%20Context%20Protocol%29.md)
+6. [A2A](A2A%20Protocol.md)
