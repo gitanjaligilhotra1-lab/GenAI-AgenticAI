@@ -26,7 +26,7 @@ The using part is inference.
 
 ## 1.3 Inference in Simple Words
 
-Inference = using a trained model to **answer a question**  
+Inference = running a trained model to produce predictions or generated outputs  
 
 - Not training
 - Not learning
@@ -65,7 +65,7 @@ Can I return my order?
 2. Processes it  
 3. Generates an answer  
 
-That thinking + answering is **inference**.
+That model execution and token generation is **inference**.
 
 ---
 
@@ -234,8 +234,7 @@ The model can only “see” tokens within its **context window**:
 [ earlier tokens  ] [ visible context  ] [ next token ? ]
 
 
-If the context window is exceeded → older tokens are dropped.  
-This affects **long conversations** and **long documents**.
+If the complete request exceeds the model's supported context, the serving/application layer must reject it or reduce/rebuild the context through techniques such as truncation, summarization, or retrieval. Dropping the oldest tokens is one application strategy, not a universal model behavior.
 
 ---
 
@@ -278,7 +277,7 @@ GPU memory (VRAM) is like a **desk**: bigger desk → more things open at once.
 ### 11.1.1 Model Weights (Largest)
 1. Learned during training  
 2. Fixed during inference  
-3. Must fully fit in GPU memory  
+3. Must be available to the inference runtime; large models can be sharded across multiple accelerators or use other memory/offload strategies  
 
 **Rule of thumb (FP16):**
 
@@ -298,7 +297,7 @@ GPU memory (VRAM) is like a **desk**: bigger desk → more things open at once.
 - Longer conversations → more memory  
 - More users → more memory
 
-**Total memory = Model weights + Temporary memory + Conversation memory**
+**Simplified memory picture = model weights + activations/workspace + KV cache + runtime overhead**
 
 ---
 
@@ -320,4 +319,196 @@ GPU memory (VRAM) is like a **desk**: bigger desk → more things open at once.
 - Predicting tokens step by step  
 - Costs money every time  
 
-**Training builds intelligence → Inference spends it**
+**Training updates parameters → inference uses those parameters to compute outputs**
+
+
+---
+
+# 14. Prefill vs Decode
+
+LLM inference has two important phases.
+
+## Prefill
+
+The model processes the input prompt/context.
+
+```text
+Prompt tokens
+     ↓
+Parallel forward computation across prompt positions
+     ↓
+KV cache populated
+```
+
+A key latency metric is **Time to First Token (TTFT)**.
+
+## Decode
+
+The model generates new tokens autoregressively.
+
+```text
+Generate token
+ ↓
+Update KV cache
+ ↓
+Generate next token
+ ↓
+Repeat
+```
+
+A key throughput metric is **tokens per second**.
+
+Prefill and decode stress hardware differently.
+
+---
+
+# 15. KV Cache
+
+Attention needs information from previous tokens.
+
+The KV cache stores reusable key/value representations so prior tokens do not need to be fully recomputed for every generated token.
+
+Benefits:
+
+- faster decoding.
+
+Cost:
+
+- memory grows with active sequence length, batch/concurrency, and model architecture.
+
+Long-context serving can therefore become memory-bound even when model weights already fit.
+
+---
+
+# 16. Batching
+
+Inference servers can combine multiple requests to use accelerators more efficiently.
+
+### Static batching
+
+Wait for a batch, then process it together.
+
+### Continuous/dynamic batching
+
+Continuously admit work as sequences arrive/finish.
+
+Trade-off:
+
+```text
+larger batches
+→ better throughput
+→ potentially higher queueing latency
+```
+
+Production serving balances throughput and user latency.
+
+---
+
+# 17. Quantization
+
+Quantization represents weights—and sometimes activations/cache—with lower numerical precision.
+
+Potential benefits:
+
+- lower memory,
+- higher throughput,
+- cheaper deployment.
+
+Potential trade-off:
+
+- quality degradation,
+- hardware/kernel compatibility,
+- calibration complexity.
+
+Quantization should be evaluated on the actual workload.
+
+---
+
+# 18. Model Parallelism
+
+A model does not necessarily have to fit on one GPU.
+
+Serving systems may distribute computation using techniques such as:
+
+- tensor parallelism,
+- pipeline parallelism,
+- expert parallelism for mixture-of-experts models.
+
+Distributed inference adds communication overhead and operational complexity.
+
+---
+
+# 19. Latency Metrics
+
+Useful metrics include:
+
+### TTFT
+
+Time from request to first generated token.
+
+### Inter-token latency
+
+Delay between generated tokens.
+
+### End-to-end latency
+
+Time until the complete response is available.
+
+### Throughput
+
+Tokens or requests processed per unit time.
+
+A streaming chatbot and a batch summarization job may optimize different metrics.
+
+---
+
+# 20. Inference Cost Drivers
+
+```text
+Cost ≈
+model computation
++ prompt/prefill tokens
++ generated/decode tokens
++ KV-cache memory
++ accelerator utilization
++ serving overhead
+```
+
+Application architecture also matters. Repeatedly sending unnecessary context can increase cost even if the model itself is unchanged.
+
+---
+
+# 21. Decoding Is Not Factual Verification
+
+Temperature, top-k, and top-p control how tokens are sampled.
+
+Lower randomness can make outputs more repeatable, but:
+
+> **deterministic decoding does not make an incorrect belief or unsupported answer true.**
+
+For factual reliability use retrieval, tools, validation, citations, and evaluation where appropriate.
+
+---
+
+# 22. Key Takeaways
+
+- Inference runs a trained model without normal training-time weight updates.
+- Autoregressive LLM inference repeatedly predicts and decodes next tokens.
+- Prefill processes the prompt; decode generates output tokens.
+- KV caching speeds decoding but consumes memory.
+- Model weights can be sharded; they need not always fit on one accelerator.
+- Batching trades latency against throughput.
+- Quantization can reduce memory/cost but requires quality evaluation.
+- TTFT, inter-token latency, end-to-end latency, and throughput measure different serving properties.
+- Context management is an application/serving concern.
+- Decoding settings do not substitute for factual verification.
+
+---
+
+## Continue Learning
+
+1. [Transformers](Transformers.md)
+2. [Large Language Models](Large%20Language%20Models%20%28LLM%29.md)
+3. **Inference in LLM — this chapter**
+4. [LLM Hallucination](LLM%20Hallucination.md)
+5. [RAG](RAG.md)
