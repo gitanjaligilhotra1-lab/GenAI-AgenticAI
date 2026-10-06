@@ -30,7 +30,13 @@ A progressive path from AI foundations to production-grade agentic systems.
 - [MCP](MCP%20%28Model%20Context%20Protocol%29.md)
 - [A2A Protocol](A2A%20Protocol.md)
 
-## 4. System Design
+## 4. Production AI Engineering
+- [Evaluation & Observability](docs/production/evaluation-and-observability.md)
+- [Production Engineering Hub](docs/production/README.md)
+
+Next pillars: Security & Guardrails → Reliability & Resilience → Context Engineering → Performance / Latency / Cost.
+
+## 5. System Design
 - [Production RAG System Design](docs/system-design/production-rag.md)
 
 Planned case studies include an enterprise knowledge assistant, research agent, coding agent, customer-support agent, multi-agent workflow platform, MCP-enabled enterprise platform, and LLM evaluation platform.
@@ -44,6 +50,6 @@ Evaluation, observability, security, guardrails, latency, caching, cost optimiza
 
 **Applied AI Engineer:** LLMs → Prompting → RAG → Tool Use → Agents → Evaluation → Production
 
-**Agentic AI Engineer:** LLMs → Agents → Agent Architecture → Tool Use → Memory → Planning → Agentic RAG → Multi-Agent Fundamentals → Multi-Agent Architecture → MCP → A2A → Evaluation
+**Agentic AI Engineer:** LLMs → Agents → Agent Architecture → Tool Use → Memory → Planning → Agentic RAG → Multi-Agent Fundamentals → Multi-Agent Architecture → MCP → A2A → Evaluation & Observability
 
 **System Design / Interview:** LLM Architecture → RAG Design → Agent Design → Production Concerns → Case Studies → Trade-offs
