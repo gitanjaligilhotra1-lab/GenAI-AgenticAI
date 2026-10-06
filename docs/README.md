@@ -2,14 +2,16 @@
 
 The `docs/` area is the long-term home for structured engineering guides, architectures, design patterns, and production references.
 
-## Knowledge Architecture
+## Current Knowledge Architecture
 
-- `foundations/` — AI, ML, transformers, tokenization, and LLM fundamentals
-- `llm-engineering/` — prompting, inference, embeddings, RAG, fine-tuning, and structured outputs
-- `agentic-ai/` — agents, tool use, planning, memory, multi-agent systems, MCP, and A2A
-- `system-design/` — end-to-end architecture case studies
-- `production/` — evaluation, observability, security, reliability, latency, cost, and governance
-- `design-patterns/` — reusable GenAI and agentic architecture patterns
+The repository is being migrated without breaking the existing root-level learning paths.
+
+- **Root learning chapters** — AI/ML, foundation models, tokenization, transformers, LLMs, prompting, embeddings, RAG, inference, fine-tuning, agents, multi-agent systems, MCP, and A2A.
+- `agentic-ai/` — deep engineering guides for agent architecture, tool use, memory, planning, and Agentic RAG.
+- `system-design/` — end-to-end architecture case studies.
+- `design-patterns/` — reusable GenAI and agentic architecture patterns.
+
+Future reorganization can move root chapters into dedicated foundations/LLM-engineering areas once that migration can be done without breaking navigation. Production concerns are currently developed inside each deep-dive chapter rather than represented by an empty `production/` directory.
 
 ## Deep-Dive Guides
 
