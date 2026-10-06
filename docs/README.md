@@ -29,7 +29,8 @@ Future reorganization can move root chapters into dedicated foundations/LLM-engi
 2. **[Security & Guardrails](production/security-and-guardrails.md)** — threat modeling, injection defenses, secure RAG, authorization, least privilege, sandboxing, memory/tenant security, MCP/A2A trust, red teaming, and incident response.
 3. **[Reliability & Resilience](production/reliability-and-resilience.md)** — failure semantics, retries, idempotency, circuit breakers, queues, checkpoints, graceful degradation, backpressure, SLOs, and chaos testing.
 4. **[Context Engineering](production/context-engineering.md)** — context assembly, state, memory, retrieval, tool context, token budgets, compression, provenance, caching, long-context trade-offs, and context evaluation.
-5. **[Production Engineering Hub](production/README.md)** — roadmap for security, reliability, context engineering, and performance/cost guidance.
+5. **[Performance, Latency & Cost](production/performance-latency-and-cost.md)** — critical-path latency, TTFT/decode, token economics, routing, caching, batching, parallelism, capacity, load testing, and cost optimization.
+6. **[Production Engineering Hub](production/README.md)** — roadmap for security, reliability, context engineering, and performance/cost guidance.
 
 ### System Design
 - **[Production RAG System Design](system-design/production-rag.md)** — ingestion, retrieval, reranking, context construction, evaluation, security, scalability, reliability, latency, cost, and Agentic RAG.
