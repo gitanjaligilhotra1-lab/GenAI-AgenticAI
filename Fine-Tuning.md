@@ -77,9 +77,9 @@ Produces consistent, task-specific responses
 
 ### Key Takeaways
 
-- Fine-tuning = **shape the behavior** of the LLM for your task  
-- Keeps the **general knowledge intact**  
-- Essential for **production-grade, predictable AI systems**
+- Fine-tuning adapts model parameters toward a target task, domain, or behavior
+- It can introduce regressions, so baseline capabilities must be re-evaluated
+- It is **one production option**, not a requirement for every LLM application
 
 ---
 
@@ -112,7 +112,7 @@ Instruction fine-tuning is **one of the most important techniques in modern LLMs
 
 2. **Training Process:**  
    - The model is trained to **minimize errors in producing the correct response**.  
-   - The pre-trained weights are **slightly adjusted** so the model learns **instruction-following behavior** without forgetting its general knowledge.
+   - The training objective updates selected parameters so instruction-following behavior improves. General capabilities can still regress, so evaluation is required.
 
 ---
 
@@ -183,7 +183,7 @@ Produces: Clear, helpful, human-aligned responses
 ### Key Takeaways
 
 - Instruction fine-tuning teaches **“how to act”**, not “what to know”.  
-- Pre-trained knowledge stays intact; the model **just learns to apply it correctly**.  
+- Instruction tuning can preserve much of the base capability, but preservation is not guaranteed.  
 - It is **essential for building helpful, reliable, multi-task LLMs**.
 
 ---
@@ -374,10 +374,8 @@ We will cover **four main types**: Task Fine-Tuning, Instruction Fine-Tuning, Do
 
 ### 4. Alignment Fine-Tuning (RLHF)
 
-- **Definition:** Teach the model **to behave safely and follow human preferences**.  
-- **Techniques:**  
-  - Humans rank outputs (good vs bad)  
-  - Reinforcement learning adjusts the model
+- **Definition:** Optimize model behavior toward preference, helpfulness, or safety objectives.
+- **Techniques:** RLHF is one approach; direct/preference-optimization methods and other post-training techniques also exist.
 
 - **Goal:**  
   - Politeness  
@@ -415,7 +413,7 @@ We will cover **four main types**: Task Fine-Tuning, Instruction Fine-Tuning, Do
 ## 5. PEFT & LoRA (Parameter-Efficient Fine-Tuning)
 
 Fine-tuning full LLMs is **expensive, risky, and often unnecessary**, especially in production with small datasets.  
-PEFT provides a **safe and efficient alternative**.
+PEFT provides a **parameter-efficient alternative**. It can reduce training cost, but it is not automatically safer or higher quality.
 
 ---
 
@@ -451,7 +449,7 @@ Full fine-tuning is often **overkill for narrow production tasks**.
 - **Benefits:**
   - Keeps the **base LLM frozen**  
   - Learns **small adjustments** to adapt to the task  
-  - **Safe**, cheap, and faster to train
+  - Often cheaper and faster to train
 
 ---
 
@@ -464,7 +462,7 @@ Full fine-tuning is often **overkill for narrow production tasks**.
 - Think of an LLM as a huge book 
 - Full fine-tuning = rewriting all chapters  
 - LoRA = adding small sticky notes for new behavior  
-- Original knowledge is **preserved**, new behavior is **learned safely**
+- Base weights remain unchanged in standard LoRA, while adapters learn task-specific updates; output quality still requires evaluation
 
 ---
 
@@ -500,10 +498,10 @@ New task-specific behavior
 | GPU memory               | Very high      | Low                    |
 | Training time            | Long           | Short                  |
 | Risk of forgetting       | High           | Low                    |
-| Production safety        | Medium         | High                   |
+| Operational footprint     | Larger        | Smaller                 |
 
 - LoRA is **ideal for small datasets** (1k–100k examples)  
-- Keeps **model general abilities intact**  
+- Often reduces interference with frozen base weights, but adapter behavior can still affect overall capability  
 - Can **switch tasks by swapping adapters**  
 
 ---
@@ -571,7 +569,7 @@ Don’t use when:
 - **PEFT** = Efficient fine-tuning
 - **LoRA** = Most popular PEFT method
 - **Instruction tuning** = Teaches behavior to learn
-- **LoRA + Instruction tuning** = Best choice for production
+- **LoRA + instruction-style data** is one common production adaptation approach; whether it is best depends on evaluation and constraints
 
 ---
 
@@ -733,3 +731,166 @@ Final Answer
 
 
 
+
+
+---
+
+## 7. Fine-Tuning Decision Framework
+
+Before tuning weights, ask what problem you are actually solving.
+
+| Need | First option to evaluate |
+|---|---|
+| Better instructions/format | prompting / structured output |
+| Current/private facts | RAG / tools |
+| Repeated task behavior | fine-tuning may help |
+| Domain language distribution | continued pretraining or tuning |
+| Lower serving cost | smaller/distilled model, quantization, routing |
+| Preference behavior | preference/alignment post-training |
+
+Fine-tuning should solve a measured problem, not be a default architecture step.
+
+---
+
+## 8. Dataset Quality
+
+A tuning dataset should be:
+
+- representative of production inputs,
+- internally consistent,
+- deduplicated where appropriate,
+- privacy/compliance reviewed,
+- separated into train/validation/test data,
+- checked for leakage.
+
+A small high-quality dataset can outperform a larger inconsistent one.
+
+---
+
+## 9. Training and Evaluation Loop
+
+```mermaid
+flowchart LR
+    B[Baseline Model] --> E0[Baseline Evaluation]
+    E0 --> D[Curated Training Data]
+    D --> T[Fine-Tune]
+    T --> V[Validation]
+    V --> E[Task + Regression Evals]
+    E -->|Pass| R[Release Candidate]
+    E -->|Fail| D
+```
+
+Always keep the untuned baseline for comparison.
+
+---
+
+## 10. What to Evaluate
+
+### Target task
+- accuracy/F1/exact match where applicable,
+- instruction adherence,
+- format/schema validity.
+
+### General regressions
+- unrelated baseline tasks,
+- language quality,
+- safety behavior,
+- refusal behavior.
+
+### Memorization/privacy
+- train-test leakage,
+- sensitive-data memorization,
+- extraction risk.
+
+### Operations
+- latency,
+- model/adaptor loading,
+- serving cost.
+
+---
+
+## 11. Fine-Tuning vs RAG
+
+Fine-tuning changes model behavior/parameters.
+
+RAG supplies external evidence at inference time.
+
+```text
+Stable repeated behavior problem
+→ consider fine-tuning
+
+Changing factual knowledge problem
+→ consider RAG/tools
+```
+
+They can be combined.
+
+Example:
+
+```text
+Fine-tuned support model
+       +
+RAG over current policy
+       ↓
+Consistent behavior + current evidence
+```
+
+---
+
+## 12. LoRA in Production
+
+LoRA can make adaptation modular:
+
+```text
+Base Model
+ ├── Finance Adapter
+ ├── Support Adapter
+ └── Classification Adapter
+```
+
+But operational questions remain:
+
+- adapter compatibility,
+- versioning,
+- loading/switching latency,
+- evaluation per adapter,
+- rollback,
+- access control to training data.
+
+Parameter efficiency does not remove MLOps requirements.
+
+---
+
+## 13. Common Anti-Patterns
+
+- fine-tuning to memorize frequently changing documents,
+- training before establishing a baseline,
+- using training examples that leak evaluation answers,
+- assuming LoRA cannot regress quality,
+- tuning on inconsistent synthetic data without review,
+- judging only a few hand-picked prompts,
+- forgetting rollback/versioning,
+- claiming fine-tuning "eliminates hallucination."
+
+---
+
+## 14. Key Takeaways
+
+- Fine-tuning adapts pretrained parameters to a target objective.
+- It is optional; prompting, RAG, tools, or deterministic software may solve the problem more simply.
+- Instruction tuning and preference post-training solve different objectives.
+- PEFT/LoRA reduces the number of trainable parameters but does not guarantee safety or quality.
+- Data quality and representative evaluation matter more than slogans about model size.
+- Compare against an untuned baseline and test for regressions.
+- Use RAG/tools for changing authoritative knowledge.
+- Treat tuned models and adapters as versioned production artifacts.
+
+---
+
+## Continue Learning
+
+1. [Pre-training vs Fine-tuning](Pre-training%20vs%20Fine-tuning.md)
+2. **Fine-Tuning — this chapter**
+3. [Prompt Engineering](Prompt%20Engineering.md)
+4. [RAG](RAG.md)
+5. [Inference in LLM](Inference%20in%20LLM.md)
