@@ -304,3 +304,252 @@ This is why **every serious enterprise GenAI system uses RAG**.
 
 
 
+
+
+---
+
+## Model vs Chat Application
+
+A production chat experience usually contains more than an LLM:
+
+```mermaid
+flowchart LR
+    U[User] --> APP[Application]
+    APP --> CTX[Context Builder]
+    CTX --> L[LLM]
+    L --> APP
+    APP --> U
+
+    APP --> R[Retrieval]
+    APP --> T[Tools]
+    APP --> P[Policies]
+    APP --> O[Observability]
+```
+
+The application decides what instructions, conversation history, retrieved evidence, tool results, and memory are placed into context.
+
+---
+
+## Pretraining and Post-Training
+
+A simplified lifecycle:
+
+```text
+Large-scale pretraining
+        ↓
+Base language model
+        ↓
+Post-training / instruction tuning / preference optimization
+        ↓
+Assistant-oriented model
+        ↓
+Application integration
+```
+
+Pretraining teaches broad sequence patterns and representations.
+
+Post-training can improve instruction following, task behavior, safety characteristics, and interaction quality.
+
+These stages should not be confused with RAG, which retrieves external information at inference time.
+
+---
+
+## Next-Token Prediction
+
+Given tokens:
+
+```text
+The capital of France is
+```
+
+the model produces probabilities over possible next tokens.
+
+Conceptually:
+
+```text
+Paris   0.82
+Lyon    0.03
+the     0.02
+...
+```
+
+A decoding strategy chooses a token, appends it to the sequence, and repeats.
+
+This simple training/generation objective can produce complex behavior at scale, but it does not guarantee factual correctness.
+
+---
+
+## Parameters vs Context
+
+Two different information channels matter:
+
+### Parameters
+
+Information/patterns encoded through training.
+
+### Context
+
+Information supplied for the current inference.
+
+```text
+Model Parameters
+      +
+Current Context
+      ↓
+Next-token distribution
+```
+
+RAG, tool results, prompts, and conversation history primarily change **context**, not model weights.
+
+---
+
+## LLM Capabilities
+
+Depending on model and post-training, LLMs can support:
+
+- generation,
+- summarization,
+- extraction,
+- classification,
+- translation,
+- code assistance,
+- question answering,
+- structured output,
+- tool-selection decisions,
+- planning/decomposition.
+
+Capability varies significantly by model, task, language, context, and evaluation setup.
+
+---
+
+## LLM Limitations
+
+### Hallucination
+
+Fluent generation can contain unsupported claims.
+
+### Knowledge freshness
+
+Parameters are not automatically updated whenever the world changes.
+
+### Context limits
+
+Only information within the supported context can directly influence a given inference.
+
+### Non-determinism
+
+Sampling and model behavior can produce different outputs for similar requests.
+
+### Cost and latency
+
+Long inputs, long outputs, and larger models can increase resource usage.
+
+### Security
+
+Prompts, retrieved content, and tool observations can contain adversarial instructions.
+
+---
+
+## LLM + RAG
+
+```text
+Question
+ ↓
+Retrieve external evidence
+ ↓
+Place selected evidence in context
+ ↓
+LLM generates grounded answer
+```
+
+RAG helps with external/current/private knowledge but does not guarantee correctness.
+
+See [RAG](RAG.md).
+
+---
+
+## LLM + Tools
+
+```text
+User Goal
+ ↓
+LLM proposes structured tool call
+ ↓
+Application validates + authorizes
+ ↓
+Tool executes
+ ↓
+Result returned to context
+ ↓
+LLM continues
+```
+
+The application—not the model—should own execution permissions.
+
+---
+
+## LLM + Agents
+
+An LLM can serve as the semantic decision component inside an agent.
+
+```text
+Agent Runtime
+ ├── LLM
+ ├── Tools
+ ├── State
+ ├── Optional Memory
+ ├── Policies
+ └── Stop Conditions
+```
+
+Therefore:
+
+> **LLM ≠ Agent.**
+
+See [AI Agents](AI%20Agents.md).
+
+---
+
+## Choosing an LLM
+
+Evaluate against your workload rather than choosing only by model size.
+
+Consider:
+
+- task quality,
+- structured-output reliability,
+- tool-use performance,
+- context requirements,
+- latency,
+- throughput,
+- cost,
+- deployment/privacy constraints,
+- supported modalities/languages,
+- safety and operational controls.
+
+Use representative evaluation cases.
+
+---
+
+## Key Takeaways
+
+- An LLM models token sequences at large scale.
+- Most contemporary LLMs use Transformer-based architectures, though architecture research continues.
+- Generation proceeds through repeated next-token prediction and decoding.
+- Parameters and inference context are different information channels.
+- Pretraining, post-training, RAG, prompting, and fine-tuning solve different problems.
+- Fluent output is not proof of factual correctness.
+- An LLM is a model component; chat applications, RAG systems, and agents add surrounding architecture.
+- Model selection should be evaluation-driven.
+
+---
+
+## Continue Learning
+
+1. [Tokenization](Tokenization.md)
+2. [Transformers](Transformers.md)
+3. **Large Language Models — this chapter**
+4. [Prompt Engineering](Prompt%20Engineering.md)
+5. [Inference in LLM](Inference%20in%20LLM.md)
+6. [RAG](RAG.md)
+7. [AI Agents](AI%20Agents.md)
