@@ -12,7 +12,7 @@ The repository is being migrated without breaking the existing root-level learni
 - `design-patterns/` — reusable GenAI and agentic architecture patterns.
 - `production/` — cross-cutting evaluation, observability, security, reliability, context engineering, performance, latency, and cost.
 
-Future reorganization can move root chapters into dedicated foundations/LLM-engineering areas once that migration can be done without breaking navigation. Production concerns remain embedded in domain deep dives, while `production/` now provides dedicated cross-cutting engineering guides.
+Root chapters remain the approachable fundamentals layer; deep dives extend them without breaking the existing learning path. Domain chapters keep local production considerations, while `production/` owns the cross-cutting engineering disciplines shared across RAG and agentic systems.
 
 ## Deep-Dive Guides
 
