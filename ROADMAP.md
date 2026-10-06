@@ -33,9 +33,10 @@ A progressive path from AI foundations to production-grade agentic systems.
 ## 4. Production AI Engineering
 - [Evaluation & Observability](docs/production/evaluation-and-observability.md)
 - [Security & Guardrails](docs/production/security-and-guardrails.md)
+- [Reliability & Resilience](docs/production/reliability-and-resilience.md)
 - [Production Engineering Hub](docs/production/README.md)
 
-Next pillars: Reliability & Resilience → Context Engineering → Performance / Latency / Cost.
+Next pillars: Context Engineering → Performance / Latency / Cost.
 
 ## 5. System Design
 - [Production RAG System Design](docs/system-design/production-rag.md)
