@@ -41,13 +41,13 @@ flowchart LR
 [AI & ML Fundamentals](AI%20%26%20ML%20Fundamentals.md) → [Foundation Models](AI%20Foundation%20Models.md) → [Tokenization](Tokenization.md) → [Transformers](Transformers.md) → [Large Language Models](Large%20Language%20Models%20%28LLM%29.md) → [Prompt Engineering](Prompt%20Engineering.md) → [Embeddings](Embeddings%20%26%20Vector%20Databases.md) → [RAG](RAG.md)
 
 ### Applied AI Engineer
-LLMs → Prompting → RAG → Tool Use → Agents → Evaluation → Production
+LLMs → Prompting → RAG → Tool Use → Agents → **[Evaluation & Observability](docs/production/evaluation-and-observability.md)** → Production
 
 ### Agentic AI Engineer
 [AI Agents](AI%20Agents.md) → **[Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)** → **[Tool Use & Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Agent Memory](docs/agentic-ai/agent-memory.md)** → **[Planning & Reasoning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → **[Multi-Agent Systems Architecture](docs/agentic-ai/multi-agent-systems.md)** → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
 
 ### System Design / Interview Preparation
-LLM Architecture → **[Production RAG Design](docs/system-design/production-rag.md)** → **[Agent Architecture](docs/agentic-ai/agent-architecture.md)** → **[Tool Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Memory](docs/agentic-ai/agent-memory.md)** → **[Planning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → **[Multi-Agent Architecture](docs/agentic-ai/multi-agent-systems.md)** → Production Concerns → Case Studies → Trade-offs
+LLM Architecture → **[Production RAG Design](docs/system-design/production-rag.md)** → **[Agent Architecture](docs/agentic-ai/agent-architecture.md)** → **[Tool Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Memory](docs/agentic-ai/agent-memory.md)** → **[Planning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → **[Multi-Agent Architecture](docs/agentic-ai/multi-agent-systems.md)** → **[Evaluation & Observability](docs/production/evaluation-and-observability.md)** → Production Concerns → Case Studies → Trade-offs
 
 See the complete **[Learning Roadmap](ROADMAP.md)**.
 
@@ -87,13 +87,17 @@ See the complete **[Learning Roadmap](ROADMAP.md)**.
 - [Model Context Protocol — MCP](MCP%20%28Model%20Context%20Protocol%29.md)
 - [Agent-to-Agent — A2A](A2A%20Protocol.md)
 
-### 5. Architecture & System Design
+### 5. Production AI Engineering
+- **[Evaluation & Observability — Deep Dive](docs/production/evaluation-and-observability.md)**
+- [Production Engineering Hub](docs/production/README.md)
+
+### 6. Architecture & System Design
 - **[Production RAG System Design](docs/system-design/production-rag.md)**
 - [System Design Hub](docs/system-design/README.md)
 
 The system-design material covers requirements, architecture, data/control flow, retrieval, orchestration, memory, security, evaluation, observability, scalability, latency, cost, failure handling, and explicit trade-offs.
 
-### 6. Design Patterns
+### 7. Design Patterns
 The [Design Patterns](docs/design-patterns/README.md) catalog organizes reusable RAG, agent, memory, orchestration, and reliability patterns.
 
 ---
