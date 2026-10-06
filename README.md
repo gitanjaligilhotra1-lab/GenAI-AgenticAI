@@ -24,12 +24,15 @@ flowchart LR
     C --> D[Prompt Engineering]
     D --> E[Embeddings]
     E --> F[RAG]
-    F --> G[Tool Use]
-    G --> H[AI Agents]
-    H --> I[Multi-Agent Systems]
-    I --> J[MCP & A2A]
-    J --> K[Evaluation & Production]
-    K --> L[System Design]
+    F --> G[AI Agents]
+    G --> H[Tool Use]
+    H --> I[Memory]
+    I --> J[Planning]
+    J --> K[Agentic RAG]
+    K --> L[Multi-Agent Systems]
+    L --> M[MCP & A2A]
+    M --> N[Evaluation & Production]
+    N --> O[System Design]
 ```
 
 ## Start Here
@@ -44,7 +47,7 @@ LLMs → Prompting → RAG → Tool Use → Agents → Evaluation → Production
 [AI Agents](AI%20Agents.md) → **[Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)** → **[Tool Use & Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Agent Memory](docs/agentic-ai/agent-memory.md)** → **[Planning & Reasoning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
 
 ### System Design / Interview Preparation
-LLM Architecture → **[Production RAG Design](docs/system-design/production-rag.md)** → **[Agent Architecture](docs/agentic-ai/agent-architecture.md)** → Production Concerns → Case Studies → Trade-offs
+LLM Architecture → **[Production RAG Design](docs/system-design/production-rag.md)** → **[Agent Architecture](docs/agentic-ai/agent-architecture.md)** → **[Tool Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Memory](docs/agentic-ai/agent-memory.md)** → **[Planning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → Production Concerns → Case Studies → Trade-offs
 
 See the complete **[Learning Roadmap](ROADMAP.md)**.
 
@@ -55,8 +58,8 @@ See the complete **[Learning Roadmap](ROADMAP.md)**.
 ### 1. Foundations
 - [AI & ML Fundamentals](AI%20%26%20ML%20Fundamentals.md)
 - [AI Foundation Models](AI%20Foundation%20Models.md)
-- [Transformers](Transformers.md)
 - [Tokenization](Tokenization.md)
+- [Transformers](Transformers.md)
 - [Large Language Models](Large%20Language%20Models%20%28LLM%29.md)
 - [Pre-training vs Fine-tuning](Pre-training%20vs%20Fine-tuning.md)
 
