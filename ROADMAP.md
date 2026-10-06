@@ -56,4 +56,4 @@ Evaluation, observability, security, guardrails, latency, caching, cost optimiza
 
 **Agentic AI Engineer:** LLMs → Agents → Agent Architecture → Tool Use → Memory → Planning → Agentic RAG → Multi-Agent Fundamentals → Multi-Agent Architecture → MCP → A2A → Evaluation & Observability
 
-**System Design / Interview:** LLM Architecture → RAG Design → Agent Design → Production Concerns → Case Studies → Trade-offs
+**System Design / Interview:** LLM Architecture → Production RAG → Agent Architecture → Tool Orchestration → Memory → Planning → Agentic RAG → Evaluation → Security → Reliability → Context Engineering → Performance/Cost → Case Studies → Trade-offs
