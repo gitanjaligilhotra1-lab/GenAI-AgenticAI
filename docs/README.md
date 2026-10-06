@@ -21,6 +21,7 @@ Future reorganization can move root chapters into dedicated foundations/LLM-engi
 3. **[Agent Memory Architecture](agentic-ai/agent-memory.md)** — working, episodic, semantic, procedural and profile memory; read/write pipelines, retrieval, consolidation, forgetting, security, privacy, evaluation, and scaling.
 4. **[Planning & Reasoning Patterns](agentic-ai/planning-and-reasoning.md)** — reactive planning, ReAct-style control, plan-and-execute, replanning, decomposition, routing, reflection, verification, hypothesis-driven investigation, bounded search, durable execution, and evaluation.
 5. **[Agentic RAG](agentic-ai/agentic-rag.md)** — adaptive retrieval, source routing, query decomposition, multi-hop retrieval, evidence grading, corrective loops, claim verification, memory integration, security, evaluation, and production architecture.
+6. **[Multi-Agent Systems Architecture](agentic-ai/multi-agent-systems.md)** — coordination topologies, structured delegation, task/state ownership, distributed execution, failure handling, security boundaries, MCP/A2A integration, evaluation, scaling, latency, and cost.
 
 ### System Design
 - **[Production RAG System Design](system-design/production-rag.md)** — ingestion, retrieval, reranking, context construction, evaluation, security, scalability, reliability, latency, cost, and Agentic RAG.
