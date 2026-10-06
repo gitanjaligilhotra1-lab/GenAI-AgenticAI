@@ -44,10 +44,10 @@ flowchart LR
 LLMs → Prompting → RAG → Tool Use → Agents → Evaluation → Production
 
 ### Agentic AI Engineer
-[AI Agents](AI%20Agents.md) → **[Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)** → **[Tool Use & Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Agent Memory](docs/agentic-ai/agent-memory.md)** → **[Planning & Reasoning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
+[AI Agents](AI%20Agents.md) → **[Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)** → **[Tool Use & Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Agent Memory](docs/agentic-ai/agent-memory.md)** → **[Planning & Reasoning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → **[Multi-Agent Systems Architecture](docs/agentic-ai/multi-agent-systems.md)** → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
 
 ### System Design / Interview Preparation
-LLM Architecture → **[Production RAG Design](docs/system-design/production-rag.md)** → **[Agent Architecture](docs/agentic-ai/agent-architecture.md)** → **[Tool Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Memory](docs/agentic-ai/agent-memory.md)** → **[Planning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → Production Concerns → Case Studies → Trade-offs
+LLM Architecture → **[Production RAG Design](docs/system-design/production-rag.md)** → **[Agent Architecture](docs/agentic-ai/agent-architecture.md)** → **[Tool Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Memory](docs/agentic-ai/agent-memory.md)** → **[Planning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → **[Multi-Agent Architecture](docs/agentic-ai/multi-agent-systems.md)** → Production Concerns → Case Studies → Trade-offs
 
 See the complete **[Learning Roadmap](ROADMAP.md)**.
 
@@ -81,6 +81,7 @@ See the complete **[Learning Roadmap](ROADMAP.md)**.
 - **[Agentic RAG — Deep Dive](docs/agentic-ai/agentic-rag.md)**
 - [Single-Agent vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md)
 - [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md)
+- **[Multi-Agent Systems Architecture — Deep Dive](docs/agentic-ai/multi-agent-systems.md)**
 
 ### 4. Agent Interoperability
 - [Model Context Protocol — MCP](MCP%20%28Model%20Context%20Protocol%29.md)
