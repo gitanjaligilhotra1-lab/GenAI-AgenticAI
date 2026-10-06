@@ -24,6 +24,7 @@ A progressive path from AI foundations to production-grade agentic systems.
 - [Agent Memory Architecture](docs/agentic-ai/agent-memory.md)
 - [Planning & Reasoning Patterns](docs/agentic-ai/planning-and-reasoning.md)
 - [Agentic RAG](docs/agentic-ai/agentic-rag.md)
+- [Multi-Agent Systems Architecture](docs/agentic-ai/multi-agent-systems.md)
 - [Single-Agent vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md)
 - [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md)
 - [MCP](MCP%20%28Model%20Context%20Protocol%29.md)
@@ -43,6 +44,6 @@ Evaluation, observability, security, guardrails, latency, caching, cost optimiza
 
 **Applied AI Engineer:** LLMs → Prompting → RAG → Tool Use → Agents → Evaluation → Production
 
-**Agentic AI Engineer:** LLMs → Agents → Agent Architecture → Tool Use → Memory → Planning → Agentic RAG → Multi-Agent → MCP → A2A → Evaluation
+**Agentic AI Engineer:** LLMs → Agents → Agent Architecture → Tool Use → Memory → Planning → Agentic RAG → Multi-Agent Fundamentals → Multi-Agent Architecture → MCP → A2A → Evaluation
 
 **System Design / Interview:** LLM Architecture → RAG Design → Agent Design → Production Concerns → Case Studies → Trade-offs
