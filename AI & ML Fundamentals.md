@@ -696,3 +696,53 @@ Complex models (neural networks) automatically learn patterns from raw data
 This shift enables modern AI systems and powers innovations across healthcare, transportation, finance, entertainment, and beyond.
 
 
+
+
+---
+
+## Mental Model: Model vs Application
+
+A recurring distinction throughout this repository is:
+
+```text
+Model ≠ Complete AI Application
+```
+
+A production AI system can include:
+
+```text
+Data
+ ↓
+Model
+ ↓
+Application Logic
+ ↓
+Retrieval / Tools / Policies
+ ↓
+Evaluation & Observability
+ ↓
+User Experience
+```
+
+This becomes especially important with LLMs and agents. A capable model is only one component of a reliable system.
+
+---
+
+## Key Takeaways
+
+- AI is the broad field; ML is one family of AI techniques.
+- Deep learning uses multi-layer neural networks and powers many modern foundation models.
+- Generative AI creates new content rather than only predicting a class or numeric value.
+- Training learns model parameters; inference uses learned parameters on new inputs.
+- Models are components inside larger systems, not complete applications by themselves.
+- Accuracy, safety, latency, cost, and evaluation are system-level concerns.
+
+---
+
+## Continue Learning
+
+1. **AI & ML Fundamentals — this chapter**
+2. [AI Foundation Models](AI%20Foundation%20Models.md)
+3. [Tokenization](Tokenization.md)
+4. [Transformers](Transformers.md)
+5. [Large Language Models](Large%20Language%20Models%20%28LLM%29.md)
