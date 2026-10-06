@@ -1,6 +1,6 @@
-# 1. Inference in Large Language Models (LLMs)
+# Inference in Large Language Models (LLMs)
 
-## 1.1 What Is Inference?
+### 1.1 What Is Inference?
 
 Inference is the phase where a trained LLM is used to generate outputs for users.  
 
@@ -10,7 +10,7 @@ Everything you see when using ChatGPT, Copilot, or any LLM happens during infere
 
 ---
 
-## 1.2 Inference
+### 1.2 Inference
 
 Forget AI terms for a moment.  
 
@@ -24,7 +24,7 @@ The using part is inference.
 
 ---
 
-## 1.3 Inference in Simple Words
+### 1.3 Inference in Simple Words
 
 Inference = running a trained model to produce predictions or generated outputs  
 
@@ -34,9 +34,9 @@ Inference = running a trained model to produce predictions or generated outputs
 
 ---
 
-# 2. Two Main Phases of AI
+## 2. Two Main Phases of AI
 
-## 2.1 Training (Learning Phase)
+### 2.1 Training (Learning Phase)
 1. Happens before users see the model  
 2. Very expensive  
 3. Takes days or weeks  
@@ -44,7 +44,7 @@ Inference = running a trained model to produce predictions or generated outputs
 
 **Human analogy:** Teaching a child math in school.
 
-## 2.2 Inference (Using Phase)
+### 2.2 Inference (Using Phase)
 1. Happens when users ask questions  
 2. Happens millions of times  
 3. Costs money every time  
@@ -54,7 +54,7 @@ Inference = running a trained model to produce predictions or generated outputs
 
 ---
 
-# 3.  AI Example
+## 3.  AI Example
 
 **User input:**
 Can I return my order?
@@ -69,7 +69,7 @@ That model execution and token generation is **inference**.
 
 ---
 
-# 4. Why Inference Matters
+## 4. Why Inference Matters
 
 1. Happens on every user request  
 2. Costs money every time  
@@ -81,7 +81,7 @@ If inference is:
 
 ---
 
-# 5. Cost Example
+## 5. Cost Example
 
 Assume:  
 - Cost per answer: $0.01  
@@ -95,7 +95,7 @@ Companies care deeply about inference efficiency.
 
 ---
 
-# 6. What Happens During Inference?
+## 6. What Happens During Inference?
 
 At its core, an LLM does **one thing repeatedly**:  
 
@@ -105,9 +105,9 @@ Everything else is implementation detail.
 
 ---
 
-# 7. Factors That Make Inference Slow or Expensive
+## 7. Factors That Make Inference Slow or Expensive
 
-## 7.1 Model Size
+### 7.1 Model Size
 1. Bigger model → more computation  
 2. More parameters → higher cost  
 
@@ -115,27 +115,27 @@ Everything else is implementation detail.
 - Small model →  Bicycle  
 - Large model →  Truck
 
-## 7.2 Output Length
+### 7.2 Output Length
 1. More tokens → more computation  
 
 **Examples:**  
 - `"Yes."` → cheap  
 - Long explanation → expensive
 
-## 7.3 Hardware
+### 7.3 Hardware
 1. Better hardware → faster inference  
 2. Weaker hardware → slower inference
 
 
 ---
 
-# 8. Step-by-Step: How Inference Works
+## 8. Step-by-Step: How Inference Works
 
-## 8.1 Step 1: User Input
+### 8.1 Step 1: User Input
 Explain transformers simply.
 
 
-## 8.2 Step 2: Tokenization
+### 8.2 Step 2: Tokenization
 
 Text is split into tokens:
 
@@ -154,7 +154,7 @@ simply → 9123
 
 ---
 
-## 8.3 Step 3: Forward Pass Through the Transformer
+### 8.3 Step 3: Forward Pass Through the Transformer
 
 1. Tokens pass through **attention layers**  
 2. Context relationships are computed  
@@ -165,7 +165,7 @@ During inference:
 
 ---
 
-## 8.4 Step 4: Predict Next Token
+### 8.4 Step 4: Predict Next Token
 
 The model outputs **probabilities**:
 
@@ -177,7 +177,7 @@ used → 0.15
 
 ---
 
-## 8.5 Step 5: Token Selection (Decoding)
+### 8.5 Step 5: Token Selection (Decoding)
 
 Choose one token based on a **decoding strategy**:  
 
@@ -193,7 +193,7 @@ Chosen token → models
 
 ---
 
-## 8.6 Step 6: Autoregressive Loop
+### 8.6 Step 6: Autoregressive Loop
 
 Append token
 ↓
@@ -208,7 +208,7 @@ This continues token by token until a **stop condition** is met.
 
 ---
 
-## 8.7 Complete Inference Flow
+### 8.7 Complete Inference Flow
 
 User prompt
 ↓
@@ -227,7 +227,7 @@ Repeat until stop
 
 ---
 
-## 8.8 Context Window During Inference
+### 8.8 Context Window During Inference
 
 The model can only “see” tokens within its **context window**:
 
@@ -238,7 +238,7 @@ If the complete request exceeds the model's supported context, the serving/appli
 
 ---
 
-# 9. Why GPUs Are Used for Inference
+## 9. Why GPUs Are Used for Inference
 
 Think of a GPU as a **very fast calculator**.
 
@@ -251,7 +251,7 @@ LLMs perform the **same math millions of times** → GPUs are ideal.
 
 ---
 
-# 10. Inference System Flow
+## 10. Inference System Flow
 
 User
 ↓
@@ -268,13 +268,13 @@ CPU sends response to user
 
 ---
 
-# 11. Memory Needed During Inference
+## 11. Memory Needed During Inference
 
 GPU memory (VRAM) is like a **desk**: bigger desk → more things open at once.
 
-## 11.1 Three Memory Requirements
+### 11.1 Three Memory Requirements
 
-### 11.1.1 Model Weights (Largest)
+#### 11.1.1 Model Weights (Largest)
 1. Learned during training  
 2. Fixed during inference  
 3. Must be available to the inference runtime; large models can be sharded across multiple accelerators or use other memory/offload strategies  
@@ -288,11 +288,11 @@ GPU memory (VRAM) is like a **desk**: bigger desk → more things open at once.
 - 7B → ~14GB  
 - 13B → ~26GB
 
-### 11.1.2 Temporary Working Memory
+#### 11.1.2 Temporary Working Memory
 - For intermediate calculations  
 - Like scratch paper
 
-### 11.1.3 Conversation Memory (KV Cache)
+#### 11.1.3 Conversation Memory (KV Cache)
 - Stores past tokens efficiently  
 - Longer conversations → more memory  
 - More users → more memory
@@ -301,7 +301,7 @@ GPU memory (VRAM) is like a **desk**: bigger desk → more things open at once.
 
 ---
 
-# 12. LLM vs GPU (Clear Separation)
+### 12. LLM vs GPU (Clear Separation)
 
 - **LLM:** Software → predicts next tokens  
 - **GPU:** Hardware → executes math fast  
@@ -312,7 +312,7 @@ GPU memory (VRAM) is like a **desk**: bigger desk → more things open at once.
 
 ---
 
-# 13. Final Mental Model
+### 13. Final Mental Model
 
 - Inference = using a trained brain  
 - Doing math, not language  
@@ -324,7 +324,7 @@ GPU memory (VRAM) is like a **desk**: bigger desk → more things open at once.
 
 ---
 
-# 14. Prefill vs Decode
+## 14. Prefill vs Decode
 
 LLM inference has two important phases.
 
@@ -362,7 +362,7 @@ Prefill and decode stress hardware differently.
 
 ---
 
-# 15. KV Cache
+## 15. KV Cache
 
 Attention needs information from previous tokens.
 
@@ -380,7 +380,7 @@ Long-context serving can therefore become memory-bound even when model weights a
 
 ---
 
-# 16. Batching
+## 16. Batching
 
 Inference servers can combine multiple requests to use accelerators more efficiently.
 
@@ -404,7 +404,7 @@ Production serving balances throughput and user latency.
 
 ---
 
-# 17. Quantization
+## 17. Quantization
 
 Quantization represents weights—and sometimes activations/cache—with lower numerical precision.
 
@@ -424,7 +424,7 @@ Quantization should be evaluated on the actual workload.
 
 ---
 
-# 18. Model Parallelism
+## 18. Model Parallelism
 
 A model does not necessarily have to fit on one GPU.
 
@@ -438,7 +438,7 @@ Distributed inference adds communication overhead and operational complexity.
 
 ---
 
-# 19. Latency Metrics
+## 19. Latency Metrics
 
 Useful metrics include:
 
@@ -462,7 +462,7 @@ A streaming chatbot and a batch summarization job may optimize different metrics
 
 ---
 
-# 20. Inference Cost Drivers
+## 20. Inference Cost Drivers
 
 ```text
 Cost ≈
@@ -478,7 +478,7 @@ Application architecture also matters. Repeatedly sending unnecessary context ca
 
 ---
 
-# 21. Decoding Is Not Factual Verification
+## 21. Decoding Is Not Factual Verification
 
 Temperature, top-k, and top-p control how tokens are sampled.
 
@@ -490,7 +490,7 @@ For factual reliability use retrieval, tools, validation, citations, and evaluat
 
 ---
 
-# 22. Key Takeaways
+## 22. Key Takeaways
 
 - Inference runs a trained model without normal training-time weight updates.
 - Autoregressive LLM inference repeatedly predicts and decodes next tokens.
