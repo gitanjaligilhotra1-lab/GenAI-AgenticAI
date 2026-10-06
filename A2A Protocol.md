@@ -1,399 +1,713 @@
-# A2A Protocol
+# Agent2Agent (A2A) Protocol
 
-The A2A Protocol is a **communication protocol designed to enable secure, reliable, and efficient data exchange between applications, systems, or devices**.  
+> **A2A = Agent2Agent:** an open protocol for communication and interoperability between independent AI agents.
 
-It is widely used in **enterprise integration, IoT, and distributed systems** to ensure seamless interoperability.
-1. Introduction to A2A Protocol
-## 1. Introduction to A2A Protocol
+A2A belongs in an Agentic AI architecture when one agent needs to discover, communicate with, delegate work to, or receive results from another agent—potentially built with a different framework or operated by a different organization.
 
-- **Definition:**  
-  - A2A stands for **Application-to-Application**.  
-  - The protocol defines **how applications communicate, exchange data, and synchronize processes**.  
-
-- **Key Idea:**  
-  - Unlike manual data sharing, A2A protocols automate **application interactions**, making systems **more efficient and consistent**.
-
-- **Why it matters:**  
-  - Ensures **secure and reliable communication**  
-  - Supports **real-time or batch data exchange**  
-  - Reduces **integration complexity** in enterprises
-
-- **Human Analogy:**  
-  - Imagine two employees passing notes manually versus using a **shared project management tool**.  
-  - A2A is like that tool — **structured, reliable, and automated communication**.
-
-  ---
-
-  ## 2. Core Components of A2A Protocol
-
-A2A Protocol relies on several **key components** that make communication between applications **secure, reliable, and efficient**.  
+It is **not** generic Application-to-Application messaging, and it is **not** a replacement for MCP.
 
 ---
 
-### 2.1 Message Formats
+## 1. Why A2A Exists
 
-- **What it is:** Defines **how data is structured** for exchange between applications.  
-- **Common formats:**  
-  - JSON  
-  - XML  
-  - CSV  
+Agent systems are increasingly built using different:
 
-- **Example:**  
+- frameworks,
+- programming languages,
+- model providers,
+- tool stacks,
+- cloud environments,
+- organizational boundaries.
+
+Without a common interoperability layer, every pair of agents requires custom integration.
+
+```text
+Agent A ──custom integration── Agent B
+Agent A ──different integration── Agent C
+Agent B ──another integration── Agent C
+```
+
+A2A provides a common interaction model so independent agentic systems can collaborate without exposing their internal implementation.
+
+### Mental Model
+
+Think of an agent as a service with capabilities rather than as a function.
+
+A2A helps answer:
+
+```text
+Who are you?
+What can you do?
+How can I communicate with you?
+Can I delegate this task?
+What is the task status?
+What artifact/result did you produce?
+```
+
+---
+
+## 2. A2A vs MCP
+
+A2A and MCP solve different interoperability problems.
+
+| Question | MCP | A2A |
+|---|---|---|
+| Primary relationship | AI application ↔ tools/resources | agent ↔ agent |
+| Purpose | expose capabilities/data to an AI application | enable independent agents to collaborate |
+| Typical interaction | call tool, access resource | delegate/manage a task |
+| Internal implementation | capability exposed through server | remote agent can remain opaque |
+| Example | agent queries CRM tool | travel agent delegates to booking agent |
+
+A useful mental model:
+
+```text
+             A2A
+      Agent A ↔ Agent B
+         ↓         ↓
+        MCP       MCP
+         ↓         ↓
+       Tools     Tools
+```
+
+MCP is commonly the **vertical capability layer**.
+
+A2A is the **horizontal agent interoperability layer**.
+
+---
+
+## 3. Core Architecture
+
+```mermaid
+flowchart LR
+    U[User / Application] --> CA[Client Agent]
+    CA --> DISC[Agent Discovery]
+    DISC --> RA[Remote Agent]
+
+    CA <-->|A2A Messages / Tasks| RA
+
+    RA --> O[Remote Orchestrator]
+    O --> T[Tools]
+    O --> M[Memory]
+    O --> L[Models]
+
+    RA --> ART[Artifacts / Results]
+    ART --> CA
+```
+
+The client agent does not need access to the remote agent's:
+
+- chain of internal decisions,
+- private memory,
+- tool implementations,
+- proprietary orchestration.
+
+It interacts through the protocol boundary.
+
+---
+
+## 4. Agent Discovery and Agent Cards
+
+Before delegating work, a client needs to know what a remote agent can do.
+
+A2A uses an **Agent Card** to advertise metadata such as:
+
+- agent identity,
+- description,
+- supported protocol version,
+- service interfaces,
+- capabilities,
+- skills,
+- supported input/output media types,
+- authentication/security requirements.
+
+Conceptually:
+
+```json
 {
-
-  "sender": "App A",
-  
-  "receiver": "App B",
-  
-  "timestamp": "2026-02-03T12:00:00Z",
-  
-  "payload": {
-
-    "order_id": 12345,
-  
-    "status": "processed"
-
-  }
-
+  "name": "Research Agent",
+  "description": "Researches technical topics and returns evidence-backed reports.",
+  "version": "1.4.0",
+  "skills": [
+    {
+      "name": "technical-research",
+      "description": "Research and synthesize technical subjects"
+    }
+  ]
 }
+```
 
-**Why it matters:** Structured formats ensure all systems understand the data consistently.
+Do not put secrets or private implementation details in public discovery metadata.
 
-### 2.2 Transport Mechanisms
+---
 
-**What it is:** Defines how messages travel between applications.
+## 5. Skills
 
-**Common mechanisms:**
+A skill describes a capability offered by an agent.
 
-- HTTP / HTTPS
-- REST or SOAP APIs
-- Message Queues (MQ)
-
-**Why it matters:** Ensures messages are delivered reliably, even between different platforms or networks.
-
-**Example Flow:**
+Examples:
 
 ```text
-App A → REST API → App B
-       
-App B → Acknowledgment → App A
+ResearchAgent
+  - web research
+  - literature review
+  - evidence synthesis
+
+TravelAgent
+  - flight research
+  - itinerary planning
+
+SecurityAgent
+  - vulnerability assessment
+  - remediation guidance
 ```
 
----
-
-### 2.3 Security Layer
-What it is: Protects messages with authentication, encryption, and integrity checks.
-
-**Techniques:**
-
-- TLS / SSL encryption
-- API keys
-- OAuth 2.0
-
-**Why it matters:**  Prevents unauthorized access, data tampering, and ensures confidentiality.
+Skills help clients determine whether delegation is appropriate.
 
 ---
 
-### 2.4 Error Handling and Reliability
+## 6. Client Agent and Remote Agent
 
-**What it is:** Ensures messages are delivered correctly and any errors are handled.
+### Client Agent
 
-**Mechanisms:**
+Initiates interaction on behalf of a user/system.
 
-Delivery confirmation / acknowledgments
+Responsibilities may include:
 
-Retry mechanisms for failed messages
+- discovering remote agents,
+- selecting an appropriate agent,
+- authenticating,
+- sending messages/tasks,
+- tracking progress,
+- consuming artifacts.
 
-Idempotent operations to avoid duplicate processing
+### Remote Agent
 
-**Example Flow:**
+Exposes an A2A-compatible interface.
+
+It may internally use:
+
+- an LLM,
+- workflows,
+- multiple sub-agents,
+- MCP tools,
+- databases,
+- human approval.
+
+Those internals remain behind the boundary.
+
+---
+
+## 7. Messages, Parts, Tasks, and Artifacts
+
+A2A distinguishes several useful concepts.
+
+### Message
+
+A communication turn between the client and remote agent.
+
+### Part
+
+A unit of content carried by a message or artifact.
+
+Depending on the protocol/version and negotiated capabilities, content can represent text, files, or structured data.
+
+### Task
+
+A stateful unit of work.
+
+This is important because agent work can be long-running rather than a single request/response.
+
+### Artifact
+
+An output produced by the agent.
+
+Examples:
+
+- report,
+- generated document,
+- structured analysis,
+- file,
+- result dataset.
+
+---
+
+## 8. Why Tasks Matter
+
+Traditional APIs often look like:
 
 ```text
-App A → Message → App B
-        ↑ Failed → Retry
-App B → Acknowledgment → App A
+Request → Response
 ```
 
-**Why it matters:** Prevents lost data, duplicates, or inconsistent states between applications.
+Agent work may look like:
 
----
-
-## 3. How A2A Protocol Works
-
-A2A Protocol allows applications to **communicate directly and reliably**. Here's a **step-by-step flow**:
-
----
-
-### 3.1 Step-by-Step Flow
-
-1. **Application A prepares a message**  
-   - Formats the data according to the protocol (JSON, XML, etc.)  
-
-2. **Application A sends the message** → over the transport mechanism (HTTP, REST API, MQ)  
-
-3. **Application B receives the message**  
-   - Validates the structure  
-   - Processes the payload  
-
-4. **Application B sends an acknowledgment** → back to Application A  
-
-5. **Error handling** manages failed transmissions  
-   - Retries, logging, and idempotency ensure reliability  
-
----
-
-
-### 3.2 Example Pseudocode
-
-```python
-
-# Application A sends message
-message = {
-    "sender": "App A",
-    "receiver": "App B",
-    "payload": {"order_id": 12345, "status": "processed"}
-}
-
-send_message("https://api.appb.com/receive", message)
-
-# Application B receives message
-def receive_message(msg):
-    validate(msg)
-    process(msg["payload"])
-    return {"status": "acknowledged"}
-```
-
-**Why it matters:**
-
-- Clear workflow ensures messages are delivered reliably.
-- Avoids lost or inconsistent data.
-- Supports automation and real-time integration.
-
----
-
-## 4. Key Benefits of A2A Protocol
-
-Using the A2A Protocol provides several **important advantages** for applications and systems:
-
----
-
-### 4.1 Automation
-
-- Reduces **manual data handling** between applications.  
-- Enables **automatic task execution** across systems.  
-
-**Example:**  
-- Automatically sending order updates from an ERP system to a CRM without human intervention.
-
----
-
-### 4.2 Consistency
-
-- Ensures **uniform data exchange** across all systems.  
-- Prevents errors caused by **manual copy-paste or mismatched formats**.  
-
-**Example:**  
-- Customer information is always the same in sales, support, and accounting systems.
-
----
-
-### 4.3 Security
-
-- Protects sensitive information during transmission.  
-- Uses **encryption, authentication, and integrity checks**.  
-
-**Example:**  
-- Payment details transferred securely between financial systems.
-
----
-
-### 4.4 Scalability
-
-- Can handle **multiple applications** and **large volumes of data**.  
-- Suitable for **enterprise and cloud-scale operations**.  
-
-**Example:**  
-- Thousands of IoT sensors sending telemetry data simultaneously to a central monitoring system.
-
----
-
-### 4.5 Monitoring
-
-- Supports **logging, auditing, and performance tracking**.  
-- Helps detect **errors or bottlenecks** early.  
-
-**Example:**  
-- Tracking all API calls between two applications to ensure messages are delivered successfully.
-
----
-
-**A2A Protocol** makes **communication automated, consistent, secure, scalable, and monitorable**, which is crucial for modern **enterprise and distributed systems**.
-
----
-
-## 5. Common Use Cases of A2A Protocol
-
-A2A Protocol is widely used in **real-world applications** where automated and reliable communication between systems is required.  
-
----
-
-### 5.1 Enterprise Systems Integration
-
-- Connects multiple enterprise applications such as ERP, CRM, and financial systems.  
-- Ensures **data flows automatically** without manual intervention.  
-
-**Example:**  
-- An ERP system updates inventory levels → CRM automatically sees updated stock → Finance gets updated sales reports.
-
----
-
-### 5.2 IoT Devices
-
-- Synchronizes data between **sensors, gateways, and servers**.  
-- Supports **real-time or periodic updates** across devices.  
-
-**Example:**  
-- Temperature sensors send readings → Central monitoring system logs data → Alerts triggered if thresholds exceeded.
-
----
-
-### 5.3 B2B Data Exchange
-
-- Automates **transactions between business applications** in different organizations.  
-- Reduces errors and improves **transaction speed**.  
-
-**Example:**  
-- Supplier sends shipment details → Retailer system receives automatically → Inventory updated without human intervention.
-
----
-
-### 5.4 Workflow Automation
-
-- Triggers **processes across multiple applications automatically**.  
-- Eliminates manual handoffs and ensures **consistent operations**.  
-
-**Example:**  
-- Customer places an order → Order management system → Payment processing → Shipping system → Notification sent to customer.
-
----
-
-**A2A Protocol** is ideal for **enterprise integration, IoT ecosystems, B2B exchanges, and automated workflows**, enabling **efficient, reliable, and scalable communication**.
-
----
-
-## 6. Best Practices for A2A Protocol
-
-Implementing A2A Protocol correctly ensures **reliable, secure, and maintainable communication** between applications.  
-
----
-
-### 6.1 Standardize Message Formats
-
-- Define **consistent data structures** for all messages.  
-- Use **JSON, XML, or CSV** across all systems.  
-
-**Example:**  
-- All order messages must include: `order_id`, `customer_id`, `status`, `timestamp`.
-
----
-
-### 6.2 Secure Communication
-
-- Use **TLS/SSL encryption** for all message transfers.  
-- Implement **authentication mechanisms** like API keys or OAuth.  
-- Validate message integrity to **prevent tampering**.  
-
-**Example:**  
-- Only authorized applications can send updates to the CRM system.
-
----
-
-### 6.3 Include Acknowledgments and Retry Mechanisms
-
-- Ensure every message is **acknowledged by the receiver**.  
-- Implement **automatic retries** if a message fails.  
-- Use **idempotent operations** to prevent duplicate processing.  
-
-**Example:**  
 ```text
-App A → Message → App B
-        ↑ Failed → Retry
-App B → Acknowledgment → App A
+Delegate task
+    ↓
+Working
+    ↓
+Need more input
+    ↓
+Continue
+    ↓
+Artifact produced
+    ↓
+Completed
 ```
 
-### 6.4 Logging and Monitoring
-
-- Log all sent and received messages.
-- Track performance metrics and detect errors early.
-
-**Example:**
-- Monitor API calls between ERP and financial systems to ensure all invoices are delivered.
-
-### 6.5 Version Control
-- Maintain versioning of message formats and APIs.
-- Ensure backward compatibility to avoid breaking integrations.
-
-**Example:**
-- Version 1.0 of the order message is supported for legacy systems, while new systems use 2.0 with additional fields.
+A2A provides semantics for stateful collaboration rather than treating every interaction as an isolated function call.
 
 ---
 
-## 7. Future Trends of A2A Protocol
+## 9. Task Lifecycle
 
-A2A Protocol is evolving to meet the demands of **modern, scalable, and intelligent systems**.  
+Conceptually:
 
----
+```mermaid
+stateDiagram-v2
+    [*] --> Submitted
+    Submitted --> Working
+    Working --> InputRequired
+    InputRequired --> Working
+    Working --> Completed
+    Working --> Failed
+    Working --> Canceled
+    Completed --> [*]
+    Failed --> [*]
+    Canceled --> [*]
+```
 
-### 7.1 Real-Time A2A Communication
-
-- Trend: Moving from **batch processing** to **real-time message exchange**.  
-- Benefit: Applications can **react instantly** to events.  
-
-**Example:**  
-- IoT sensor detects temperature spike → Sends immediate alert → Cooling system reacts in real-time.
-
----
-
-### 7.2 Integration with Cloud Platforms
-
-- Trend: A2A frameworks increasingly support **cloud-based applications and services**.  
-- Benefit: Enables **scalable, cross-organization workflows**.  
-
-**Example:**  
-- ERP in cloud communicates automatically with a CRM hosted in another cloud platform.
+Exact protocol states should follow the current specification, but the architectural idea is durable task management.
 
 ---
 
-### 7.3 AI-Driven Routing and Validation
+## 10. Synchronous Interaction
 
-- Trend: Using **AI to optimize message routing and validation**.  
-- Benefit: Ensures **faster, more accurate message processing**.  
+For short tasks:
 
-**Example:**  
-- AI detects duplicate messages and routes them appropriately, reducing errors and delays.
+```text
+Client Agent
+    ↓ request
+Remote Agent
+    ↓ result
+Client Agent
+```
 
----
+Example:
 
-### 7.4 Enhanced Security Standards
+> Summarize this structured incident report.
 
-- Trend: Stronger **authentication, encryption, and compliance** with regulations.  
-- Benefit: Protects sensitive information across **distributed applications**.  
-
-**Example:**  
-- Messages between financial institutions are automatically encrypted and logged for regulatory audits.
-
----
-
-### 7.5 Optional Mini End-to-End Example
-
-App A (ERP) → Sends order → Cloud API → App B (CRM)
-App B → Validates order → Acknowledgment → App A
-AI layer → Monitors messages → Optimizes routing
-
-
-- Shows **how future A2A systems combine real-time communication, cloud integration, and AI-driven improvements**.
+The result may be returned immediately.
 
 ---
 
-**Future A2A Protocols**  will be **real-time, cloud-ready, AI-assisted, and highly secure**, making enterprise and distributed systems **faster, smarter, and more reliable**.
+## 11. Streaming
 
+For progressive results:
+
+```text
+Client → Remote Agent
+           ↓
+       progress
+           ↓
+       artifact chunk
+           ↓
+       status update
+           ↓
+       completion
+```
+
+Streaming improves user experience for long operations.
+
+---
+
+## 12. Asynchronous / Long-Running Work
+
+Some tasks outlive the original connection.
+
+Example:
+
+> Research 50 vendors and produce a comparison report.
+
+A robust architecture needs:
+
+- durable task IDs,
+- status retrieval,
+- resumability,
+- notifications or polling,
+- persistent artifacts.
+
+A2A is designed for agent interactions where work may be asynchronous.
+
+---
+
+## 13. Delegation Example
+
+User asks a coordinator:
+
+> Analyze whether our services are affected by a newly disclosed vulnerability.
+
+Possible flow:
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as Coordinator Agent
+    participant R as Research Agent
+    participant S as Security Agent
+
+    U->>C: Assess vulnerability impact
+    C->>R: Research advisory and affected versions
+    R-->>C: Evidence artifact
+    C->>S: Compare advisory with internal environment
+    S-->>C: Impact assessment
+    C-->>U: Consolidated answer
+```
+
+A2A can provide the interoperability boundary between independently implemented agents.
+
+---
+
+## 14. Opaque Agents
+
+One of the useful design principles is that agents can collaborate without exposing internal state.
+
+Remote Agent A does not need to reveal:
+
+```text
+private prompts
+internal memory
+proprietary planning
+tool credentials
+implementation details
+```
+
+It advertises capabilities and exchanges protocol-level messages/results.
+
+This reduces coupling.
+
+---
+
+## 15. Transport and Bindings
+
+Modern A2A defines a common semantic model with protocol bindings for agent communication over standard network technologies.
+
+Architecturally, separate:
+
+```text
+A2A semantics
+      ↓
+protocol binding
+      ↓
+HTTP/network transport
+```
+
+This lets interoperability semantics remain stable even when implementations use different supported bindings.
+
+Always check the current A2A specification when implementing because protocol details and supported bindings evolve.
+
+---
+
+## 16. Security
+
+A2A does not mean "trust every agent."
+
+A production deployment must consider:
+
+- authentication,
+- authorization,
+- TLS,
+- tenant isolation,
+- scope-limited credentials,
+- artifact validation,
+- input validation,
+- audit logging,
+- rate limits,
+- delegation policy.
+
+```text
+Remote Agent Identity
+       ↓
+Authentication
+       ↓
+Authorization
+       ↓
+Allowed Skill / Task
+       ↓
+Execution
+```
+
+---
+
+## 17. Delegation Is Not Authorization
+
+Suppose Agent A asks Agent B:
+
+> Delete production customer data.
+
+The existence of an A2A connection does not authorize that operation.
+
+The receiving system must independently enforce:
+
+- caller identity,
+- user authority,
+- organizational policy,
+- action-specific permissions,
+- human approval when appropriate.
+
+Protocol connectivity is not permission.
+
+---
+
+## 18. Trust Boundaries
+
+Remote agent output should be treated as external input.
+
+A remote agent may return:
+
+- incorrect information,
+- malformed structured data,
+- malicious instructions,
+- stale data,
+- unsupported claims.
+
+Validate outputs before they influence high-impact actions.
+
+---
+
+## 19. Agent Selection
+
+When several remote agents expose overlapping skills, a coordinator may select based on:
+
+```text
+capability match
+authorization
+trust
+latency
+cost
+availability
+historical success
+data locality
+```
+
+Discovery tells you what agents claim they can do.
+
+Evaluation tells you how well they actually do it.
+
+---
+
+## 20. Failure Handling
+
+Distributed agents introduce distributed-systems failures:
+
+- remote agent unavailable,
+- timeout,
+- partial result,
+- task failure,
+- duplicated request,
+- stale status,
+- incompatible protocol version,
+- authentication failure.
+
+Design:
+
+- bounded retries,
+- idempotency where needed,
+- task correlation IDs,
+- timeouts,
+- cancellation,
+- fallback agents,
+- graceful degradation.
+
+---
+
+## 21. Observability
+
+Trace across agent boundaries:
+
+```text
+User request
+└── Coordinator task
+    ├── Remote Agent A task
+    │   ├── status
+    │   └── artifact
+    └── Remote Agent B task
+        ├── status
+        └── artifact
+```
+
+Useful metadata:
+
+- task ID,
+- remote agent identity,
+- protocol version,
+- skill,
+- timestamps,
+- status transitions,
+- latency,
+- artifact IDs,
+- errors,
+- authentication context.
+
+Do not log secrets or unnecessary sensitive content.
+
+---
+
+## 22. A2A in a Multi-Agent Architecture
+
+```mermaid
+flowchart TD
+    U[User] --> C[Coordinator Agent]
+
+    C <-->|A2A| R[Research Agent]
+    C <-->|A2A| D[Data Agent]
+    C <-->|A2A| W[Writer Agent]
+
+    R --> RM[MCP Client]
+    D --> DM[MCP Client]
+    W --> WM[MCP Client]
+
+    RM --> RT[Research Tools]
+    DM --> DT[Data Tools]
+    WM --> WT[Content Tools]
+```
+
+A2A handles inter-agent collaboration.
+
+MCP can handle each agent's tool/resource integration.
+
+---
+
+## 23. A2A vs Internal Sub-Agent Calls
+
+Not every multi-agent architecture needs A2A.
+
+If all agents:
+
+- run inside one process,
+- share one framework,
+- use the same orchestrator,
+- are tightly coupled,
+
+native framework primitives may be simpler.
+
+A2A becomes especially valuable when agents are:
+
+- independently deployed,
+- framework-independent,
+- vendor-independent,
+- organization-independent,
+- exposed as reusable agentic services.
+
+---
+
+## 24. A2A Is Not an Agent Framework
+
+A2A does not tell you how to build:
+
+- memory,
+- planning,
+- tool orchestration,
+- prompts,
+- model routing,
+- internal sub-agents.
+
+It standardizes the **communication boundary between agentic applications**.
+
+---
+
+## 25. A2A Is Not MCP
+
+Do not model a remote autonomous agent as merely another low-level tool when the interaction requires:
+
+- delegation,
+- long-running state,
+- negotiation,
+- artifacts,
+- agent-level collaboration.
+
+Likewise, do not use A2A just to expose a simple calculator or database lookup. MCP or a normal API may be more appropriate.
+
+---
+
+## 26. Production Design Checklist
+
+### Discovery
+- How are Agent Cards discovered?
+- Are capabilities cached/versioned?
+- Can discovery metadata be trusted?
+
+### Identity
+- Who is calling?
+- On whose behalf?
+
+### Delegation
+- Which skills may be invoked?
+- What context is shared?
+- What must remain private?
+
+### Tasks
+- How are long-running tasks persisted?
+- How are cancellation and retries handled?
+
+### Security
+- Authentication?
+- Authorization?
+- Tenant isolation?
+- Human approval?
+
+### Reliability
+- Timeouts?
+- Fallback agents?
+- Idempotency?
+- Version compatibility?
+
+### Observability
+- Cross-agent tracing?
+- Task correlation?
+- Artifact provenance?
+
+---
+
+## 27. Interview Discussion Framework
+
+For an A2A architecture question:
+
+1. Explain why independent agents need interoperability.
+2. Distinguish A2A from MCP and ordinary APIs.
+3. Define client and remote agent boundaries.
+4. Explain Agent Cards and skills.
+5. Explain messages, tasks, and artifacts.
+6. Design synchronous vs long-running interaction.
+7. Add authentication and authorization.
+8. Treat remote output as untrusted.
+9. Add retries, cancellation, and idempotency.
+10. Add cross-agent tracing.
+11. Discuss version compatibility.
+12. Explain when native sub-agent calls are simpler.
+
+---
+
+## 28. Key Takeaways
+
+- A2A means **Agent2Agent** in this repository's Agentic AI context.
+- It standardizes communication between independent agentic applications.
+- Agent Cards enable capability discovery.
+- Tasks model stateful work; artifacts represent outputs.
+- A2A supports agent collaboration without exposing internal memory, tools, or proprietary logic.
+- A2A and MCP are complementary: **agent-to-agent vs agent-to-capability**.
+- Connectivity does not imply authorization.
+- Remote agents and their outputs cross a trust boundary.
+- Long-running agent work requires durable task management, cancellation, retries, and observability.
+- Use A2A when interoperability across independent agent systems is valuable; do not add it to tightly coupled internal workflows without a reason.
+
+---
+
+## Continue Learning
+
+- [AI Agents](AI%20Agents.md)
+- [Single-Agent vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md)
+- [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md)
+- [MCP](MCP%20%28Model%20Context%20Protocol%29.md)
+- [Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)
+- [Tool Use & Agent Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)
