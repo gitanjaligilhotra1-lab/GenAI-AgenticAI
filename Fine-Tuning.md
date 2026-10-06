@@ -1,3 +1,5 @@
+# Fine-Tuning Large Language Models
+
 ## 1. Introduction to Fine-Tuning
 
 Fine-tuning is the process of **adapting a pre-trained LLM** so it performs well on a **specific task, domain, or behavior**.  
@@ -372,7 +374,7 @@ We will cover **four main types**: Task Fine-Tuning, Instruction Fine-Tuning, Do
 
 ---
 
-### 4. Alignment Fine-Tuning (RLHF)
+### 4. Preference / Alignment Post-Training
 
 - **Definition:** Optimize model behavior toward preference, helpfulness, or safety objectives.
 - **Techniques:** RLHF is one approach; direct/preference-optimization methods and other post-training techniques also exist.
@@ -527,7 +529,7 @@ Besides LoRA, PEFT includes:
 
 ---
 
-### 5.7 Instruction Tuning + LoRA (Best Practice)
+### 5.7 Instruction Tuning + LoRA
 
 - **Instruction Tuning:** Teaches **what behavior to learn**  
 - **LoRA:** Teaches **how to adapt efficiently**  
@@ -590,17 +592,17 @@ This section shows **how fine-tuning works in production**, step by step, using 
 
 ---
 
-### 6.2 Step 1: Choose Fine-Tuning Strategy
+### 6.2 Step 1: Choose an Adaptation Strategy
 
 - **Full fine-tuning:**  **Not Recommended**  
   - Small dataset → overfitting risk  
   - Expensive compute  
   - Catastrophic forgetting  
 
-- **PEFT / LoRA + Instruction Tuning:**  **Recommended**  
+- **PEFT / LoRA + Instruction Tuning:** **Candidate to evaluate**  
   - Base model frozen  
   - Learn only small adjustments  
-  - Safe and production-ready
+  - Smaller trainable footprint; still requires production evaluation
 
 ---
 
