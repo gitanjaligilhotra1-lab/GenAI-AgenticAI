@@ -4,11 +4,10 @@
 
 LLM Hallucination occurs when a Large Language Model (LLM) produces output that:
 
-- Sounds confident and fluent
-- 
-- But is incorrect, fabricated, or unverifiable  
+- Is unsupported, incorrect, fabricated, or inconsistent with the relevant source/context
+- May still sound fluent and confident  
 
-**Key point:** LLMs do not know facts — they predict the most likely next words based on patterns in data.  
+**Key point:** language models generate from learned token distributions; the generation objective does not itself verify claims against an authoritative source.  
 
 **Simple Definition:**  
 > Hallucination = "Fluent but wrong output"
@@ -22,11 +21,11 @@ LLM Hallucination occurs when a Large Language Model (LLM) produces output that:
 1. **No real-time knowledge** (unless connected to tools)  
 2. **Gaps in training data**  
 3. **Ambiguous or vague prompts**  
-4. **Overconfidence bias** (models are optimized to answer, not to say “I don’t know”)  
+4. **Objective mismatch** — fluent completion is not the same objective as factual verification  
 5. **Long reasoning chains → errors compound**  
 6. **Out-of-domain questions**  
 
- **Insight:** LLMs are probabilistic word predictors, not truth machines.
+ **Insight:** probabilistic generation can produce useful knowledge-like behavior, but factuality must be evaluated and grounded when correctness matters.
 
 ---
 
@@ -129,7 +128,7 @@ LLM answers ONLY from retrieved info
 Answer using only the provided document. If the answer is not present, say 'Not found'.
 
 
-> Hugely reduces hallucinations in enterprise & legal systems.
+> RAG can reduce unsupported answers when retrieval finds authoritative evidence and the model uses it correctly; it does not eliminate hallucination.
 
 ---
 
@@ -151,9 +150,9 @@ Answer and cite the sentence from the source used. If not available, say "Cannot
 ---
 
 ###  5. Temperature Control
-- High temperature (0.8–1.0) → more creative → more hallucinations  
-- Low temperature (0–0.3) → deterministic → safer  
-- Production systems usually use **low temperature**.
+- Higher temperature increases sampling diversity.
+- Lower temperature can improve repeatability for some tasks.
+- **Temperature is not a factuality or safety control**: a deterministic model can repeatedly produce the same wrong answer.
 
 ---
 
@@ -194,10 +193,7 @@ Employees get 25 paid leaves annually.
 **LLM retrieves HR policy PDF and answers:**  
 According to HR Policy v3.2, employees receive 18 paid leaves annually.
 
-
--  Accurate  
--  Verifiable  
--  Auditable
+If that retrieved source is current and authoritative, the answer is grounded and easier to verify/audit. The system should still preserve provenance and evaluate retrieval correctness.
 
 ---
 
@@ -211,9 +207,174 @@ According to HR Policy v3.2, employees receive 18 paid leaves annually.
 
 - **Hallucination** = confident but wrong output  
 - Happens because LLMs **predict**, not **know**  
-- **Most effective mitigations:  **
-  - RAG (Retrieval-Augmented Generation)  
-  - Grounding & citations  
-  - Tool usage / function calls  
-  - Low temperature / deterministic decoding  
-  - Validation layers / fact-checking
+- Mitigation depends on failure type:
+  - authoritative retrieval/RAG
+  - grounding and provenance
+  - tools for current/structured facts
+  - deterministic validation where possible
+  - claim/evidence verification
+  - calibrated abstention
+  - evaluation and monitoring
+
+
+---
+
+## 9. Hallucination Is a System Problem
+
+The final answer can become unsupported at several layers:
+
+```mermaid
+flowchart LR
+    Q[Question] --> R[Retrieval]
+    R --> C[Context]
+    C --> L[LLM]
+    L --> V[Validation]
+    V --> A[Answer]
+
+    R -. wrong evidence .-> A
+    C -. missing context .-> A
+    L -. unsupported claim .-> A
+    V -. missed error .-> A
+```
+
+Do not diagnose every wrong answer as "the model hallucinated."
+
+Possible root causes include:
+
+- retrieval miss,
+- stale source,
+- parsing error,
+- incorrect tool result,
+- prompt ambiguity,
+- model generation,
+- citation mapping bug.
+
+---
+
+## 10. Groundedness vs Factual Correctness
+
+These are different.
+
+### Groundedness
+
+Does the answer follow the provided evidence?
+
+### Factual correctness
+
+Is the claim actually true in the real world/domain?
+
+A model can faithfully summarize an outdated document and be grounded but factually stale.
+
+This is why source quality and freshness matter.
+
+---
+
+## 11. Citation Hallucination
+
+A model can invent:
+
+- paper titles,
+- URLs,
+- document IDs,
+- page numbers.
+
+Safer architecture:
+
+```text
+Retriever assigns real source IDs
+       ↓
+Model receives evidence + IDs
+       ↓
+Answer references only supplied IDs
+       ↓
+Application validates IDs
+```
+
+Do not rely on the model to create provenance from memory.
+
+---
+
+## 12. Structured Facts
+
+For values such as:
+
+- account balance,
+- inventory,
+- order status,
+- calculation,
+
+prefer authoritative APIs/databases/calculators rather than asking the model to recall or infer the value.
+
+```text
+LLM decides information is needed
+      ↓
+Trusted tool
+      ↓
+Structured result
+      ↓
+LLM explains result
+```
+
+---
+
+## 13. Abstention
+
+A reliable system needs a valid "insufficient evidence" outcome.
+
+Examples:
+
+```text
+The available documents do not specify this.
+I could not verify this claim from the approved sources.
+More information is required.
+```
+
+Measure whether the system abstains **when it should**, not simply whether it always answers.
+
+---
+
+## 14. Evaluation
+
+Create test cases covering:
+
+- answerable questions,
+- unanswerable questions,
+- stale/conflicting evidence,
+- fabricated citation traps,
+- ambiguous prompts,
+- current-information requests,
+- adversarial retrieved content.
+
+Metrics can include:
+
+- factual correctness,
+- groundedness,
+- citation accuracy,
+- retrieval recall,
+- abstention precision/recall,
+- unsupported-claim rate.
+
+---
+
+## 15. Key Takeaways
+
+- Hallucination is unsupported or incorrect generation, not merely confident wording.
+- Next-token generation is not a truth-verification mechanism.
+- RAG reduces some failures but can itself retrieve wrong/stale evidence.
+- Groundedness and real-world factual correctness are different.
+- Citations need application-managed provenance.
+- Tools are preferable for authoritative structured/current values.
+- Lower temperature can improve repeatability but does not guarantee truth or safety.
+- Abstention is an important valid outcome.
+- Diagnose the whole pipeline before blaming the model.
+
+---
+
+## Continue Learning
+
+1. [Large Language Models](Large%20Language%20Models%20%28LLM%29.md)
+2. [Prompt Engineering](Prompt%20Engineering.md)
+3. **LLM Hallucination — this chapter**
+4. [RAG](RAG.md)
+5. [Production RAG System Design](docs/system-design/production-rag.md)
+6. [Agentic RAG](docs/agentic-ai/agentic-rag.md)
