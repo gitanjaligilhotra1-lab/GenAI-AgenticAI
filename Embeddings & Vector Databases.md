@@ -250,7 +250,7 @@ The architectural question is not simply **SQL vs vectors**. Choose based on ret
 
 ---
 
-## 1️1️. Vector Database Flow
+## 11. Vector Database Flow
 
 ### Ingestion Phase (Before Questions)
 
@@ -310,7 +310,7 @@ In a pure vector-search path, ranking is driven by vector similarity. In product
 
 ---
 
-## 1️2️. Example: Resume Search
+## 12. Example: Resume Search
 
 ### Stored Data
 
@@ -343,11 +343,11 @@ The embedding model can place related descriptions near each other even when the
 
 ---
 
-# 1️3️. Chunking
+## 13. Chunking
 
 
 
-## 1️3️.1️. Why Chunking Exists
+### 13.1️. Why Chunking Exists
 
 Large documents are **too big** to embed as a single unit.
 
@@ -367,7 +367,7 @@ Large documents are **too big** to embed as a single unit.
 
 
 
-## 1️3️.2️. What Is Chunking?
+### 13.2️. What Is Chunking?
 
 **Chunking** means splitting large documents into smaller, meaningful pieces.
 
@@ -378,7 +378,7 @@ Large documents are **too big** to embed as a single unit.
 
 
 
-## 1️3️.3️. Chunking Visualized
+### 13.3️. Chunking Visualized
 
 ### Without Chunking
 
@@ -408,7 +408,7 @@ Each topic becomes searchable on its own.
 
 
 
-## 1️3️.4️. Chunking Example
+### 13.4️. Chunking Example
 
 ### Original Document
 
@@ -435,7 +435,7 @@ Chunk 3 → Insurance policy
 
 ---
 
-## 1️4️ What Is Recursive Chunking?
+## 14 What Is Recursive Chunking?
 
 **Recursive chunking** is a smarter form of chunking.
 
@@ -443,7 +443,7 @@ Instead of cutting text at fixed sizes, it follows the **document structure**.
 
 
 
-## 1️4️.1️ Recursive Chunking Strategy
+## 14.1️ Recursive Chunking Strategy
 
 Recursive chunking splits text in stages:
 
@@ -455,7 +455,7 @@ Recursive chunking splits text in stages:
 
 
 
-## 1️4️.2️ Recursive Chunking Visual Flow
+## 14.2️ Recursive Chunking Visual Flow
 
 ### Document Structure
 
@@ -477,7 +477,7 @@ Paragraph → good size
 
 
 
-## 1️4️.3️ Normal Chunking vs Recursive Chunking
+## 14.3️ Normal Chunking vs Recursive Chunking
 
 | Feature        | Normal Chunking | Recursive Chunking |
 |----------------|-----------------|-------------------|
@@ -488,13 +488,13 @@ Paragraph → good size
 
 ---
 
-## 1️5️ Vector Stores: Offline vs Online
+## 15 Vector Stores: Offline vs Online
 
 Vector stores can be **local** or **cloud-based**.
 
 
 
-## 1️5️.1️ Offline Vector Stores
+## 15.1️ Offline Vector Stores
 
 ### Characteristics
 
@@ -515,7 +515,7 @@ Vector stores can be **local** or **cloud-based**.
 
 
 
-## 1️5️.2️ Online Vector Stores
+## 15.2️ Online Vector Stores
 
 ### Characteristics
 
@@ -538,7 +538,7 @@ Vector stores can be **local** or **cloud-based**.
 
 
 
-## 1️5️.3️ Popular Vector Databases
+## 15.3️ Popular Vector Databases
 
 ### FAISS
 
@@ -574,7 +574,7 @@ Vector stores can be **local** or **cloud-based**.
 
 
 
-## 1️5️.4️. End-to-End Vector Database Pipeline
+## 15.4️. End-to-End Vector Database Pipeline
 
 ### Ingestion Pipeline
 
@@ -615,13 +615,13 @@ Relevant Chunks
 
 ---
 
-## 1️6️. How Vector Retrieval Fits into RAG
+## 16. How Vector Retrieval Fits into RAG
 
 RAG retrieves external evidence and supplies selected context to a generative model. Vector search is one common retrieval technique, but RAG can also use keyword search, hybrid retrieval, databases, APIs, graph retrieval, or other sources.
 
 
 
-## 1️6️.1️. RAG Flow
+## 16.1️. RAG Flow
 
 User Question
 
@@ -648,7 +648,7 @@ Final Answer
 
 
 
-## 1️6️.2️. Important RAG Insight
+## 16.2️. Important RAG Insight
 
 The LLM:
 
@@ -660,7 +660,7 @@ Answer quality depends on retrieval quality **and** how the model uses the retri
 
 
 
-## 1️6️.3️. RAG Example
+## 16.3️. RAG Example
 
 ### Question
 
@@ -685,7 +685,7 @@ LLM uses retrieved policy
 
 
 
-## 1️6️.4️. Mental Model
+## 16.4️. Mental Model
 
 Embeddings → Learned semantic representations
 Similarity → Retrieval signal
