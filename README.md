@@ -35,13 +35,13 @@ flowchart LR
 ## Start Here
 
 ### Beginner
-[AI & ML Fundamentals](AI%20%26%20ML%20Fundamentals.md) → [Transformers](Transformers.md) → [Large Language Models](Large%20Language%20Models%20%28LLM%29.md) → [Prompt Engineering](Prompt%20Engineering.md) → [Embeddings](Embeddings%20%26%20Vector%20Databases.md) → [RAG](RAG.md)
+[AI & ML Fundamentals](AI%20%26%20ML%20Fundamentals.md) → [Foundation Models](AI%20Foundation%20Models.md) → [Tokenization](Tokenization.md) → [Transformers](Transformers.md) → [Large Language Models](Large%20Language%20Models%20%28LLM%29.md) → [Prompt Engineering](Prompt%20Engineering.md) → [Embeddings](Embeddings%20%26%20Vector%20Databases.md) → [RAG](RAG.md)
 
 ### Applied AI Engineer
 LLMs → Prompting → RAG → Tool Use → Agents → Evaluation → Production
 
 ### Agentic AI Engineer
-[AI Agents](AI%20Agents.md) → **[Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)** → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
+[AI Agents](AI%20Agents.md) → **[Agent Architecture & Agent Loops](docs/agentic-ai/agent-architecture.md)** → **[Tool Use & Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)** → **[Agent Memory](docs/agentic-ai/agent-memory.md)** → **[Planning & Reasoning](docs/agentic-ai/planning-and-reasoning.md)** → **[Agentic RAG](docs/agentic-ai/agentic-rag.md)** → [Single vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md) → [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md) → [MCP](MCP%20%28Model%20Context%20Protocol%29.md) → [A2A](A2A%20Protocol.md)
 
 ### System Design / Interview Preparation
 LLM Architecture → **[Production RAG Design](docs/system-design/production-rag.md)** → **[Agent Architecture](docs/agentic-ai/agent-architecture.md)** → Production Concerns → Case Studies → Trade-offs
@@ -72,6 +72,10 @@ See the complete **[Learning Roadmap](ROADMAP.md)**.
 ### 3. Agentic AI
 - [AI Agents](AI%20Agents.md)
 - **[Agent Architecture & Agent Loops — Deep Dive](docs/agentic-ai/agent-architecture.md)**
+- **[Tool Use & Agent Orchestration — Deep Dive](docs/agentic-ai/tool-use-and-orchestration.md)**
+- **[Agent Memory Architecture — Deep Dive](docs/agentic-ai/agent-memory.md)**
+- **[Planning & Reasoning Patterns — Deep Dive](docs/agentic-ai/planning-and-reasoning.md)**
+- **[Agentic RAG — Deep Dive](docs/agentic-ai/agentic-rag.md)**
 - [Single-Agent vs Multi-Agent](Single-Agent%20vs.%20Multi-Agent.md)
 - [Multi-Agent Collaboration](Multi-Agent%20Collaboration.md)
 
@@ -126,7 +130,7 @@ The goal is not only to know definitions. A reader should be able to answer:
 
 ## Repository Evolution
 
-The repository is being progressively organized into the [structured knowledge hub](docs/README.md). Existing material is retained while deeper architecture guides, examples, production practices, design patterns, and system-design case studies are added.
+The repository is being progressively organized into the [structured knowledge hub](docs/README.md). Existing material is being reviewed topic by topic: strong explanations and examples are retained and rewritten where useful, inaccurate or duplicated material is corrected, and each fundamentals chapter is connected to the deeper architecture guides.
 
 ## Contributing
 
