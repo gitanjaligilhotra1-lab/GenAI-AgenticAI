@@ -1,9 +1,11 @@
 # Pre-training vs Fine-tuning
 
-**Pre-training teaches the model language.**  
-**Fine-tuning teaches the model behavior.**
+A useful first approximation is:
 
-This single idea explains almost everything about how modern LLMs are built.
+**Pre-training learns broad representations and capabilities from large-scale data.**  
+**Fine-tuning adapts a pretrained model toward particular tasks, domains, or behaviors.**
+
+The distinction is useful, but neither stage is limited to only "language" or only "behavior."
 
 ---
 
@@ -16,8 +18,7 @@ This single idea explains almost everything about how modern LLMs are built.
 
 **Pre-training** is the first, large-scale training phase where a model learns **how language works**.
 
-At this stage, the model does NOT learn how to behave like a chatbot.  
-It only learns **patterns in language**.
+For language models, pretraining learns statistical structure from large token corpora. The resulting base model may acquire broad capabilities and knowledge-like associations, but it is not necessarily optimized for assistant-style instruction following.
 
 ---
 
@@ -32,7 +33,7 @@ During pre-training, the model learns:
 - Relationships between words
 - Basic reasoning patterns
 
-No humans label answers here — the **text teaches itself**.
+Many common pretraining objectives are self-supervised: targets are derived from the training data itself rather than requiring a human label for every example.
 
 ---
 
@@ -267,11 +268,7 @@ Repeat for weeks or months
 
 
 
-This requires:
-
-- Thousands of GPUs
-- Massive memory
-- Extremely high cost
+Large frontier-scale pretraining can require substantial accelerator clusters, memory, time, and cost. Smaller models and continued/domain pretraining can operate at very different scales.
 
 ---
 
@@ -281,8 +278,7 @@ This requires:
 
 **Fine-tuning** is additional training on **smaller, curated data** to teach the model **how to behave**.
 
-The model already knows language.  
-Now we shape **how it responds**.
+The model already has pretrained representations. Fine-tuning updates some or all trainable parameters using a narrower objective or dataset.
 
 ---
 
@@ -338,13 +334,13 @@ After fine-tuning, the model:
 - Becomes safer and more reliable
 - Performs specific tasks more accurately
 
-The model is now **usable in real applications**.
+Fine-tuning can improve suitability for an application, but production readiness still requires evaluation, safety controls, retrieval/tools where needed, and operational engineering.
 
 
 **In Simple Terms:**
 
-Pre-training makes the model **smart**  
-Fine-tuning makes the model **useful**
+Pre-training provides broad base capabilities.  
+Fine-tuning specializes or shapes those capabilities.
 
 ---
 
@@ -409,11 +405,11 @@ This is what makes **ChatGPT useful**.
 
 ---
 
-### 5.4 Alignment Fine-tuning (RLHF)
+### 5.4 Preference / Alignment Post-Training
 
-**Purpose:** Teach human preferences
+**Purpose:** Optimize behavior toward preference/safety objectives. RLHF is one family of techniques; other preference-optimization approaches also exist.
 
-Humans rank answers based on:
+Feedback or preference data can reflect:
 
 - Helpfulness
 - Safety
@@ -476,6 +472,90 @@ A safe, helpful medical assistant.
 
 - **Pre-training = language intelligence**
 - **Fine-tuning = usable behavior**
-- All modern LLMs use **both**
+- Many assistant-oriented LLMs use pretraining followed by one or more post-training/adaptation stages; exact recipes differ
 - ChatGPT-style models =  
   **Pre-training + Instruction tuning + Alignment**
+
+
+---
+
+## 9. Fine-Tuning vs Continued Pretraining
+
+These are often confused.
+
+### Continued / domain-adaptive pretraining
+
+Continue a language-model objective on additional domain text.
+
+Useful when the goal is adapting representations to a specialized corpus or language distribution.
+
+### Supervised fine-tuning
+
+Train on input → desired-output examples.
+
+Useful when the goal is task or instruction behavior.
+
+```text
+Domain corpus
+→ continued pretraining
+
+Instruction + ideal response pairs
+→ supervised fine-tuning
+```
+
+---
+
+## 10. Fine-Tuning vs RAG
+
+Use **RAG** when the primary problem is access to external, private, frequently changing, or source-cited knowledge.
+
+Use **fine-tuning** when the primary problem is repeatable behavior, style, task mapping, or model adaptation.
+
+```text
+Need current company policy?
+→ RAG
+
+Need consistent classification behavior?
+→ Fine-tuning may help
+
+Need both?
+→ Combine them
+```
+
+Do not fine-tune a model merely to memorize frequently changing facts.
+
+---
+
+## 11. Fine-Tuning Is Not Guaranteed Knowledge Preservation
+
+Updating model parameters can create trade-offs:
+
+- overfitting,
+- capability regressions,
+- catastrophic forgetting,
+- unwanted style shifts.
+
+Evaluate both the target behavior and important baseline capabilities after tuning.
+
+---
+
+## 12. Key Takeaways
+
+- Pretraining learns broad representations/capabilities from large-scale data.
+- Fine-tuning adapts pretrained parameters toward narrower objectives.
+- Self-supervised pretraining derives learning targets from data.
+- Causal and masked language modeling are different objectives for different model families.
+- Continued pretraining and supervised fine-tuning solve different adaptation problems.
+- Preference/alignment post-training is broader than RLHF alone.
+- RAG is often better for current, private, source-backed knowledge.
+- Fine-tuning does not automatically make a model safe, factual, or production-ready.
+
+---
+
+## Continue Learning
+
+1. [AI Foundation Models](AI%20Foundation%20Models.md)
+2. [Large Language Models](Large%20Language%20Models%20%28LLM%29.md)
+3. **Pre-training vs Fine-tuning — this chapter**
+4. [Fine-Tuning](Fine-Tuning.md)
+5. [RAG](RAG.md)
