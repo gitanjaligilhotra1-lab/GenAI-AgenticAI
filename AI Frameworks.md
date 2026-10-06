@@ -1,6 +1,6 @@
 # AI Frameworks
 
-AI frameworks are **software libraries, platforms, or tools** that help developers **build, train, and deploy AI models efficiently**.  
+"AI framework" is a broad label covering libraries and platforms at different layers: classical ML, deep learning, model libraries, inference/serving, and GenAI/agent orchestration. They should not all be evaluated as if they solve the same problem.  
 
 They provide **pre-built functions, abstractions, and optimizations** to simplify AI development, making it faster and less error-prone.
 
@@ -9,7 +9,7 @@ They provide **pre-built functions, abstractions, and optimizations** to simplif
 ## 1. What Are AI Frameworks?
 
 1. **Definition:**  
-   - AI frameworks are **tools for building AI models** without starting from scratch.  
+   - Frameworks provide reusable abstractions for particular parts of the AI lifecycle; some build/train models, while others primarily consume or orchestrate pretrained models.  
    - They provide support for **model creation, training, evaluation, deployment, and monitoring**.  
    - They make AI development **reproducible, collaborative, and scalable** across different environments.
 
@@ -30,7 +30,7 @@ They provide **pre-built functions, abstractions, and optimizations** to simplif
 4. **Key Takeaways:**  
    - AI frameworks are like a **toolkit or engine** for AI development.  
    - They save time, reduce errors, and make it easier to scale AI projects from research to production.  
-   - They support **the entire AI lifecycle**, from experimentation to deployment and monitoring.
+   - No single framework necessarily owns the entire lifecycle; production systems often combine several layers.
 
 ---
 
@@ -412,14 +412,12 @@ There are many AI frameworks available, each designed for **specific tasks, perf
 
 ---
 
-### 5.8 OpenAI API
+### 5.8 Hosted Model APIs
 
-- **Purpose:** Access pre-trained large language models and foundation models.  
-- **Key Features:**  
-  - Easy API integration  
-  - Supports multiple tasks: text generation, summarization, code generation  
-  - No need to train models locally  
-- **Example Tasks:** Chatbots, AI assistants, automated content generation  
+- **Purpose:** Access hosted foundation models without operating model-serving infrastructure directly.
+- **Key Features:** managed inference APIs, model capabilities, structured/tool interfaces depending on provider.
+- **Important distinction:** an API is a service interface, not the same category as a training framework such as PyTorch.
+- **Example Tasks:** assistants, extraction, generation, tool-enabled applications.  
 
 ---
 
@@ -500,7 +498,7 @@ Choosing the right AI framework depends on **your task, resources, and goals**. 
 ### 6.5 Example Decision Flow
 
 Task: Image recognition → Deep learning → TensorFlow or PyTorch
-Task: Text summarization → Transformer models → Hugging Face Transformers
+Task: Text summarization → hosted model API or model library, depending on deployment requirements
 Task: Predict sales from tabular data → Classical ML → Scikit-learn or XGBoost
 Task: Research new neural architecture → High flexibility → PyTorch or JAX
 
@@ -578,3 +576,158 @@ AI frameworks are evolving rapidly. Understanding these trends helps developers 
 - Integration with **foundation models** allows rapid deployment of advanced AI  
 - Enterprise-ready features like **monitoring, pipelines, and compliance tools** are becoming standard  
 - Developers should consider frameworks that **adapt to emerging trends** to future-proof AI projects
+
+
+---
+
+## 8. A Better Framework Taxonomy
+
+Instead of one flat list, think in layers.
+
+| Layer | Purpose | Examples |
+|---|---|---|
+| Classical ML | tabular/traditional ML | scikit-learn, XGBoost |
+| Deep learning | tensors, autodiff, model training | PyTorch, TensorFlow, JAX |
+| Model libraries | pretrained architectures/tokenizers | Transformers-style libraries |
+| Serving/runtime | efficient model inference | model servers/runtimes |
+| GenAI application | prompts, retrieval, tools, workflows | orchestration libraries |
+| Agent runtime | stateful loops, tools, multi-agent coordination | agent frameworks |
+| Evaluation/observability | tests, traces, metrics | eval/telemetry systems |
+
+A production stack can use several layers simultaneously.
+
+---
+
+## 9. Framework vs Protocol vs API
+
+These terms should not be mixed.
+
+### Framework
+
+Provides software abstractions and runtime/library behavior.
+
+### API
+
+Defines how software accesses a service/capability.
+
+### Protocol
+
+Defines interoperable communication semantics between independently implemented systems.
+
+Examples from this repository:
+
+```text
+Agent framework → builds/orchestrates agent runtime
+MCP → protocol for capability/context integration
+A2A → protocol for independent agent interoperability
+Model API → hosted inference interface
+```
+
+---
+
+## 10. Framework Lock-In
+
+Framework abstractions are useful, but application architecture should not disappear inside them.
+
+Keep portable domain contracts for:
+
+- messages,
+- tool schemas,
+- state,
+- retrieval results,
+- evaluation cases,
+- traces.
+
+Then framework-specific adapters can sit around those contracts.
+
+```text
+Business / Agent Logic
+        ↓
+Portable Interfaces
+        ↓
+Framework Adapter
+        ↓
+Provider / Runtime
+```
+
+This reduces migration cost.
+
+---
+
+## 11. Choosing a GenAI / Agent Framework
+
+Ask:
+
+### Control
+Can I inspect and control the execution loop?
+
+### State
+How is state represented and persisted?
+
+### Tools
+Are tool contracts portable and permission-aware?
+
+### Durability
+Can long-running tasks resume?
+
+### Observability
+Can I trace every model/tool decision?
+
+### Evaluation
+Can I test trajectories, not only final output?
+
+### Portability
+How tightly am I coupled to one model/provider?
+
+### Production fit
+Does it support the reliability/security requirements I actually need?
+
+A framework with the most features is not necessarily the best architecture.
+
+---
+
+## 12. When Not to Use a Heavy Framework
+
+For a simple application:
+
+```text
+request
+→ retrieve
+→ model
+→ response
+```
+
+a small amount of explicit application code may be easier to:
+
+- understand,
+- test,
+- debug,
+- secure,
+- migrate.
+
+Add orchestration frameworks when they reduce real complexity rather than create abstraction for its own sake.
+
+---
+
+## 13. Key Takeaways
+
+- "AI framework" covers multiple layers; do not compare unrelated tools as direct substitutes.
+- Training frameworks, model libraries, hosted APIs, and agent frameworks solve different problems.
+- Production stacks often combine several frameworks/services.
+- MCP and A2A are protocols, not agent frameworks.
+- Preserve portable schemas/state/evals to reduce framework lock-in.
+- Choose based on control, durability, observability, evaluation, portability, security, and operations.
+- Simple explicit code can be better than a heavy framework for simple workflows.
+- Architecture should remain understandable even if the framework changes.
+
+---
+
+## Continue Learning
+
+1. [AI & ML Fundamentals](AI%20%26%20ML%20Fundamentals.md)
+2. [AI Foundation Models](AI%20Foundation%20Models.md)
+3. **AI Frameworks — this chapter**
+4. [AI Agents](AI%20Agents.md)
+5. [Tool Use & Agent Orchestration](docs/agentic-ai/tool-use-and-orchestration.md)
+6. [MCP](MCP%20%28Model%20Context%20Protocol%29.md)
+7. [A2A](A2A%20Protocol.md)
