@@ -10,8 +10,9 @@ The repository is being migrated without breaking the existing root-level learni
 - `agentic-ai/` — deep engineering guides for agent architecture, tool use, memory, planning, and Agentic RAG.
 - `system-design/` — end-to-end architecture case studies.
 - `design-patterns/` — reusable GenAI and agentic architecture patterns.
+- `production/` — cross-cutting evaluation, observability, security, reliability, context engineering, performance, latency, and cost.
 
-Future reorganization can move root chapters into dedicated foundations/LLM-engineering areas once that migration can be done without breaking navigation. Production concerns are currently developed inside each deep-dive chapter rather than represented by an empty `production/` directory.
+Future reorganization can move root chapters into dedicated foundations/LLM-engineering areas once that migration can be done without breaking navigation. Production concerns remain embedded in domain deep dives, while `production/` now provides dedicated cross-cutting engineering guides.
 
 ## Deep-Dive Guides
 
@@ -22,6 +23,10 @@ Future reorganization can move root chapters into dedicated foundations/LLM-engi
 4. **[Planning & Reasoning Patterns](agentic-ai/planning-and-reasoning.md)** — reactive planning, ReAct-style control, plan-and-execute, replanning, decomposition, routing, reflection, verification, hypothesis-driven investigation, bounded search, durable execution, and evaluation.
 5. **[Agentic RAG](agentic-ai/agentic-rag.md)** — adaptive retrieval, source routing, query decomposition, multi-hop retrieval, evidence grading, corrective loops, claim verification, memory integration, security, evaluation, and production architecture.
 6. **[Multi-Agent Systems Architecture](agentic-ai/multi-agent-systems.md)** — coordination topologies, structured delegation, task/state ownership, distributed execution, failure handling, security boundaries, MCP/A2A integration, evaluation, scaling, latency, and cost.
+
+### Production AI Engineering
+1. **[Evaluation & Observability](production/evaluation-and-observability.md)** — datasets, graders, RAG/tool/agent evaluation, regression gates, tracing, monitoring, failure mining, latency, cost, and privacy-aware telemetry.
+2. **[Production Engineering Hub](production/README.md)** — roadmap for security, reliability, context engineering, and performance/cost guidance.
 
 ### System Design
 - **[Production RAG System Design](system-design/production-rag.md)** — ingestion, retrieval, reranking, context construction, evaluation, security, scalability, reliability, latency, cost, and Agentic RAG.
