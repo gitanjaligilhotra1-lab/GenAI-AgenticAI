@@ -1,0 +1,1 @@
+[{"service":"checkout-api","version":"checkout-api:v2.14.0","deployed_at":"2026-10-07T09:08:00Z","change":"database connection pool configuration","risk":"database_pool"},{"service":"catalog-api","version":"catalog-api:v5.3.1","deployed_at":"2026-10-06T18:00:00Z","change":"logging update","risk":"low"}]

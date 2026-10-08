@@ -1,0 +1,2 @@
+# Python 3.10+
+# The base capstone uses only the standard library.

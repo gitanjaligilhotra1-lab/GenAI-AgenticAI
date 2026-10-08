@@ -1,0 +1,9 @@
+{
+  "ALERT-9001": {
+    "user": "alex@example.test",
+    "type": "impossible_travel",
+    "privileged_access": true,
+    "window_start": "09:00",
+    "window_end": "09:40"
+  }
+}

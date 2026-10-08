@@ -1,0 +1,1 @@
+{"checkout-api":{"error_rate":18.4,"p95_ms":2840,"baseline_p95_ms":420,"cpu_percent":46},"catalog-api":{"error_rate":6.2,"p95_ms":980,"baseline_p95_ms":430,"cpu_percent":51}}

@@ -1,0 +1,1 @@
+{"INC-1001":{"service":"checkout-api","severity":"SEV-1","started_at":"2026-10-07T09:16:00Z","symptom":"checkout failures elevated latency database pool"},"INC-1002":{"service":"catalog-api","severity":"SEV-2","started_at":"2026-10-07T08:40:00Z","symptom":"dependency timeouts"}}

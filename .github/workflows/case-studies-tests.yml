@@ -1,0 +1,38 @@
+name: Case Study Python Tests
+on:
+  push:
+    paths:
+      - '06-projects-and-case-studies/**'
+      - '.github/workflows/case-studies-tests.yml'
+  pull_request:
+    paths:
+      - '06-projects-and-case-studies/**'
+      - '.github/workflows/case-studies-tests.yml'
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - customer-service-ai-agent
+          - production-incident-investigation-agent
+          - voice-ai-retail-customer-support
+          - it-helpdesk-automation-agent
+          - cybersecurity-threat-investigation-agent
+          - personal-finance-spending-agent
+          - agent-pipeline-workflow-builder
+          - project-status-assistant
+    defaults:
+      run:
+        working-directory: 06-projects-and-case-studies/${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check Python syntax
+        run: python -m compileall -q .
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v

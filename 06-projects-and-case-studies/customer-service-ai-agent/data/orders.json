@@ -1,0 +1,5 @@
+{
+  "ORD-1001": {"customer": "Alex", "item": "Wireless Headphones", "price": 79.99, "delivered": true},
+  "ORD-1002": {"customer": "Sam", "item": "Smart Speaker", "price": 249.00, "delivered": true},
+  "ORD-1003": {"customer": "Jordan", "item": "Mechanical Keyboard", "price": 129.00, "delivered": false}
+}

@@ -1,0 +1,1 @@
+[{"user":"alex@example.test","time":"09:12","ip":"198.51.100.10","device":"CORP-101","mfa":"passed"},{"user":"alex@example.test","time":"09:27","ip":"203.0.113.77","device":"UNKNOWN-9","mfa":"failed"},{"user":"alex@example.test","time":"09:29","ip":"203.0.113.77","device":"UNKNOWN-9","mfa":"passed"}]

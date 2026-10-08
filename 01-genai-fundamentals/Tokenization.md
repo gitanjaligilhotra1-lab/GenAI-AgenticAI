@@ -1,0 +1,417 @@
+# Tokens & Tokenization
+
+## 1. What are Tokens?
+
+**Definition:**  
+In Natural Language Processing (NLP), a **token** is a small unit of text that a language model processes. Tokens can be:
+
+* Words (e.g., `apple`)
+* Subwords (e.g., `appl` + `e`)
+* Characters (e.g., `a`, `p`, `p`, `l`, `e`)
+
+**Why Tokens Matter:**  
+
+LLMs do not read text as humans do. They process **tokens**, which allows them to handle unknown words, punctuation, and complex languages efficiently.
+
+**Example:**
+
+*Sentence:*  
+I love AI.
+
+
+*Tokens (word-level):*  
+["I", "love", "AI", "."]
+
+
+*Tokens (subword-level):*  
+["I", "lo", "ve", "A", "I", "."]
+
+
+---
+
+## 2. What is Tokenization?
+
+**Definition:**  
+**Tokenization** is the process of converting text into tokens that a model can understand. It is the first step in preparing text for LLMs or other NLP models.
+
+**Key Points:**
+
+* Breaks down sentences into smaller units  
+* Handles punctuation, spaces, and special characters  
+* Converts tokens into numerical IDs that the model can process  
+
+**Example:**
+
+*Text:*  
+This is a sample
+
+
+*Tokens:*  
+["This", "is", "a", "sample"]
+
+
+```mermaid
+flowchart LR
+    A["Raw text<br/>This is a sample"] --> B["Tokenizer"]
+    B --> C["Tokens<br/>This | is | a | sample"]
+    C --> D["Vocabulary lookup"]
+    D --> E["Token IDs<br/>Illustrative numeric IDs"]
+    E --> F["Numerical input to the model"]
+```
+
+*The token boundaries shown are illustrative. Actual tokenization and token IDs depend on the model’s tokenizer.*
+
+
+**Why Tokenization is Needed:**  
+
+* LLMs operate on numbers, not raw text  
+* Ensures consistent processing of words, subwords, and symbols  
+* Reduces memory usage by splitting rare words into subwords  
+
+---
+
+## 3. Types of Tokenization
+
+### 3.1 Word-Level Tokenization
+
+* Each word is treated as a token  
+* Simple but inefficient for rare words or misspellings  
+
+**Example:**  
+"I love AI" → ["I", "love", "AI"]
+
+
+### 3.2 Subword-Level Tokenization
+
+* Breaks words into smaller units (subwords)  
+* Efficient for large vocabularies and rare words  
+
+**Example:**  
+"unhappiness" → ["un", "happiness"]
+
+
+
+
+### 3.3 Character-Level Tokenization
+
+* Each character is a token  
+* Handles unknown words and languages without spaces  
+
+**Example:**  
+"AI" → ["A", "I"]
+
+**Comparison of tokenization approaches (illustrative):**
+
+```mermaid
+flowchart TD
+    A["Input text: unhappiness"]
+    A --> B["Word-level"]
+    A --> C["Subword-level"]
+    A --> D["Character-level"]
+    B --> E["One token: unhappiness"]
+    C --> F["Two tokens: un | happiness"]
+    D --> G["Characters: u | n | h | a | p | p | i | n | e | s | s"]
+```
+
+*Token boundaries are illustrative; actual subword splits depend on the tokenizer.*
+
+
+---
+
+## 4. Tokenization in Practice with LLMs
+
+* Many modern LLM tokenizers use subword-like or byte-aware schemes; the exact algorithm and vocabulary are model-specific  
+* Input and generated tokens consume the model's available context budget; exact limits depend on the model  
+* Tokenization affects:
+  - sequence length
+  - context usage
+  - compute and memory
+  - latency
+  - token-metered API cost where applicable  
+
+**Example:**
+
+*Input:*  
+"Large language models are amazing!"
+
+
+*Tokens:*  
+["Large", "language", "models", "are", "amazing", "!"]
+
+
+*Token Count:* 6  
+
+---
+
+## 5. Why Tokenization Matters
+
+### 5.1 Cost
+
+* Many hosted model APIs meter input/output usage in tokens, although pricing models vary
+* More processed tokens generally increase compute and can increase cost  
+
+### 5.2 Context Window
+
+* LLMs have a **token limit**  
+* Exact limits vary by model
+* Applications must keep the complete request—system instructions, conversation, retrieved context, tool schemas, and expected output—within the supported budget  
+
+### 5.3 Model Understanding
+
+* Poor tokenization → poor model understanding  
+* Proper tokenization → better predictions  
+
+---
+
+## 6. Example: Token Count Surprise 
+
+*Text:*  
+Hello, how are you?
+
+
+*Tokens:*  
+["Hello", ",", " how", " are", " you", "?"]
+
+
+*Token Count:* 6 (not 4 words!)  
+
+---
+
+## 7. Tokens in Training vs Usage
+
+* **Training:** Model learns patterns between tokens  
+* **Inference:** Model predicts the next token  
+* Everything internally is token-based  
+
+**Example:**
+
+*Input:*  
+I love pizza
+
+
+*Steps:*  
+Text → Tokens → Numbers → Model → Numbers → Tokens → Text
+
+
+*Note:* The user sees text, but the model processes **numbers representing tokens** internally.  
+
+---
+---
+
+## Context Window & Limitations
+
+## 8. What is a Context Window?
+
+**Definition:**  
+The **context window** (or context length) is the **maximum number of tokens an LLM can process at once**. It determines how much “memory” the model has when generating text.
+
+**Why it Matters:**  
+
+* Defines the **information the model can see** at a time  
+* Limits how much previous conversation or document the model can remember  
+* Impacts **accuracy, summarization, reasoning, and coding tasks**
+
+**Example:**  
+
+Illustrative model context budget: 8K tokens  
+Input text: "Large language models can generate, summarize, and translate text..."
+Token count: 120 tokens → fits entirely in context window
+
+*All 120 tokens are available for the model to process.*
+
+---
+
+## 9. How Context Windows Work
+
+* LLMs process **text token by token**  
+* A model has a maximum supported context length
+* Applications decide how to handle overflow: reject, truncate, summarize, retrieve selectively, or rebuild context. It is not universally true that the model automatically drops the oldest tokens.  
+
+**Visual Illustration:**
+
+[Token1, Token2, ..., TokenN] → Max N tokens
+
+Older tokens outside the window → forgotten
+
+
+**Example:**
+Context window = 8 tokens
+Input: "I love AI and machine learning every day!"
+Tokens: [I, love, AI, and, machine, learning, every, day, !]
+Token 9 (!) → truncated if context window exceeded
+
+
+---
+
+## 10. Limitations of Context Windows
+
+### 10.1 Truncation of Long Text
+
+* Input exceeding the window is **cut off**  
+* Model loses early content → may produce incomplete or inaccurate outputs  
+
+**Scenario:** Summarizing a 1200-token document with 1000-token context:  
+* First 200 tokens → truncated  
+* Model summarizes tokens 201–1200 only → early info lost  
+
+---
+
+### 10.2 Limited Long-Term Memory
+
+* Model **cannot remember tokens beyond the current window**  
+* Multi-turn chat may forget older messages  
+* New sessions = fresh context unless memory is explicitly managed  
+
+**Impact:**  
+- Chatbots may forget important user instructions  
+- Summaries of long research papers may miss the introduction  
+
+---
+
+### 10.3 Cost & Performance
+
+* Larger contexts → **more computation and memory**  
+* Token-based API billing → longer inputs = higher cost  
+* Very long context → slower response time  
+
+**Example:**  
+8K tokens → faster, cheaper
+32K tokens → slower, expensive
+
+
+---
+
+## 11. Managing Context Limitations
+
+**Strategies:**
+
+1. **Chunking:** Break documents into smaller segments within context limit  
+2. **Summarization:** Pre-summarize old chunks to fit more info  
+3. **Retrieval-Augmented Generation (RAG):** Feed relevant external info dynamically  
+4. **Explicit context management:** Keep track of important details manually in multi-turn conversations  
+
+**Example Workflow:**
+
+Step 1: Split 10,000-token document into 5 chunks of 2,000 tokens
+Step 2: Summarize each chunk into 500 tokens
+Step 3: Feed summarized chunks sequentially to LLM
+
+
+---
+
+## 12. Example Scenarios
+
+**Chatbot Example:**  
+*Context budget = 4096 tokens*  
+* The complete request would require 5000 tokens  
+* The application must reduce/reject the request before inference or use an appropriate larger-context model
+* Possible solution: summarize, retrieve selectively, or remove irrelevant history  
+
+**Coding Assistant:**  
+* Large codebase = 50,000 tokens  
+* Model can only see function file in context window → cannot reason across entire repo  
+* Solution: feed file-by-file or provide summaries 
+
+
+---
+
+## 13. Token IDs and Vocabulary
+
+A tokenizer maps token pieces to integer IDs.
+
+```text
+Text
+ ↓
+Tokenizer
+ ↓
+Token pieces
+ ↓
+Vocabulary lookup
+ ↓
+Token IDs
+ ↓
+Model
+```
+
+The model processes token IDs/embeddings, not the original string directly.
+
+Different models can tokenize the same text differently because they use different vocabularies and tokenizer algorithms.
+
+---
+
+## 14. Why Token Counts Are Hard to Guess
+
+Token count is not the same as:
+
+- word count,
+- character count,
+- syllable count.
+
+Factors include:
+
+- language,
+- punctuation,
+- whitespace,
+- numbers,
+- code,
+- uncommon words,
+- tokenizer vocabulary.
+
+Therefore, examples in this chapter are illustrative. Use the tokenizer associated with the actual model when an exact count matters.
+
+---
+
+## 15. Context Window vs Memory
+
+A context window is **not long-term memory**.
+
+```text
+Context Window
+= information supplied to this inference
+
+Agent Memory
+= selected information persisted and retrieved across interactions
+```
+
+A long context can reduce how aggressively an application must summarize or retrieve, but it does not replace memory lifecycle, permissions, freshness, or retrieval design.
+
+---
+
+## 16. Context Engineering
+
+For an LLM application, the context budget may contain:
+
+```text
+System instructions
++ conversation
++ retrieved documents
++ tool definitions
++ tool results
++ memory
++ user request
++ generated output
+```
+
+Context engineering is the discipline of selecting the **most useful information**, not merely filling the largest possible window.
+
+---
+
+## 17. Key Takeaways
+
+- Models process token IDs rather than raw text.
+- Tokens may represent words, subwords, bytes/characters, punctuation, or combinations depending on the tokenizer.
+- Exact tokenization is model-specific.
+- Token count affects context capacity, compute, latency, and often cost.
+- Applications—not a universal automatic rule—decide how overflow is handled.
+- Context window and persistent memory are different concepts.
+- Larger context does not remove the need for selective retrieval and context engineering.
+
+---
+
+## Continue Learning
+
+1. [AI Foundation Models](AI%20Foundation%20Models.md)
+2. **Tokenization — this chapter**
+3. [Transformers](Transformers.md)
+4. [Large Language Models](Large%20Language%20Models%20%28LLM%29.md)
+5. [Prompt Engineering](Prompt%20Engineering.md)

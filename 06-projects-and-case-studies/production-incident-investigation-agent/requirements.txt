@@ -1,0 +1,1 @@
+# Python 3.10+\n# No third-party packages are required for the base capstone.\n
