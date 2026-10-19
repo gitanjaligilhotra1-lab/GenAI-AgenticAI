@@ -1,5 +1,24 @@
 # Voice AI Agent for Retail Customer Support — Case Study
 
+## Quick Review — For Technical Leaders
+
+| Review question | Answer |
+|---|---|
+| **What does this demonstrate?** | Stateful voice-support workflow. |
+| **What is runnable today?** | Typed-turn simulation demonstrates conversation state and action confirmation; it does not stream real audio. |
+| **Which decisions matter?** | Realtime architecture decisions, interruption handling, latency budgets. |
+| **How do I validate it?** | Run the local example and the unit tests below; inspect the architecture and failure-mode sections for the rationale. |
+
+**Quick start** (from the repository root):
+
+```bash
+cd 06-projects-and-case-studies/voice-ai-retail-customer-support
+python app.py
+python -m unittest discover -s tests -v
+```
+
+**Interpretation:** A passing local demonstration or unit test is evidence about this teaching implementation, **not** proof of production readiness, measured business ROI, or a deployed AI service. The production-evolution section outlines additional work.
+
 ## Executive Overview
 
 Voice support is not a text chatbot with speech attached. A useful voice agent must coordinate **audio streaming, turn detection, transcription or speech-native understanding, conversational state, business tools, retrieval, action confirmation, speech generation, interruptions, latency, and escalation** while the caller expects a natural response in real time.
