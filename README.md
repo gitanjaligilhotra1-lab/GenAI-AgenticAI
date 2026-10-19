@@ -1,8 +1,30 @@
-# GenAI & Agentic AI
+# GenAI & Agentic AI — From Fundamentals to Production Design
 
-> A practical, beginner-to-advanced knowledge base for understanding, building, evaluating, and designing modern Generative AI and Agentic AI systems.
+**A practical engineering knowledge base for building and evaluating Generative AI and agentic systems.** Follow a structured learning path, examine architecture and production trade-offs, or explore eight runnable educational case studies.
 
-This repository connects **fundamentals with real engineering**: LLMs, prompting, embeddings, search/retrieval, RAG, fine-tuning, agents, multi-agent systems, MCP, A2A, architecture, system design, evaluation, security, scalability, latency, and cost.
+**For:** AI engineers, technical leads, architects, and engineering leaders assessing how AI systems should be designed, evaluated, secured, and operated.
+
+### Explore in 2 minutes
+
+| If you want to… | Start here |
+|---|---|
+| Understand the fundamentals | [GenAI fundamentals](01-genai-fundamentals/README.md) |
+| Design agents and tool workflows | [Agentic AI](02-agentic-ai/README.md) |
+| Evaluate safety, reliability, latency, and cost | [Production AI](03-production-ai/README.md) |
+| Review enterprise architecture trade-offs | [AI platform system design](04-system-design/ai-platform-architecture.md) |
+| Explore working examples | [Eight applied case studies](06-projects-and-case-studies/README.md) |
+| Follow a structured progression | [Learning roadmap](ROADMAP.md) |
+
+### What makes this repository useful
+
+- **Architecture-first explanations:** not just what a component does, but where it fits, what can fail, and which alternatives to consider.
+- **Production decision points:** evaluations, observability, access controls, failure handling, latency, scalability, and unit economics.
+- **Executable learning examples:** eight case-study scenarios with synthetic data and tests; examples are educational, not claims of deployed enterprise systems.
+- **Leadership-level trade-offs:** when to use RAG versus fine-tuning, single versus multi-agent designs, shared platforms versus product-specific implementations, and when simpler automation is preferable.
+
+**Suggested first read for a CTO or AI engineering leader:** [AI Platform Architecture](04-system-design/ai-platform-architecture.md) → [Evaluation & Observability](03-production-ai/evaluation-and-observability.md) → [Security & Guardrails](03-production-ai/security-and-guardrails.md) → [Applied Case Studies](06-projects-and-case-studies/README.md).
+
+> **Scope:** This is an educational and technical reference portfolio. Runnable case studies use teaching implementations and synthetic scenarios; production architecture discussions are design guidance, not evidence of live customer deployments.
 
 ## Repository Structure
 
