@@ -1,5 +1,24 @@
 # Project Status Assistant — Case Study
 
+## Quick Review — For Technical Leaders
+
+| Review question | Answer |
+|---|---|
+| **What does this demonstrate?** | Decision-oriented project reporting. |
+| **What is runnable today?** | Assesses a synthetic project snapshot for blockers and performance risk; no live project integration. |
+| **Which decisions matter?** | Traceability, risk communication, missing-data handling. |
+| **How do I validate it?** | Run the local example and the unit tests below; inspect the architecture and failure-mode sections for the rationale. |
+
+**Quick start** (from the repository root):
+
+```bash
+cd 06-projects-and-case-studies/project-status-assistant
+python app.py
+python -m unittest discover -s tests -v
+```
+
+**Interpretation:** A passing local demonstration or unit test is evidence about this teaching implementation, **not** proof of production readiness, measured business ROI, or a deployed AI service. The production-evolution section outlines additional work.
+
 ## Executive Overview
 
 Leaders often receive project updates from separate systems: task boards, engineering metrics, deployment logs, and team discussions. Each source provides part of the picture, but no single source automatically explains whether the project is ready for its next milestone. A useful assistant turns these signals into a **traceable, decision-oriented status assessment**, not merely a polished summary.
