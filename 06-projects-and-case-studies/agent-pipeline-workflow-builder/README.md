@@ -1,5 +1,24 @@
 # Agent Pipeline and AI Workflow Builder — Case Study
 
+## Quick Review — For Technical Leaders
+
+| Review question | Answer |
+|---|---|
+| **What does this demonstrate?** | Multi-stage research workflow. |
+| **What is runnable today?** | Runs planner, research, comparison and critique stages over local evidence; no live multi-agent LLM orchestration. |
+| **Which decisions matter?** | Workflow contracts, evidence gaps, orchestration trade-offs. |
+| **How do I validate it?** | Run the local example and the unit tests below; inspect the architecture and failure-mode sections for the rationale. |
+
+**Quick start** (from the repository root):
+
+```bash
+cd 06-projects-and-case-studies/agent-pipeline-workflow-builder
+python app.py
+python -m unittest discover -s tests -v
+```
+
+**Interpretation:** A passing local demonstration or unit test is evidence about this teaching implementation, **not** proof of production readiness, measured business ROI, or a deployed AI service. The production-evolution section outlines additional work.
+
 ## Executive Overview
 
 Many AI tasks are not one prompt. They are workflows: define a goal, decompose it into steps, gather evidence, combine outputs, check quality, and return a result. A pipeline makes those responsibilities explicit, testable, and observable.
