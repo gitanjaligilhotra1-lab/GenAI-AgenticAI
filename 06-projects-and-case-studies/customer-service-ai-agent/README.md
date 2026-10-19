@@ -1,5 +1,24 @@
 # Customer Support AI Agent — Case Study
 
+## Quick Review — For Technical Leaders
+
+| Review question | Answer |
+|---|---|
+| **What does this demonstrate?** | Policy retrieval and guarded support actions. |
+| **What is runnable today?** | Refund and replacement flows require confirmation and enforce application-side boundaries. |
+| **Which decisions matter?** | Action safety, stateful confirmation, policy enforcement. |
+| **How do I validate it?** | Run the local example and the unit tests below; inspect the architecture and failure-mode sections for the rationale. |
+
+**Quick start** (from the repository root):
+
+```bash
+cd 06-projects-and-case-studies/customer-service-ai-agent
+python app.py
+python -m unittest discover -s tests -v
+```
+
+**Interpretation:** A passing local demonstration or unit test is evidence about this teaching implementation, **not** proof of production readiness, measured business ROI, or a deployed AI service. The production-evolution section outlines additional work.
+
 ## Executive Overview
 
 Customer support is a practical example of where generative AI becomes useful only when it is connected to **trusted knowledge, live business data, controlled actions, conversational state, and deterministic policy enforcement**.
