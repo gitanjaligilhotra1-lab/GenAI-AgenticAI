@@ -4,6 +4,16 @@ Eight runnable, self-contained reference implementations connect GenAI and agent
 
 **Start here:** choose a scenario, read its README, run the deterministic sample, then explore the diagrams, tests, evaluation approach, and production extensions. These examples use local synthetic data; do not mistake their simulated actions or heuristic assessments for connected production systems.
 
+## Two-Minute Reviewer Path
+
+If you are evaluating this repository for AI engineering or technical leadership capability, review these three cases first:
+
+1. **[Customer Service AI Agent](customer-service-ai-agent/README.md)** — demonstrates grounded responses, confirmation before actions, and application-enforced policy boundaries.
+2. **[Production Incident Investigation](production-incident-investigation-agent/README.md)** — demonstrates evidence correlation, alternative hypotheses, and controlled human decision-making.
+3. **[Agent Pipeline Workflow Builder](agent-pipeline-workflow-builder/README.md)** — demonstrates workflow decomposition, explicit stage contracts, and critique of insufficient evidence.
+
+Each of the eight case-study READMEs begins with a **Quick Review — For Technical Leaders** section summarizing runnable scope, leadership trade-offs, and exact local validation commands. These are educational simulations rather than deployed LLM services.
+
 ## Case Study Catalog
 
 | Case study | Business problem | Engineering focus |
