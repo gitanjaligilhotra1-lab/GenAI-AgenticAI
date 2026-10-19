@@ -1,5 +1,24 @@
 # Production Incident Investigation Agent — Case Study
 
+## Quick Review — For Technical Leaders
+
+| Review question | Answer |
+|---|---|
+| **What does this demonstrate?** | Evidence-grounded incident investigation. |
+| **What is runnable today?** | Correlates synthetic alerts, metrics, logs and deployments without automatically changing production. |
+| **Which decisions matter?** | Causal reasoning, uncertainty, human approval. |
+| **How do I validate it?** | Run the local example and the unit tests below; inspect the architecture and failure-mode sections for the rationale. |
+
+**Quick start** (from the repository root):
+
+```bash
+cd 06-projects-and-case-studies/production-incident-investigation-agent
+python app.py
+python -m unittest discover -s tests -v
+```
+
+**Interpretation:** A passing local demonstration or unit test is evidence about this teaching implementation, **not** proof of production readiness, measured business ROI, or a deployed AI service. The production-evolution section outlines additional work.
+
 ## Executive Overview
 
 Production incidents are expensive because responders must reconstruct reality under time pressure. Evidence is fragmented across alerts, metrics, logs, traces, deployment systems, service catalogs, and runbooks. An AI-assisted investigator can reduce **time to understanding** by gathering and correlating that evidence before a human decides whether to change production.
