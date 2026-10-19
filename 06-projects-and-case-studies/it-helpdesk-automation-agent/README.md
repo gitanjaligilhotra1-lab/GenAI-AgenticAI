@@ -1,5 +1,24 @@
 # AI Agent for IT Helpdesk Automation — Case Study
 
+## Quick Review — For Technical Leaders
+
+| Review question | Answer |
+|---|---|
+| **What does this demonstrate?** | Enterprise helpdesk triage. |
+| **What is runnable today?** | Uses local device and knowledge evidence to suggest troubleshooting and escalation; no privileged access changes. |
+| **Which decisions matter?** | Identity boundaries, support workflow design, escalation. |
+| **How do I validate it?** | Run the local example and the unit tests below; inspect the architecture and failure-mode sections for the rationale. |
+
+**Quick start** (from the repository root):
+
+```bash
+cd 06-projects-and-case-studies/it-helpdesk-automation-agent
+python app.py
+python -m unittest discover -s tests -v
+```
+
+**Interpretation:** A passing local demonstration or unit test is evidence about this teaching implementation, **not** proof of production readiness, measured business ROI, or a deployed AI service. The production-evolution section outlines additional work.
+
 ## Executive Overview
 
 IT helpdesks handle repetitive requests while protecting employee identities, devices, and enterprise access. A support agent can reduce ticket volume and employee downtime by retrieving approved troubleshooting instructions, checking managed-device evidence, and routing unresolved issues to human technicians. It must **not** turn conversational requests into privileged account changes without authorization.
