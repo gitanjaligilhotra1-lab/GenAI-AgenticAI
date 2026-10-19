@@ -1,5 +1,24 @@
 # Cybersecurity Threat Investigation Agent — Case Study
 
+## Quick Review — For Technical Leaders
+
+| Review question | Answer |
+|---|---|
+| **What does this demonstrate?** | Read-only threat triage. |
+| **What is runnable today?** | Correlates synthetic security evidence and flags uncertainty; it does not lock accounts. |
+| **Which decisions matter?** | Analyst oversight, evidence quality, false-positive risk. |
+| **How do I validate it?** | Run the local example and the unit tests below; inspect the architecture and failure-mode sections for the rationale. |
+
+**Quick start** (from the repository root):
+
+```bash
+cd 06-projects-and-case-studies/cybersecurity-threat-investigation-agent
+python app.py
+python -m unittest discover -s tests -v
+```
+
+**Interpretation:** A passing local demonstration or unit test is evidence about this teaching implementation, **not** proof of production readiness, measured business ROI, or a deployed AI service. The production-evolution section outlines additional work.
+
 ## Executive Overview
 
 Security operations teams face more alerts than analysts can investigate manually. An investigation agent can assemble identity, device, authentication, threat-intelligence, and privilege evidence into a reviewable assessment. The value is **faster, more consistent triage**, not automatic account lockdown based on an opaque model judgment.
