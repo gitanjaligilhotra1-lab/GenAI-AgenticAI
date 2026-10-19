@@ -1,5 +1,24 @@
 # Personal Finance & Spending Agent — Case Study
 
+## Quick Review — For Technical Leaders
+
+| Review question | Answer |
+|---|---|
+| **What does this demonstrate?** | Deterministic spending analysis. |
+| **What is runnable today?** | Uses synthetic transactions and decimal arithmetic; no banking integration or personalized financial advice. |
+| **Which decisions matter?** | Numerical correctness, privacy, scope limitations. |
+| **How do I validate it?** | Run the local example and the unit tests below; inspect the architecture and failure-mode sections for the rationale. |
+
+**Quick start** (from the repository root):
+
+```bash
+cd 06-projects-and-case-studies/personal-finance-spending-agent
+python app.py
+python -m unittest discover -s tests -v
+```
+
+**Interpretation:** A passing local demonstration or unit test is evidence about this teaching implementation, **not** proof of production readiness, measured business ROI, or a deployed AI service. The production-evolution section outlines additional work.
+
 ## Executive Overview
 
 A personal finance assistant can make transaction data easier to understand: where money went, which expenses recur, what spending stands out, and how a hypothetical purchase affects the current month's arithmetic. But financial decisions require more than a fluent answer. They need **correct calculations, explicit assumptions, data privacy, and clear limits on what the system actually knows**.
